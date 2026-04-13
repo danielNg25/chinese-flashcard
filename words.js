@@ -53,6 +53,7 @@ const words = [
   { char:"加拿大", pinyin:"Jiānádà",        pos:"n.",    viet:"Canada",                                              lesson:2 },
   { char:"日本",   pinyin:"Rìběn",         pos:"n.",    viet:"Nhật Bản",                                            lesson:2 },
   { char:"韩国",   pinyin:"Hánguó",        pos:"n.",    viet:"Hàn Quốc",                                            lesson:2 },
+  { char:"越南",   pinyin:"Yuènán",        pos:"n.",    viet:"Việt Nam",                                            lesson:2 },
 
   // ── Lesson 3 ──
   { char:"那",     pinyin:"nà",            pos:"pron.", viet:"kia, đó",                                            lesson:3 },
