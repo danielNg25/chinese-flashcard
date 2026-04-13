@@ -1,0 +1,517 @@
+
+<style>
+:root {
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --color-background-primary: #ffffff;
+  --color-background-secondary: #f5f5f5;
+  --color-text-primary: #1a1a1a;
+  --color-text-secondary: #666666;
+  --color-text-tertiary: #999999;
+  --color-border-secondary: #e0e0e0;
+  --color-border-tertiary: #eeeeee;
+  --border-radius-md: 8px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-sans); }
+.wrap { padding: 1rem 0; }
+
+/* Mode Toggle */
+.mode-toggle { display: flex; gap: 0; margin-bottom: 1rem; border: 1px solid var(--color-border-secondary); border-radius: var(--border-radius-md); overflow: hidden; width: fit-content; }
+.mode-btn { padding: 8px 20px; font-size: 14px; border: none; cursor: pointer; background: var(--color-background-primary); color: var(--color-text-secondary); transition: all 0.2s; font-family: inherit; }
+.mode-btn.active { background: var(--color-background-secondary); color: var(--color-text-primary); font-weight: 600; }
+.mode-btn:hover:not(.active) { background: var(--color-background-secondary); }
+
+/* Browse View */
+.controls { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1rem; align-items: center; }
+.controls input { flex: 1; min-width: 160px; padding: 6px 10px; border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); font-size: 14px; background: var(--color-background-primary); color: var(--color-text-primary); }
+.controls select { padding: 6px 10px; border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); font-size: 14px; background: var(--color-background-primary); color: var(--color-text-primary); }
+.stats { display: flex; gap: 12px; margin-bottom: 1rem; flex-wrap: wrap; }
+.stat { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 8px 14px; font-size: 13px; color: var(--color-text-secondary); }
+.stat span { font-weight: 500; color: var(--color-text-primary); font-size: 15px; margin-right: 4px; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+thead th { text-align: left; font-weight: 500; font-size: 12px; color: var(--color-text-secondary); padding: 6px 10px; border-bottom: 0.5px solid var(--color-border-tertiary); text-transform: uppercase; letter-spacing: 0.04em; }
+tbody tr { border-bottom: 0.5px solid var(--color-border-tertiary); }
+tbody tr:hover { background: var(--color-background-secondary); }
+tbody td { padding: 8px 10px; vertical-align: middle; }
+.char { font-size: 22px; font-weight: 500; }
+.pinyin { color: var(--color-text-secondary); font-style: italic; }
+.badge { display: inline-block; font-size: 11px; padding: 2px 7px; border-radius: 99px; font-weight: 500; }
+.n    { background: #E6F1FB; color: #0C447C; }
+.v    { background: #EAF3DE; color: #27500A; }
+.pron { background: #EEEDFE; color: #3C3489; }
+.adv  { background: #FAEEDA; color: #633806; }
+.adj  { background: #FBEAF0; color: #72243E; }
+.part { background: #FAECE7; color: #712B13; }
+.other{ background: #F1EFE8; color: #444441; }
+.lesson-tag { font-size: 11px; padding: 2px 6px; border-radius: 4px; background: var(--color-background-secondary); color: var(--color-text-tertiary); }
+.viet { color: var(--color-text-secondary); font-size: 13px; }
+
+/* Flashcard View */
+#flashcard-view { display: none; }
+.fc-controls { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1rem; align-items: center; }
+.fc-controls select { padding: 6px 10px; border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); font-size: 14px; background: var(--color-background-primary); color: var(--color-text-primary); }
+.fc-stats { display: flex; gap: 12px; margin-bottom: 1.5rem; flex-wrap: wrap; }
+.fc-stat { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 8px 14px; font-size: 13px; color: var(--color-text-secondary); }
+.fc-stat span { font-weight: 600; margin-right: 4px; }
+.fc-stat.due span { color: #C2410C; }
+.fc-stat.new-cards span { color: #0C447C; }
+.fc-stat.learned span { color: #27500A; }
+.fc-reset-btn { padding: 8px 14px; font-size: 13px; font-family: inherit; border: 1px solid var(--color-border-secondary); border-radius: var(--border-radius-md); background: var(--color-background-primary); color: var(--color-text-secondary); cursor: pointer; transition: background 0.15s; }
+.fc-reset-btn:hover { background: #FBEAF0; color: #72243E; border-color: #FBEAF0; }
+
+/* Card */
+.card-area { display: flex; flex-direction: column; align-items: center; margin: 0 auto; max-width: 400px; }
+.card-container { perspective: 1000px; width: 100%; aspect-ratio: 3/2; margin-bottom: 1rem; cursor: pointer; }
+.card-inner { position: relative; width: 100%; height: 100%; transition: transform 0.5s ease; transform-style: preserve-3d; }
+.card-inner.flipped { transform: rotateY(180deg); }
+.card-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; border: 1px solid var(--color-border-secondary); background: var(--color-background-primary); box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.card-front .card-char { font-size: 48px; font-weight: 600; margin-bottom: 12px; }
+.card-front .card-hint { font-size: 13px; color: var(--color-text-tertiary); }
+.answer-input { width: 80%; padding: 8px 12px; border: 1.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); font-size: 15px; font-family: inherit; text-align: center; margin-top: 8px; background: var(--color-background-primary); color: var(--color-text-primary); outline: none; transition: border-color 0.2s; }
+.answer-input:focus { border-color: #0C447C; }
+.answer-input::placeholder { color: var(--color-text-tertiary); }
+.check-btn { margin-top: 10px; padding: 7px 24px; border: none; border-radius: var(--border-radius-md); background: #0C447C; color: #fff; font-size: 14px; font-family: inherit; cursor: pointer; transition: background 0.15s; }
+.check-btn:hover { background: #093562; }
+.card-back { transform: rotateY(180deg); gap: 8px; }
+.card-back .card-char { font-size: 36px; font-weight: 600; }
+.card-back .card-pinyin { font-size: 20px; color: var(--color-text-secondary); font-style: italic; }
+.card-back .card-meaning { font-size: 16px; color: var(--color-text-primary); text-align: center; margin-top: 4px; }
+.card-back .card-pos { margin-top: 4px; }
+.answer-result { margin-top: 6px; font-size: 14px; font-weight: 600; padding: 4px 12px; border-radius: 6px; }
+.answer-result.correct { background: #EAF3DE; color: #27500A; }
+.answer-result.incorrect { background: #FBEAF0; color: #72243E; }
+.your-answer { font-size: 13px; color: var(--color-text-secondary); margin-top: 4px; }
+
+/* Rating Buttons */
+.rating-btns { display: flex; gap: 8px; width: 100%; margin-top: 4px; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+.rating-btns.visible { opacity: 1; pointer-events: auto; }
+.rate-btn { flex: 1; padding: 10px 4px; border: none; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 600; font-family: inherit; transition: transform 0.1s, filter 0.1s; }
+.rate-btn:active { transform: scale(0.96); }
+.rate-btn:hover { filter: brightness(0.95); }
+.rate-btn.again { background: #FBEAF0; color: #72243E; }
+.rate-btn.hard  { background: #FAEEDA; color: #633806; }
+.rate-btn.good  { background: #EAF3DE; color: #27500A; }
+.rate-btn.easy  { background: #E6F1FB; color: #0C447C; }
+.rate-label { display: block; font-size: 11px; font-weight: 400; opacity: 0.7; margin-top: 2px; }
+
+/* Progress */
+.fc-progress { font-size: 12px; color: var(--color-text-tertiary); margin-top: 12px; text-align: center; }
+.fc-keyboard-hint { font-size: 11px; color: var(--color-text-tertiary); margin-top: 6px; text-align: center; opacity: 0.6; }
+
+/* Session Complete / Empty */
+.fc-message { text-align: center; padding: 48px 24px; }
+.fc-message h3 { font-size: 20px; font-weight: 600; margin-bottom: 8px; color: var(--color-text-primary); }
+.fc-message p { font-size: 14px; color: var(--color-text-secondary); margin-bottom: 6px; }
+.fc-message .fc-msg-actions { display: flex; gap: 8px; justify-content: center; margin-top: 20px; }
+.fc-message button { padding: 8px 20px; border-radius: var(--border-radius-md); font-size: 14px; font-family: inherit; cursor: pointer; border: 1px solid var(--color-border-secondary); background: var(--color-background-primary); color: var(--color-text-primary); transition: background 0.15s; }
+.fc-message button:hover { background: var(--color-background-secondary); }
+.fc-message button.primary { background: #27500A; color: #fff; border-color: #27500A; }
+.fc-message button.primary:hover { background: #1e3d08; }
+
+/* Card enter animation */
+@keyframes cardSlideIn {
+  from { opacity: 0; transform: translateX(30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+.card-container.entering { animation: cardSlideIn 0.3s ease; }
+</style>
+
+<div class="wrap">
+  <div class="mode-toggle">
+    <button class="mode-btn active" onclick="switchMode('browse')">Browse Table</button>
+    <button class="mode-btn" onclick="switchMode('flashcard')">Flashcards</button>
+  </div>
+
+  <!-- Browse View -->
+  <div id="browse-view">
+    <div class="controls">
+      <input type="text" id="search" placeholder="Search characters, pinyin, or meaning..." oninput="render()">
+      <select id="posFilter" onchange="render()">
+        <option value="">All types</option>
+        <option value="n.">Noun (n.)</option>
+        <option value="v.">Verb (v.)</option>
+        <option value="pron.">Pronoun (pron.)</option>
+        <option value="adv.">Adverb (adv.)</option>
+        <option value="adj.">Adjective (adj.)</option>
+        <option value="part.">Particle (part.)</option>
+      </select>
+      <select id="lessonFilter" onchange="render()">
+        <option value="">All lessons</option>
+        <option value="1">Lesson 1</option>
+        <option value="2">Lesson 2</option>
+        <option value="3">Lesson 3</option>
+      </select>
+    </div>
+    <div class="stats">
+      <div class="stat"><span id="totalCount">46</span> total words</div>
+      <div class="stat"><span id="filteredCount">46</span> showing</div>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Character</th>
+          <th>Pinyin</th>
+          <th>Type</th>
+          <th>Vietnamese meaning</th>
+          <th>Lesson</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+
+  <!-- Flashcard View -->
+  <div id="flashcard-view">
+    <div class="fc-controls">
+      <select id="fcLessonFilter" onchange="startFlashcardSession()">
+        <option value="">All lessons</option>
+        <option value="1">Lesson 1</option>
+        <option value="2">Lesson 2</option>
+        <option value="3">Lesson 3</option>
+      </select>
+    </div>
+    <div class="fc-stats">
+      <div class="fc-stat due"><span id="fcDue">0</span> due</div>
+      <div class="fc-stat new-cards"><span id="fcNew">0</span> new</div>
+      <div class="fc-stat learned"><span id="fcLearned">0</span> learned</div>
+      <button class="fc-reset-btn" onclick="resetProgress()">Reset</button>
+    </div>
+    <div id="fc-content"></div>
+  </div>
+</div>
+
+<script src="words.js"></script>
+<script>
+
+/* ── Browse Table ── */
+function posClass(pos) {
+  if(!pos) return 'other';
+  if(pos.startsWith('n')) return 'n';
+  if(pos.startsWith('v')) return 'v';
+  if(pos.startsWith('pron')) return 'pron';
+  if(pos.startsWith('adv')) return 'adv';
+  if(pos.startsWith('adj')) return 'adj';
+  if(pos.startsWith('part')) return 'part';
+  return 'other';
+}
+
+function render() {
+  const q = document.getElementById('search').value.toLowerCase();
+  const pos = document.getElementById('posFilter').value;
+  const les = document.getElementById('lessonFilter').value;
+  const filtered = words.filter(w => {
+    const matchQ = !q || w.char.includes(q) || w.pinyin.toLowerCase().includes(q) || w.viet.toLowerCase().includes(q);
+    const matchPos = !pos || w.pos === pos || w.pos.startsWith(pos.replace('.',''));
+    const matchLes = !les || w.lesson == les;
+    return matchQ && matchPos && matchLes;
+  });
+  document.getElementById('filteredCount').textContent = filtered.length;
+  document.getElementById('totalCount').textContent = words.length;
+  const tb = document.getElementById('tbody');
+  tb.innerHTML = filtered.map((w,i) => `
+    <tr>
+      <td style="color:var(--color-text-tertiary);font-size:12px">${i+1}</td>
+      <td class="char">${w.char}</td>
+      <td class="pinyin">${w.pinyin}</td>
+      <td>${w.pos ? `<span class="badge ${posClass(w.pos)}">${w.pos}</span>` : '<span style="color:var(--color-text-tertiary);font-size:12px">—</span>'}</td>
+      <td class="viet">${w.viet}</td>
+      <td><span class="lesson-tag">L${w.lesson}</span></td>
+    </tr>
+  `).join('');
+}
+
+/* ── Mode Toggle ── */
+let currentMode = 'browse';
+
+function switchMode(mode) {
+  currentMode = mode;
+  document.querySelectorAll('.mode-btn').forEach((btn, i) => {
+    btn.classList.toggle('active', (i === 0 && mode === 'browse') || (i === 1 && mode === 'flashcard'));
+  });
+  document.getElementById('browse-view').style.display = mode === 'browse' ? 'block' : 'none';
+  document.getElementById('flashcard-view').style.display = mode === 'flashcard' ? 'block' : 'none';
+  if (mode === 'flashcard') startFlashcardSession();
+}
+
+/* ── SRS Data Layer ── */
+const SRS_KEY = 'srs_cards';
+
+function todayStr() {
+  return new Date().toLocaleDateString('en-CA');
+}
+
+function loadSrsData() {
+  let data = {};
+  try { data = JSON.parse(localStorage.getItem(SRS_KEY)) || {}; } catch(e) {}
+  words.forEach(w => {
+    const k = String(w.n);
+    if (!data[k]) {
+      data[k] = { easeFactor: 2.5, interval: 0, repetitions: 0, dueDate: todayStr(), lastReview: null, state: 'new' };
+    }
+  });
+  return data;
+}
+
+function saveSrsData(data) {
+  try { localStorage.setItem(SRS_KEY, JSON.stringify(data)); } catch(e) {}
+}
+
+function sm2(record, rating) {
+  const r = { ...record };
+  const today = todayStr();
+
+  if (rating < 2) {
+    r.repetitions = 0;
+    r.interval = rating === 1 ? 1 : 0;
+    r.state = 'learning';
+  } else {
+    if (r.repetitions === 0) r.interval = 1;
+    else if (r.repetitions === 1) r.interval = 6;
+    else r.interval = Math.round(r.interval * r.easeFactor);
+    r.repetitions += 1;
+    r.state = 'review';
+    if (rating === 3) r.interval = Math.round(r.interval * 1.3);
+  }
+
+  r.easeFactor += (0.1 - (2 - rating) * (0.08 + (2 - rating) * 0.02));
+  r.easeFactor = Math.max(1.3, Math.min(3.0, r.easeFactor));
+
+  const due = new Date();
+  due.setDate(due.getDate() + r.interval);
+  r.dueDate = due.toLocaleDateString('en-CA');
+  r.lastReview = today;
+  return r;
+}
+
+function buildQueue(srsData, lessonFilter) {
+  const today = todayStr();
+  const filtered = words.filter(w => !lessonFilter || w.lesson == lessonFilter);
+
+  const due = [];
+  const newCards = [];
+
+  filtered.forEach(w => {
+    const k = String(w.n);
+    const rec = srsData[k];
+    if (rec.state === 'new') {
+      newCards.push(w);
+    } else if (rec.state === 'learning' || rec.dueDate <= today) {
+      due.push(w);
+    }
+  });
+
+  due.sort((a, b) => (srsData[a.n].dueDate || '').localeCompare(srsData[b.n].dueDate || ''));
+
+  const maxNew = 10;
+  return [...due, ...newCards.slice(0, maxNew)];
+}
+
+function getStats(srsData, lessonFilter) {
+  const today = todayStr();
+  const filtered = words.filter(w => !lessonFilter || w.lesson == lessonFilter);
+  let dueCount = 0, newCount = 0, learnedCount = 0, nextDue = null;
+
+  filtered.forEach(w => {
+    const rec = srsData[String(w.n)];
+    if (rec.state === 'new') newCount++;
+    else if (rec.state === 'learning' || rec.dueDate <= today) dueCount++;
+    else {
+      learnedCount++;
+      if (!nextDue || rec.dueDate < nextDue) nextDue = rec.dueDate;
+    }
+  });
+
+  return { due: dueCount, new: newCount, learned: learnedCount, nextDue };
+}
+
+/* ── Flashcard Session ── */
+let fcQueue = [];
+let fcIndex = 0;
+let fcFlipped = false;
+let fcAnswerChecked = false;
+let fcSrsData = {};
+
+function resetProgress() {
+  if (!confirm('Reset all flashcard progress?')) return;
+  localStorage.removeItem(SRS_KEY);
+  startFlashcardSession();
+}
+
+function startFlashcardSession() {
+  fcSrsData = loadSrsData();
+  const lesson = document.getElementById('fcLessonFilter').value;
+  fcQueue = buildQueue(fcSrsData, lesson);
+  fcIndex = 0;
+  fcFlipped = false;
+  updateFcStats();
+  renderCard();
+}
+
+function updateFcStats() {
+  const lesson = document.getElementById('fcLessonFilter').value;
+  const stats = getStats(fcSrsData, lesson);
+  document.getElementById('fcDue').textContent = stats.due;
+  document.getElementById('fcNew').textContent = stats.new;
+  document.getElementById('fcLearned').textContent = stats.learned;
+}
+
+function renderCard() {
+  const content = document.getElementById('fc-content');
+
+  if (fcQueue.length === 0) {
+    const lesson = document.getElementById('fcLessonFilter').value;
+    const stats = getStats(fcSrsData, lesson);
+    const nextMsg = stats.nextDue ? `Next review: ${stats.nextDue}` : '';
+    content.innerHTML = `
+      <div class="fc-message">
+        <h3>All caught up!</h3>
+        <p>No cards due for review right now.</p>
+        ${nextMsg ? `<p>${nextMsg}</p>` : ''}
+        <div class="fc-msg-actions">
+          <button onclick="switchMode('browse')">Back to Browse</button>
+        </div>
+      </div>`;
+    return;
+  }
+
+  if (fcIndex >= fcQueue.length) {
+    content.innerHTML = `
+      <div class="fc-message">
+        <h3>Session Complete!</h3>
+        <p>You reviewed <strong>${fcQueue.length}</strong> cards.</p>
+        <div class="fc-msg-actions">
+          <button onclick="startFlashcardSession()">Review Again</button>
+          <button onclick="switchMode('browse')">Back to Browse</button>
+        </div>
+      </div>`;
+    return;
+  }
+
+  const w = fcQueue[fcIndex];
+  fcFlipped = false;
+  fcAnswerChecked = false;
+  const posHtml = w.pos ? `<span class="badge ${posClass(w.pos)}">${w.pos}</span>` : '';
+
+  content.innerHTML = `
+    <div class="card-area">
+      <div class="card-container entering">
+        <div class="card-inner">
+          <div class="card-face card-front">
+            <div class="card-char">${w.char}</div>
+            <input type="text" class="answer-input" id="answerInput" placeholder="Type pinyin..." autocomplete="off">
+            <button class="check-btn" onclick="checkAnswer()">Check</button>
+          </div>
+          <div class="card-face card-back">
+            <div class="card-char">${w.char}</div>
+            <div class="card-pinyin">${w.pinyin}</div>
+            <div class="card-meaning">${w.viet}</div>
+            <div class="card-pos">${posHtml}</div>
+            <div id="answerFeedback"></div>
+          </div>
+        </div>
+      </div>
+      <div class="rating-btns" id="ratingBtns">
+        <button class="rate-btn again" onclick="rateCard(0)">Again<span class="rate-label">&lt;1m</span></button>
+        <button class="rate-btn hard" onclick="rateCard(1)">Hard<span class="rate-label">1d</span></button>
+        <button class="rate-btn good" onclick="rateCard(2)">Good<span class="rate-label">${getIntervalLabel(fcQueue[fcIndex], 2)}</span></button>
+        <button class="rate-btn easy" onclick="rateCard(3)">Easy<span class="rate-label">${getIntervalLabel(fcQueue[fcIndex], 3)}</span></button>
+      </div>
+      <div class="fc-progress">Card ${fcIndex + 1} of ${fcQueue.length}</div>
+      <div class="fc-keyboard-hint">Enter to check &middot; 1-4 to rate</div>
+    </div>`;
+
+  setTimeout(() => {
+    const c = document.querySelector('.card-container');
+    if (c) c.classList.remove('entering');
+    const inp = document.getElementById('answerInput');
+    if (inp) inp.focus();
+  }, 300);
+}
+
+function getIntervalLabel(word, rating) {
+  const rec = fcSrsData[String(word.n)];
+  const preview = sm2(rec, rating);
+  if (preview.interval === 0) return '<1m';
+  if (preview.interval === 1) return '1d';
+  if (preview.interval < 30) return preview.interval + 'd';
+  if (preview.interval < 365) return Math.round(preview.interval / 30) + 'mo';
+  return Math.round(preview.interval / 365 * 10) / 10 + 'y';
+}
+
+function normalizePinyin(str) {
+  return str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, '').replace(/ü/g, 'v').trim();
+}
+
+function checkAnswer() {
+  if (fcFlipped) return;
+  const inp = document.getElementById('answerInput');
+  const userAnswer = (inp ? inp.value : '').trim();
+  fcAnswerChecked = true;
+
+  const w = fcQueue[fcIndex];
+  const correctPinyin = w.pinyin.split('/').map(s => s.trim());
+  const normalizedUser = normalizePinyin(userAnswer);
+  const isCorrect = userAnswer.length > 0 && correctPinyin.some(p => normalizePinyin(p) === normalizedUser);
+
+  const feedback = document.getElementById('answerFeedback');
+  if (feedback) {
+    if (userAnswer.length === 0) {
+      feedback.innerHTML = `<div class="answer-result incorrect">Skipped</div>`;
+    } else if (isCorrect) {
+      feedback.innerHTML = `<div class="answer-result correct">Correct!</div><div class="your-answer">Your answer: ${userAnswer}</div>`;
+    } else {
+      feedback.innerHTML = `<div class="answer-result incorrect">Incorrect</div><div class="your-answer">Your answer: ${userAnswer}</div>`;
+    }
+  }
+
+  flipCard();
+}
+
+function flipCard() {
+  if (fcFlipped) return;
+  fcFlipped = true;
+  const inner = document.querySelector('.card-inner');
+  const btns = document.getElementById('ratingBtns');
+  if (inner) inner.classList.add('flipped');
+  if (btns) btns.classList.add('visible');
+}
+
+function rateCard(rating) {
+  if (!fcFlipped) return;
+  const w = fcQueue[fcIndex];
+  const k = String(w.n);
+  fcSrsData[k] = sm2(fcSrsData[k], rating);
+  saveSrsData(fcSrsData);
+
+  if (rating === 0) {
+    const insertAt = Math.min(fcIndex + 5, fcQueue.length);
+    fcQueue.splice(insertAt, 0, w);
+  }
+
+  fcIndex++;
+  updateFcStats();
+  renderCard();
+}
+
+/* ── Keyboard Shortcuts ── */
+document.addEventListener('keydown', (e) => {
+  if (currentMode !== 'flashcard') return;
+
+  if (e.key === 'Enter' && !fcFlipped) {
+    e.preventDefault();
+    checkAnswer();
+    return;
+  }
+
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+
+  if (fcFlipped && e.key >= '1' && e.key <= '4') {
+    e.preventDefault();
+    rateCard(parseInt(e.key) - 1);
+  }
+});
+
+/* ── Init ── */
+render();
+</script>
