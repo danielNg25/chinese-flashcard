@@ -348,19 +348,18 @@ function posClass(pos) {
 
 let showRatings = false;
 
-function weightBadge(rec, prefix) {
-  if (!rec || rec.state === 'new') return `<span class="weight-badge weight-new">${prefix}:New</span>`;
-  const wt = rec.weight || 2;
+function weightBadge(wt, prefix) {
+  if (wt === undefined) return `<span class="weight-badge weight-new">${prefix}:New</span>`;
   const labels = { 4: 'Forgot', 3: 'Hard', 2: 'Good', 1: 'Easy' };
   return `<span class="weight-badge weight-${wt}">${prefix}:${labels[wt] || 'Good'}</span>`;
 }
 
 function weightLabel(w) {
-  const charSrs = loadSrsData('char');
-  const meanSrs = loadSrsData('meaning');
-  const pySrs = loadSrsData('pinyin');
+  const cw = loadWeights('char');
+  const mw = loadWeights('meaning');
+  const pw = loadWeights('pinyin');
   const k = String(w.n);
-  return `${weightBadge(charSrs[k], 'C')} ${weightBadge(meanSrs[k], 'M')} ${weightBadge(pySrs[k], 'P')}`;
+  return `${weightBadge(cw[k], 'C')} ${weightBadge(mw[k], 'M')} ${weightBadge(pw[k], 'P')}`;
 }
 
 function toggleRatings() {
@@ -434,24 +433,47 @@ function switchMode(mode) {
 
 /* ── SRS Data Layer ── */
 const SRS_KEYS = { char: 'srs_cards_char', meaning: 'srs_cards_meaning', pinyin: 'srs_cards_pinyin' };
+const WEIGHT_KEYS = { char: 'weights_char', meaning: 'weights_meaning', pinyin: 'weights_pinyin' };
 
 function todayStr() {
   return new Date().toLocaleDateString('en-CA');
+}
+
+function loadWeights(tab) {
+  const key = WEIGHT_KEYS[tab] || WEIGHT_KEYS.char;
+  let w = {};
+  try { w = JSON.parse(localStorage.getItem(key)) || {}; } catch(e) {}
+  return w;
+}
+
+function saveWeight(tab, wordN, weight) {
+  const key = WEIGHT_KEYS[tab] || WEIGHT_KEYS.char;
+  let w = {};
+  try { w = JSON.parse(localStorage.getItem(key)) || {}; } catch(e) {}
+  w[String(wordN)] = weight;
+  try { localStorage.setItem(key, JSON.stringify(w)); } catch(e) {}
+}
+
+function getWeight(tab, wordN) {
+  const weights = loadWeights(tab);
+  const v = weights[String(wordN)];
+  return v !== undefined ? v : 2;
 }
 
 function loadSrsData(tab) {
   const key = SRS_KEYS[tab] || SRS_KEYS.char;
   let data = {};
   try { data = JSON.parse(localStorage.getItem(key)) || {}; } catch(e) {}
-  // Migrate old shared data
   if (Object.keys(data).length === 0) {
     try { data = JSON.parse(localStorage.getItem('srs_cards')) || {}; } catch(e) {}
   }
+  const weights = loadWeights(tab);
   words.forEach(w => {
     const k = String(w.n);
     if (!data[k]) {
-      data[k] = { easeFactor: 2.5, interval: 0, repetitions: 0, dueDate: todayStr(), lastReview: null, state: 'new', weight: 2 };
+      data[k] = { easeFactor: 2.5, interval: 0, repetitions: 0, dueDate: todayStr(), lastReview: null, state: 'new' };
     }
+    data[k].weight = weights[k] !== undefined ? weights[k] : 2;
   });
   return data;
 }
@@ -562,33 +584,15 @@ function weightedShuffle(arr, srsData) {
 
 function resetProgress() {
   if (!confirm('Reset SRS progress? (Ratings will be kept)')) return;
-  // Collect weights from all sources (per-tab keys + old shared key)
-  const allKeys = [...Object.values(SRS_KEYS), 'srs_cards'];
-  const weights = {};
-  allKeys.forEach(key => {
-    let data = {};
-    try { data = JSON.parse(localStorage.getItem(key)) || {}; } catch(e) {}
-    Object.keys(data).forEach(k => {
-      if (!weights[k] && data[k].weight) weights[k] = data[k].weight;
-    });
-  });
-  // Clear old shared key
+  Object.values(SRS_KEYS).forEach(k => localStorage.removeItem(k));
   localStorage.removeItem('srs_cards');
-  // Reset each tab but keep weights
-  Object.values(SRS_KEYS).forEach(key => {
-    const data = {};
-    words.forEach(w => {
-      const k = String(w.n);
-      data[k] = { easeFactor: 2.5, interval: 0, repetitions: 0, dueDate: todayStr(), lastReview: null, state: 'new', weight: weights[k] || 2 };
-    });
-    try { localStorage.setItem(key, JSON.stringify(data)); } catch(e) {}
-  });
   startFlashcardSession();
 }
 
 function clearRatings() {
   if (!confirm('Clear all ratings? This resets weights to default.')) return;
   Object.values(SRS_KEYS).forEach(k => localStorage.removeItem(k));
+  Object.values(WEIGHT_KEYS).forEach(k => localStorage.removeItem(k));
   localStorage.removeItem('srs_cards');
   render();
 }
@@ -637,7 +641,7 @@ function renderCard() {
     content.innerHTML = `
       <div class="fc-message">
         <h3>Session Complete!</h3>
-        <p>You reviewed <strong>${fcQueue.length}</strong> cards.</p>
+        <p>You reviewed <strong>${new Set(fcQueue.map(w => w.n)).size}</strong> cards.</p>
         <div class="fc-msg-actions">
           <button onclick="startFlashcardSession()">Review Again</button>
           <button onclick="switchMode('browse')">Back to Browse</button>
@@ -679,7 +683,7 @@ function renderCard() {
         <button class="rate-btn good" onclick="rateCard(2)">Good<span class="rate-desc">Remembered</span><span class="rate-label">${getIntervalLabel(fcQueue[fcIndex], 2)}</span></button>
         <button class="rate-btn easy" onclick="rateCard(3)">Easy<span class="rate-desc">Knew instantly</span><span class="rate-label">${getIntervalLabel(fcQueue[fcIndex], 3)}</span></button>
       </div>
-      <div class="fc-progress">Card ${fcIndex + 1} of ${fcQueue.length}</div>
+      <div class="fc-progress">Card ${fcIndex + 1} of ${new Set(fcQueue.map(w => w.n)).size}</div>
       <div class="fc-keyboard-hint">Enter to check &middot; 1-4 to rate</div>
     </div>`;
 
@@ -759,9 +763,9 @@ function rateCard(rating) {
   const w = fcQueue[fcIndex];
   const k = String(w.n);
   fcSrsData[k] = sm2(fcSrsData[k], rating);
-  // weight: Forgot=4, Hard=3, Good=2, Easy=1
   fcSrsData[k].weight = 4 - rating;
   saveSrsData(fcSrsData, 'char');
+  saveWeight('char', w.n, 4 - rating);
 
   if (rating === 0) {
     const insertAt = Math.min(fcIndex + 5, fcQueue.length);
@@ -776,8 +780,8 @@ function rateCard(rating) {
 /* ── Writing Exercise ── */
 let wrQueue = [];
 let wrIndex = 0;
-let wrCorrect = 0;
-let wrWrong = 0;
+let wrCorrect = new Set();
+let wrWrong = new Set();
 let wrChecked = false;
 
 let wrSrsData = {};
@@ -789,17 +793,18 @@ function startWritingSession() {
   const filtered = weightedShuffle(words.filter(w => !lesson || w.lesson == lesson), wrSrsData);
   wrQueue = limit > 0 ? filtered.slice(0, limit) : filtered;
   wrIndex = 0;
-  wrCorrect = 0;
-  wrWrong = 0;
+  wrCorrect = new Set();
+  wrWrong = new Set();
   wrChecked = false;
   updateWrStats();
   renderWritingCard();
 }
 
 function updateWrStats() {
-  document.getElementById('wrCorrect').textContent = wrCorrect;
-  document.getElementById('wrWrong').textContent = wrWrong;
-  document.getElementById('wrRemaining').textContent = Math.max(0, wrQueue.length - wrIndex);
+  document.getElementById('wrCorrect').textContent = wrCorrect.size;
+  document.getElementById('wrWrong').textContent = wrWrong.size;
+  const unique = new Set(wrQueue.slice(wrIndex).map(w => w.n));
+  document.getElementById('wrRemaining').textContent = unique.size;
 }
 
 function renderWritingCard() {
@@ -815,11 +820,12 @@ function renderWritingCard() {
   }
 
   if (wrIndex >= wrQueue.length) {
-    const pct = wrQueue.length > 0 ? Math.round(wrCorrect / wrQueue.length * 100) : 0;
+    const total = wrCorrect.size + wrWrong.size;
+    const pct = total > 0 ? Math.round(wrCorrect.size / total * 100) : 0;
     content.innerHTML = `
       <div class="fc-message">
         <h3>Session Complete!</h3>
-        <p>Score: <strong>${wrCorrect}/${wrQueue.length}</strong> (${pct}%)</p>
+        <p>Score: <strong>${wrCorrect.size}/${total}</strong> (${pct}%)</p>
         <div class="fc-msg-actions">
           <button onclick="startWritingSession()">Try Again</button>
           <button onclick="switchMode('browse')">Back to Browse</button>
@@ -860,7 +866,7 @@ function renderWritingCard() {
         <button class="rate-btn good" onclick="rateWritingCard(2)">Good<span class="rate-desc">Remembered</span></button>
         <button class="rate-btn easy" onclick="rateWritingCard(3)">Easy<span class="rate-desc">Knew instantly</span></button>
       </div>
-      <div class="fc-progress">Card ${wrIndex + 1} of ${wrQueue.length}</div>
+      <div class="fc-progress">Card ${wrCorrect.size + wrWrong.size + 1} of ${new Set(wrQueue.map(w => w.n)).size}</div>
       <div class="fc-keyboard-hint">Enter to check &middot; 1-4 to rate</div>
     </div>`;
 
@@ -882,8 +888,8 @@ function checkWriting() {
   const charOk = charVal.length > 0 && charVal === w.char;
   const pinyinOk = checkPinyinMatch(pinyinVal, w);
 
-  if (charOk && pinyinOk) wrCorrect++;
-  else wrWrong++;
+  if (charOk && pinyinOk) { wrCorrect.add(w.n); wrWrong.delete(w.n); }
+  else if (!wrCorrect.has(w.n)) { wrWrong.add(w.n); }
   updateWrStats();
 
   const feedback = document.getElementById('wrFeedback');
@@ -906,6 +912,7 @@ function rateWritingCard(rating) {
   wrSrsData[k] = sm2(wrSrsData[k], rating);
   wrSrsData[k].weight = 4 - rating;
   saveSrsData(wrSrsData, 'meaning');
+  saveWeight('meaning', w.n, 4 - rating);
 
   if (rating === 0) {
     const insertAt = Math.min(wrIndex + 5, wrQueue.length);
@@ -919,8 +926,8 @@ function rateWritingCard(rating) {
 /* ── Pinyin Exercise ── */
 let pyQueue = [];
 let pyIndex = 0;
-let pyCorrect = 0;
-let pyWrong = 0;
+let pyCorrect = new Set();
+let pyWrong = new Set();
 let pyChecked = false;
 let pySrsData = {};
 
@@ -931,17 +938,18 @@ function startPinyinSession() {
   const filtered = weightedShuffle(words.filter(w => !lesson || w.lesson == lesson), pySrsData);
   pyQueue = limit > 0 ? filtered.slice(0, limit) : filtered;
   pyIndex = 0;
-  pyCorrect = 0;
-  pyWrong = 0;
+  pyCorrect = new Set();
+  pyWrong = new Set();
   pyChecked = false;
   updatePyStats();
   renderPinyinCard();
 }
 
 function updatePyStats() {
-  document.getElementById('pyCorrect').textContent = pyCorrect;
-  document.getElementById('pyWrong').textContent = pyWrong;
-  document.getElementById('pyRemaining').textContent = Math.max(0, pyQueue.length - pyIndex);
+  document.getElementById('pyCorrect').textContent = pyCorrect.size;
+  document.getElementById('pyWrong').textContent = pyWrong.size;
+  const unique = new Set(pyQueue.slice(pyIndex).map(w => w.n));
+  document.getElementById('pyRemaining').textContent = unique.size;
 }
 
 function renderPinyinCard() {
@@ -957,11 +965,12 @@ function renderPinyinCard() {
   }
 
   if (pyIndex >= pyQueue.length) {
-    const pct = pyQueue.length > 0 ? Math.round(pyCorrect / pyQueue.length * 100) : 0;
+    const total = pyCorrect.size + pyWrong.size;
+    const pct = total > 0 ? Math.round(pyCorrect.size / total * 100) : 0;
     content.innerHTML = `
       <div class="fc-message">
         <h3>Session Complete!</h3>
-        <p>Score: <strong>${pyCorrect}/${pyQueue.length}</strong> (${pct}%)</p>
+        <p>Score: <strong>${pyCorrect.size}/${total}</strong> (${pct}%)</p>
         <div class="fc-msg-actions">
           <button onclick="startPinyinSession()">Try Again</button>
           <button onclick="switchMode('browse')">Back to Browse</button>
@@ -1002,7 +1011,7 @@ function renderPinyinCard() {
         <button class="rate-btn good" onclick="ratePinyinCard(2)">Good<span class="rate-desc">Remembered</span></button>
         <button class="rate-btn easy" onclick="ratePinyinCard(3)">Easy<span class="rate-desc">Knew instantly</span></button>
       </div>
-      <div class="fc-progress">Card ${pyIndex + 1} of ${pyQueue.length}</div>
+      <div class="fc-progress">Card ${pyCorrect.size + pyWrong.size + 1} of ${new Set(pyQueue.map(w => w.n)).size}</div>
       <div class="fc-keyboard-hint">Enter to check &middot; 1-4 to rate</div>
     </div>`;
 
@@ -1028,8 +1037,8 @@ function checkPinyin() {
   const charOk = charVal.length > 0 && charVal === w.char;
   const meaningOk = checkViet(meaningVal, w);
 
-  if (charOk && meaningOk) pyCorrect++;
-  else pyWrong++;
+  if (charOk && meaningOk) { pyCorrect.add(w.n); pyWrong.delete(w.n); }
+  else if (!pyCorrect.has(w.n)) { pyWrong.add(w.n); }
   updatePyStats();
 
   const feedback = document.getElementById('pyFeedback');
@@ -1052,6 +1061,7 @@ function ratePinyinCard(rating) {
   pySrsData[k] = sm2(pySrsData[k], rating);
   pySrsData[k].weight = 4 - rating;
   saveSrsData(pySrsData, 'pinyin');
+  saveWeight('pinyin', w.n, 4 - rating);
 
   if (rating === 0) {
     const insertAt = Math.min(pyIndex + 5, pyQueue.length);
