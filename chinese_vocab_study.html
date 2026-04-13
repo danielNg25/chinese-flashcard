@@ -332,6 +332,15 @@ let fcFlipped = false;
 let fcAnswerChecked = false;
 let fcSrsData = {};
 
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
 function resetProgress() {
   if (!confirm('Reset all flashcard progress?')) return;
   localStorage.removeItem(SRS_KEY);
@@ -341,7 +350,7 @@ function resetProgress() {
 function startFlashcardSession() {
   fcSrsData = loadSrsData();
   const lesson = document.getElementById('fcLessonFilter').value;
-  fcQueue = buildQueue(fcSrsData, lesson);
+  fcQueue = shuffle(buildQueue(fcSrsData, lesson));
   fcIndex = 0;
   fcFlipped = false;
   updateFcStats();
