@@ -44,11 +44,21 @@ tbody td { padding: 8px 10px; vertical-align: middle; }
 .part { background: #FAECE7; color: #712B13; }
 .other{ background: #F1EFE8; color: #444441; }
 .lesson-tag { font-size: 11px; padding: 2px 6px; border-radius: 4px; background: var(--color-background-secondary); color: var(--color-text-tertiary); }
+.weight-badge { font-size: 10px; padding: 2px 5px; border-radius: 99px; font-weight: 500; margin: 1px; display: inline-block; }
+.weight-4 { background: #FBEAF0; color: #72243E; }
+.weight-3 { background: #FAEEDA; color: #633806; }
+.weight-2 { background: #EAF3DE; color: #27500A; }
+.weight-1 { background: #E6F1FB; color: #0C447C; }
+.weight-new { background: var(--color-background-secondary); color: var(--color-text-tertiary); }
+.rating-col { display: none; }
+.rating-col.show { display: table-cell; }
+th.rating-col.show { display: table-cell; }
 .viet { color: var(--color-text-secondary); font-size: 13px; }
 
 /* Flashcard View */
 #flashcard-view { display: none; }
 #writing-view { display: none; }
+#pinyin-view { display: none; }
 .fc-controls { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1rem; align-items: center; }
 .fc-controls select { padding: 6px 10px; border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); font-size: 14px; background: var(--color-background-primary); color: var(--color-text-primary); }
 .fc-stats { display: flex; gap: 12px; margin-bottom: 1.5rem; flex-wrap: wrap; }
@@ -68,6 +78,15 @@ tbody td { padding: 8px 10px; vertical-align: middle; }
 .card-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; border: 1px solid var(--color-border-secondary); background: var(--color-background-primary); box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
 .card-front .card-char { font-size: 48px; font-weight: 600; margin-bottom: 12px; }
 .card-front .card-hint { font-size: 13px; color: var(--color-text-tertiary); }
+.answer-group { width: 85%; display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
+.answer-row { display: flex; align-items: center; gap: 8px; }
+.answer-row label { font-size: 12px; color: var(--color-text-tertiary); min-width: 55px; text-align: right; }
+.answer-row input { flex: 1; padding: 7px 10px; border: 1.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); font-size: 15px; font-family: inherit; text-align: center; background: var(--color-background-primary); color: var(--color-text-primary); outline: none; transition: border-color 0.2s; }
+.answer-row input:focus { border-color: #0C447C; }
+.answer-row input::placeholder { color: var(--color-text-tertiary); }
+.feedback-row { font-size: 12px; margin-top: 2px; }
+.feedback-row .correct { color: #27500A; }
+.feedback-row .incorrect { color: #72243E; }
 .answer-input { width: 80%; padding: 8px 12px; border: 1.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); font-size: 15px; font-family: inherit; text-align: center; margin-top: 8px; background: var(--color-background-primary); color: var(--color-text-primary); outline: none; transition: border-color 0.2s; }
 .answer-input:focus { border-color: #0C447C; }
 .answer-input::placeholder { color: var(--color-text-tertiary); }
@@ -84,7 +103,9 @@ tbody td { padding: 8px 10px; vertical-align: middle; }
 .your-answer { font-size: 13px; color: var(--color-text-secondary); margin-top: 4px; }
 
 /* Rating Buttons */
-.rating-btns { display: flex; gap: 8px; width: 100%; margin-top: 4px; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+.rating-hint { font-size: 12px; color: var(--color-text-tertiary); text-align: center; margin-bottom: 6px; opacity: 0; transition: opacity 0.3s; }
+.rating-hint.visible { opacity: 1; }
+.rating-btns { display: flex; gap: 8px; width: 100%; margin-top: 0; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
 .rating-btns.visible { opacity: 1; pointer-events: auto; }
 .rate-btn { flex: 1; padding: 10px 4px; border: none; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 600; font-family: inherit; transition: transform 0.1s, filter 0.1s; }
 .rate-desc { display: block; font-size: 10px; font-weight: 400; opacity: 0.6; margin-top: 1px; }
@@ -117,58 +138,65 @@ tbody td { padding: 8px 10px; vertical-align: middle; }
 }
 .card-container.entering { animation: cardSlideIn 0.3s ease; }
 
-/* ── Mobile Responsive ── */
+/* ── Mobile: convert table to card list ── */
+.mobile-cards { display: none; }
+
 @media (max-width: 600px) {
   .wrap { padding: 0.75rem 0.5rem; }
 
   /* Mode toggle full width */
   .mode-toggle { width: 100%; }
-  .mode-btn { flex: 1; padding: 10px 8px; font-size: 13px; text-align: center; }
+  .mode-btn { flex: 1; padding: 12px 8px; font-size: 13px; text-align: center; }
 
   /* Controls stack */
   .controls { flex-direction: column; gap: 6px; }
-  .controls input { min-width: 100%; }
-  .controls select { width: 100%; }
+  .controls input { min-width: 100%; font-size: 16px; padding: 10px 12px; }
+  .controls select { width: 100%; font-size: 16px; padding: 10px 12px; }
   .fc-controls { flex-direction: column; gap: 6px; }
-  .fc-controls select { width: 100%; }
+  .fc-controls select { width: 100%; font-size: 16px; padding: 10px 12px; }
 
-  /* Stats wrap */
+  /* Stats */
   .stats { gap: 6px; }
-  .stat { padding: 6px 10px; font-size: 12px; }
-  .stat span { font-size: 13px; }
+  .stat { padding: 8px 12px; font-size: 14px; }
+  .stat span { font-size: 15px; }
   .fc-stats { gap: 6px; flex-wrap: wrap; }
-  .fc-stat { padding: 6px 10px; font-size: 12px; }
+  .fc-stat { padding: 8px 12px; font-size: 14px; }
 
-  /* Table: hide # and Lesson columns, smaller text */
-  thead th:first-child, tbody td:first-child { display: none; }
-  thead th:last-child, tbody td:last-child { display: none; }
-  table { font-size: 13px; }
-  .char { font-size: 18px; }
-  .viet { font-size: 12px; }
-  thead th { padding: 4px 6px; font-size: 11px; }
-  tbody td { padding: 6px; }
+  /* Hide table, show card list */
+  table { display: none; }
+  .mobile-cards { display: flex; flex-direction: column; gap: 8px; }
+  .mobile-card { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 10px; border: 1px solid var(--color-border-tertiary); background: var(--color-background-primary); }
+  .mobile-card-left { flex-shrink: 0; text-align: center; min-width: 60px; }
+  .mobile-card-left .char { font-size: 28px; font-weight: 600; display: block; }
+  .mobile-card-left .pinyin { font-size: 13px; color: var(--color-text-secondary); font-style: italic; display: block; margin-top: 2px; }
+  .mobile-card-right { flex: 1; min-width: 0; }
+  .mobile-card-right .viet { font-size: 15px; color: var(--color-text-primary); display: block; }
+  .mobile-card-meta { display: flex; gap: 6px; align-items: center; margin-top: 4px; }
 
   /* Card area */
   .card-area { max-width: 100%; }
   .card-container { aspect-ratio: 4/3; }
-  .card-face { padding: 16px; }
-  .card-front .card-char { font-size: 36px; margin-bottom: 8px; }
-  .card-back .card-char { font-size: 28px; }
-  .card-back .card-pinyin { font-size: 16px; }
-  .card-back .card-meaning { font-size: 14px; }
+  .card-face { padding: 20px; }
+  .card-front .card-char { font-size: 40px; margin-bottom: 8px; }
+  .card-back .card-char { font-size: 32px; }
+  .card-back .card-pinyin { font-size: 18px; }
+  .card-back .card-meaning { font-size: 16px; }
   .answer-input { width: 90%; font-size: 16px; padding: 10px 12px; }
-  .check-btn { padding: 10px 28px; font-size: 15px; }
+  .answer-group { width: 95%; }
+  .answer-row label { min-width: 45px; font-size: 11px; }
+  .answer-row input { font-size: 16px; padding: 9px 8px; }
+  .check-btn { padding: 12px 32px; font-size: 16px; }
 
   /* Rating buttons stack 2x2 */
   .rating-btns { flex-wrap: wrap; gap: 6px; }
-  .rate-btn { flex: 1 1 45%; padding: 12px 4px; font-size: 13px; }
-  .rate-desc { font-size: 10px; }
-  .rate-label { font-size: 10px; }
+  .rate-btn { flex: 1 1 45%; padding: 14px 4px; font-size: 14px; }
+  .rate-desc { font-size: 11px; }
+  .rate-label { font-size: 11px; }
 
   /* Messages */
   .fc-message { padding: 32px 16px; }
   .fc-message .fc-msg-actions { flex-direction: column; }
-  .fc-message button { width: 100%; }
+  .fc-message button { width: 100%; padding: 12px 20px; font-size: 16px; }
 
   /* Keyboard hints hidden on mobile */
   .fc-keyboard-hint { display: none; }
@@ -177,9 +205,10 @@ tbody td { padding: 8px 10px; vertical-align: middle; }
 
 <div class="wrap">
   <div class="mode-toggle">
-    <button class="mode-btn active" onclick="switchMode('browse')">Browse Table</button>
-    <button class="mode-btn" onclick="switchMode('flashcard')">Flashcards</button>
-    <button class="mode-btn" onclick="switchMode('writing')">Write Chinese</button>
+    <button class="mode-btn active" onclick="switchMode('browse')">Browse</button>
+    <button class="mode-btn" onclick="switchMode('flashcard')">Character</button>
+    <button class="mode-btn" onclick="switchMode('writing')">Meaning</button>
+    <button class="mode-btn" onclick="switchMode('pinyin')">Pinyin</button>
   </div>
 
   <!-- Browse View -->
@@ -205,6 +234,8 @@ tbody td { padding: 8px 10px; vertical-align: middle; }
     <div class="stats">
       <div class="stat"><span id="totalCount">46</span> total words</div>
       <div class="stat"><span id="filteredCount">46</span> showing</div>
+      <button class="fc-reset-btn" id="toggleRatingsBtn" onclick="toggleRatings()">Show Ratings</button>
+      <button class="fc-reset-btn" id="clearRatingsBtn" onclick="clearRatings()" style="display:none">Clear Ratings</button>
     </div>
     <table>
       <thead>
@@ -215,10 +246,12 @@ tbody td { padding: 8px 10px; vertical-align: middle; }
           <th>Type</th>
           <th>Vietnamese meaning</th>
           <th>Lesson</th>
+          <th class="rating-col">Rating</th>
         </tr>
       </thead>
       <tbody id="tbody"></tbody>
     </table>
+    <div class="mobile-cards" id="mobileCards"></div>
   </div>
 
   <!-- Flashcard View -->
@@ -271,6 +304,31 @@ tbody td { padding: 8px 10px; vertical-align: middle; }
     </div>
     <div id="wr-content"></div>
   </div>
+
+  <!-- Pinyin View -->
+  <div id="pinyin-view">
+    <div class="fc-controls">
+      <select id="pyLessonFilter" onchange="startPinyinSession()">
+        <option value="">All lessons</option>
+        <option value="1">Lesson 1</option>
+        <option value="2">Lesson 2</option>
+        <option value="3">Lesson 3</option>
+      </select>
+      <select id="pyCardCount" onchange="startPinyinSession()">
+        <option value="10" selected>10 cards</option>
+        <option value="20">20 cards</option>
+        <option value="30">30 cards</option>
+        <option value="50">50 cards</option>
+        <option value="0">All</option>
+      </select>
+    </div>
+    <div class="fc-stats">
+      <div class="fc-stat"><span id="pyCorrect">0</span> correct</div>
+      <div class="fc-stat"><span id="pyWrong">0</span> wrong</div>
+      <div class="fc-stat"><span id="pyRemaining">0</span> remaining</div>
+    </div>
+    <div id="py-content"></div>
+  </div>
 </div>
 
 <script src="words.js"></script>
@@ -288,6 +346,31 @@ function posClass(pos) {
   return 'other';
 }
 
+let showRatings = false;
+
+function weightBadge(rec, prefix) {
+  if (!rec || rec.state === 'new') return `<span class="weight-badge weight-new">${prefix}:New</span>`;
+  const wt = rec.weight || 2;
+  const labels = { 4: 'Forgot', 3: 'Hard', 2: 'Good', 1: 'Easy' };
+  return `<span class="weight-badge weight-${wt}">${prefix}:${labels[wt] || 'Good'}</span>`;
+}
+
+function weightLabel(w) {
+  const charSrs = loadSrsData('char');
+  const meanSrs = loadSrsData('meaning');
+  const pySrs = loadSrsData('pinyin');
+  const k = String(w.n);
+  return `${weightBadge(charSrs[k], 'C')} ${weightBadge(meanSrs[k], 'M')} ${weightBadge(pySrs[k], 'P')}`;
+}
+
+function toggleRatings() {
+  showRatings = !showRatings;
+  document.getElementById('toggleRatingsBtn').textContent = showRatings ? 'Hide Ratings' : 'Show Ratings';
+  document.getElementById('clearRatingsBtn').style.display = showRatings ? '' : 'none';
+  document.querySelectorAll('.rating-col').forEach(el => el.classList.toggle('show', showRatings));
+  render();
+}
+
 function render() {
   const q = document.getElementById('search').value.toLowerCase();
   const pos = document.getElementById('posFilter').value;
@@ -300,6 +383,7 @@ function render() {
   });
   document.getElementById('filteredCount').textContent = filtered.length;
   document.getElementById('totalCount').textContent = words.length;
+  const rcls = showRatings ? 'rating-col show' : 'rating-col';
   const tb = document.getElementById('tbody');
   tb.innerHTML = filtered.map((w,i) => `
     <tr>
@@ -309,7 +393,24 @@ function render() {
       <td>${w.pos ? `<span class="badge ${posClass(w.pos)}">${w.pos}</span>` : '<span style="color:var(--color-text-tertiary);font-size:12px">—</span>'}</td>
       <td class="viet">${w.viet}</td>
       <td><span class="lesson-tag">L${w.lesson}</span></td>
+      <td class="${rcls}">${weightLabel(w)}</td>
     </tr>
+  `).join('');
+  document.getElementById('mobileCards').innerHTML = filtered.map(w => `
+    <div class="mobile-card">
+      <div class="mobile-card-left">
+        <span class="char">${w.char}</span>
+        <span class="pinyin">${w.pinyin}</span>
+      </div>
+      <div class="mobile-card-right">
+        <span class="viet">${w.viet}</span>
+        <div class="mobile-card-meta">
+          ${w.pos ? `<span class="badge ${posClass(w.pos)}">${w.pos}</span>` : ''}
+          <span class="lesson-tag">L${w.lesson}</span>
+          ${showRatings ? weightLabel(w) : ''}
+        </div>
+      </div>
+    </div>
   `).join('');
 }
 
@@ -318,27 +419,34 @@ let currentMode = 'browse';
 
 function switchMode(mode) {
   currentMode = mode;
-  const modes = ['browse', 'flashcard', 'writing'];
+  const modes = ['browse', 'flashcard', 'writing', 'pinyin'];
   document.querySelectorAll('.mode-btn').forEach((btn, i) => {
     btn.classList.toggle('active', modes[i] === mode);
   });
   document.getElementById('browse-view').style.display = mode === 'browse' ? 'block' : 'none';
   document.getElementById('flashcard-view').style.display = mode === 'flashcard' ? 'block' : 'none';
   document.getElementById('writing-view').style.display = mode === 'writing' ? 'block' : 'none';
+  document.getElementById('pinyin-view').style.display = mode === 'pinyin' ? 'block' : 'none';
   if (mode === 'flashcard') startFlashcardSession();
   if (mode === 'writing') startWritingSession();
+  if (mode === 'pinyin') startPinyinSession();
 }
 
 /* ── SRS Data Layer ── */
-const SRS_KEY = 'srs_cards';
+const SRS_KEYS = { char: 'srs_cards_char', meaning: 'srs_cards_meaning', pinyin: 'srs_cards_pinyin' };
 
 function todayStr() {
   return new Date().toLocaleDateString('en-CA');
 }
 
-function loadSrsData() {
+function loadSrsData(tab) {
+  const key = SRS_KEYS[tab] || SRS_KEYS.char;
   let data = {};
-  try { data = JSON.parse(localStorage.getItem(SRS_KEY)) || {}; } catch(e) {}
+  try { data = JSON.parse(localStorage.getItem(key)) || {}; } catch(e) {}
+  // Migrate old shared data
+  if (Object.keys(data).length === 0) {
+    try { data = JSON.parse(localStorage.getItem('srs_cards')) || {}; } catch(e) {}
+  }
   words.forEach(w => {
     const k = String(w.n);
     if (!data[k]) {
@@ -348,8 +456,9 @@ function loadSrsData() {
   return data;
 }
 
-function saveSrsData(data) {
-  try { localStorage.setItem(SRS_KEY, JSON.stringify(data)); } catch(e) {}
+function saveSrsData(data, tab) {
+  const key = SRS_KEYS[tab] || SRS_KEYS.char;
+  try { localStorage.setItem(key, JSON.stringify(data)); } catch(e) {}
 }
 
 function sm2(record, rating) {
@@ -379,7 +488,7 @@ function sm2(record, rating) {
   return r;
 }
 
-function buildQueue(srsData, lessonFilter) {
+function buildQueue(srsData, lessonFilter, limit) {
   const today = todayStr();
   const filtered = words.filter(w => !lessonFilter || w.lesson == lessonFilter);
 
@@ -396,9 +505,6 @@ function buildQueue(srsData, lessonFilter) {
     }
   });
 
-  due.sort((a, b) => (srsData[a.n].dueDate || '').localeCompare(srsData[b.n].dueDate || ''));
-
-  const limit = parseInt(document.getElementById('fcCardCount').value) || 0;
   const all = [...due, ...newCards];
   return limit > 0 ? all.slice(0, limit) : all;
 }
@@ -438,24 +544,62 @@ function shuffle(arr) {
 }
 
 function weightedShuffle(arr, srsData) {
-  return [...arr].sort((a, b) => {
-    const wa = (srsData[String(a.n)] && srsData[String(a.n)].weight) || 2;
-    const wb = (srsData[String(b.n)] && srsData[String(b.n)].weight) || 2;
-    // Higher weight = more priority, with randomness to avoid fixed order
-    return (wb + Math.random() * 2) - (wa + Math.random() * 2);
-  });
+  const pool = arr.map(w => ({ word: w, weight: (srsData[String(w.n)] && srsData[String(w.n)].weight) || 2 }));
+  const result = [];
+  while (pool.length > 0) {
+    const totalWeight = pool.reduce((sum, item) => sum + item.weight, 0);
+    let rand = Math.random() * totalWeight;
+    let picked = 0;
+    for (let i = 0; i < pool.length; i++) {
+      rand -= pool[i].weight;
+      if (rand <= 0) { picked = i; break; }
+    }
+    result.push(pool[picked].word);
+    pool.splice(picked, 1);
+  }
+  return result;
 }
 
 function resetProgress() {
-  if (!confirm('Reset all flashcard progress?')) return;
-  localStorage.removeItem(SRS_KEY);
+  if (!confirm('Reset SRS progress? (Ratings will be kept)')) return;
+  // Collect weights from all sources (per-tab keys + old shared key)
+  const allKeys = [...Object.values(SRS_KEYS), 'srs_cards'];
+  const weights = {};
+  allKeys.forEach(key => {
+    let data = {};
+    try { data = JSON.parse(localStorage.getItem(key)) || {}; } catch(e) {}
+    Object.keys(data).forEach(k => {
+      if (!weights[k] && data[k].weight) weights[k] = data[k].weight;
+    });
+  });
+  // Clear old shared key
+  localStorage.removeItem('srs_cards');
+  // Reset each tab but keep weights
+  Object.values(SRS_KEYS).forEach(key => {
+    const data = {};
+    words.forEach(w => {
+      const k = String(w.n);
+      data[k] = { easeFactor: 2.5, interval: 0, repetitions: 0, dueDate: todayStr(), lastReview: null, state: 'new', weight: weights[k] || 2 };
+    });
+    try { localStorage.setItem(key, JSON.stringify(data)); } catch(e) {}
+  });
   startFlashcardSession();
 }
 
+function clearRatings() {
+  if (!confirm('Clear all ratings? This resets weights to default.')) return;
+  Object.values(SRS_KEYS).forEach(k => localStorage.removeItem(k));
+  localStorage.removeItem('srs_cards');
+  render();
+}
+
 function startFlashcardSession() {
-  fcSrsData = loadSrsData();
+  fcSrsData = loadSrsData('char');
   const lesson = document.getElementById('fcLessonFilter').value;
-  fcQueue = weightedShuffle(buildQueue(fcSrsData, lesson), fcSrsData);
+  const limit = parseInt(document.getElementById('fcCardCount').value) || 0;
+  const all = buildQueue(fcSrsData, lesson, 0);
+  fcQueue = weightedShuffle(all, fcSrsData);
+  if (limit > 0) fcQueue = fcQueue.slice(0, limit);
   fcIndex = 0;
   fcFlipped = false;
   updateFcStats();
@@ -513,7 +657,10 @@ function renderCard() {
         <div class="card-inner">
           <div class="card-face card-front">
             <div class="card-char">${w.char}</div>
-            <input type="text" class="answer-input" id="answerInput" placeholder="Type pinyin..." autocomplete="off">
+            <div class="answer-group">
+              <div class="answer-row"><label>Pinyin</label><input type="text" id="fcInputPinyin" placeholder="nǐ hǎo" autocomplete="off"></div>
+              <div class="answer-row"><label>Meaning</label><input type="text" id="fcInputMeaning" placeholder="Vietnamese meaning" autocomplete="off"></div>
+            </div>
             <button class="check-btn" onclick="checkAnswer()">Check</button>
           </div>
           <div class="card-face card-back">
@@ -525,6 +672,7 @@ function renderCard() {
           </div>
         </div>
       </div>
+      <div class="rating-hint" id="ratingHint">Rate how well you knew it — harder words will appear more often</div>
       <div class="rating-btns" id="ratingBtns">
         <button class="rate-btn again" onclick="rateCard(0)">Forgot<span class="rate-desc">Don't remember</span><span class="rate-label">shows more often</span></button>
         <button class="rate-btn hard" onclick="rateCard(1)">Hard<span class="rate-desc">Barely recalled</span><span class="rate-label">${getIntervalLabel(fcQueue[fcIndex], 1)}</span></button>
@@ -536,9 +684,9 @@ function renderCard() {
     </div>`;
 
   setTimeout(() => {
-    const c = document.querySelector('.card-container');
+    const c = document.querySelector('#fc-content .card-container');
     if (c) c.classList.remove('entering');
-    const inp = document.getElementById('answerInput');
+    const inp = document.getElementById('fcInputPinyin');
     if (inp) inp.focus();
   }, 300);
 }
@@ -557,26 +705,39 @@ function normalizePinyin(str) {
   return str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, '').replace(/ü/g, 'v').trim();
 }
 
+function checkViet(userAnswer, word) {
+  const parts = word.viet.split(',').map(s => s.replace(/\(.*?\)/g, '').trim()).filter(Boolean);
+  const nu = normalizeViet(userAnswer);
+  return userAnswer.length > 0 && parts.some(p => {
+    const np = normalizeViet(p);
+    return nu === np || np.includes(nu) || nu.includes(np);
+  });
+}
+
+function checkPinyinMatch(userAnswer, word) {
+  const parts = word.pinyin.split('/').map(s => s.trim());
+  const nu = normalizePinyin(userAnswer);
+  return userAnswer.length > 0 && parts.some(p => normalizePinyin(p) === nu);
+}
+
+function feedbackHtml(label, userAnswer, isCorrect) {
+  if (!userAnswer) return `<span class="incorrect">${label}: skipped</span>`;
+  return isCorrect ? `<span class="correct">${label}: ✓ ${userAnswer}</span>` : `<span class="incorrect">${label}: ✗ ${userAnswer}</span>`;
+}
+
 function checkAnswer() {
   if (fcFlipped) return;
-  const inp = document.getElementById('answerInput');
-  const userAnswer = (inp ? inp.value : '').trim();
   fcAnswerChecked = true;
-
   const w = fcQueue[fcIndex];
-  const correctPinyin = w.pinyin.split('/').map(s => s.trim());
-  const normalizedUser = normalizePinyin(userAnswer);
-  const isCorrect = userAnswer.length > 0 && correctPinyin.some(p => normalizePinyin(p) === normalizedUser);
+
+  const pinyinVal = (document.getElementById('fcInputPinyin').value || '').trim();
+  const meaningVal = (document.getElementById('fcInputMeaning').value || '').trim();
+  const pinyinOk = checkPinyinMatch(pinyinVal, w);
+  const meaningOk = checkViet(meaningVal, w);
 
   const feedback = document.getElementById('answerFeedback');
   if (feedback) {
-    if (userAnswer.length === 0) {
-      feedback.innerHTML = `<div class="answer-result incorrect">Skipped</div>`;
-    } else if (isCorrect) {
-      feedback.innerHTML = `<div class="answer-result correct">Correct!</div><div class="your-answer">Your answer: ${userAnswer}</div>`;
-    } else {
-      feedback.innerHTML = `<div class="answer-result incorrect">Incorrect</div><div class="your-answer">Your answer: ${userAnswer}</div>`;
-    }
+    feedback.innerHTML = `<div class="feedback-row">${feedbackHtml('Pinyin', pinyinVal, pinyinOk)}</div><div class="feedback-row">${feedbackHtml('Meaning', meaningVal, meaningOk)}</div>`;
   }
 
   flipCard();
@@ -585,9 +746,11 @@ function checkAnswer() {
 function flipCard() {
   if (fcFlipped) return;
   fcFlipped = true;
-  const inner = document.querySelector('.card-inner');
+  const inner = document.querySelector('#fc-content .card-inner');
   const btns = document.getElementById('ratingBtns');
+  const hint = document.getElementById('ratingHint');
   if (inner) inner.classList.add('flipped');
+  if (hint) hint.classList.add('visible');
   if (btns) btns.classList.add('visible');
 }
 
@@ -598,7 +761,7 @@ function rateCard(rating) {
   fcSrsData[k] = sm2(fcSrsData[k], rating);
   // weight: Forgot=4, Hard=3, Good=2, Easy=1
   fcSrsData[k].weight = 4 - rating;
-  saveSrsData(fcSrsData);
+  saveSrsData(fcSrsData, 'char');
 
   if (rating === 0) {
     const insertAt = Math.min(fcIndex + 5, fcQueue.length);
@@ -620,7 +783,7 @@ let wrChecked = false;
 let wrSrsData = {};
 
 function startWritingSession() {
-  wrSrsData = loadSrsData();
+  wrSrsData = loadSrsData('meaning');
   const lesson = document.getElementById('wrLessonFilter').value;
   const limit = parseInt(document.getElementById('wrCardCount').value) || 0;
   const filtered = weightedShuffle(words.filter(w => !lesson || w.lesson == lesson), wrSrsData);
@@ -676,7 +839,10 @@ function renderWritingCard() {
           <div class="card-face card-front">
             <div class="card-meaning" style="font-size:18px;color:var(--color-text-primary);text-align:center">${w.viet}</div>
             <div style="margin-top:6px">${posHtml}</div>
-            <input type="text" class="answer-input" id="wrInput" placeholder="Type Chinese character..." autocomplete="off">
+            <div class="answer-group">
+              <div class="answer-row"><label>Character</label><input type="text" id="wrInputChar" placeholder="汉字" autocomplete="off"></div>
+              <div class="answer-row"><label>Pinyin</label><input type="text" id="wrInputPinyin" placeholder="pīnyīn" autocomplete="off"></div>
+            </div>
             <button class="check-btn" onclick="checkWriting()">Check</button>
           </div>
           <div class="card-face card-back">
@@ -687,6 +853,7 @@ function renderWritingCard() {
           </div>
         </div>
       </div>
+      <div class="rating-hint" id="wrRatingHint">Rate how well you knew it — harder words will appear more often</div>
       <div class="rating-btns" id="wrRatingBtns">
         <button class="rate-btn again" onclick="rateWritingCard(0)">Forgot<span class="rate-desc">Don't remember</span></button>
         <button class="rate-btn hard" onclick="rateWritingCard(1)">Hard<span class="rate-desc">Barely recalled</span></button>
@@ -698,9 +865,9 @@ function renderWritingCard() {
     </div>`;
 
   setTimeout(() => {
-    const c = document.querySelector('.card-container');
+    const c = document.querySelector('#wr-content .card-container');
     if (c) c.classList.remove('entering');
-    const inp = document.getElementById('wrInput');
+    const inp = document.getElementById('wrInputChar');
     if (inp) inp.focus();
   }, 300);
 }
@@ -709,29 +876,26 @@ function checkWriting() {
   if (wrChecked) return;
   wrChecked = true;
 
-  const inp = document.getElementById('wrInput');
-  const userAnswer = (inp ? inp.value : '').trim();
   const w = wrQueue[wrIndex];
-  const isCorrect = userAnswer.length > 0 && userAnswer === w.char;
+  const charVal = (document.getElementById('wrInputChar').value || '').trim();
+  const pinyinVal = (document.getElementById('wrInputPinyin').value || '').trim();
+  const charOk = charVal.length > 0 && charVal === w.char;
+  const pinyinOk = checkPinyinMatch(pinyinVal, w);
 
-  if (isCorrect) wrCorrect++;
+  if (charOk && pinyinOk) wrCorrect++;
   else wrWrong++;
   updateWrStats();
 
   const feedback = document.getElementById('wrFeedback');
   if (feedback) {
-    if (userAnswer.length === 0) {
-      feedback.innerHTML = `<div class="answer-result incorrect">Skipped</div>`;
-    } else if (isCorrect) {
-      feedback.innerHTML = `<div class="answer-result correct">Correct!</div><div class="your-answer">Your answer: ${userAnswer}</div>`;
-    } else {
-      feedback.innerHTML = `<div class="answer-result incorrect">Incorrect</div><div class="your-answer">Your answer: ${userAnswer}</div>`;
-    }
+    feedback.innerHTML = `<div class="feedback-row">${feedbackHtml('Character', charVal, charOk)}</div><div class="feedback-row">${feedbackHtml('Pinyin', pinyinVal, pinyinOk)}</div>`;
   }
 
-  const inner = document.querySelector('.card-inner');
+  const inner = document.querySelector('#wr-content .card-inner');
   if (inner) inner.classList.add('flipped');
+  const hint = document.getElementById('wrRatingHint');
   const btns = document.getElementById('wrRatingBtns');
+  if (hint) hint.classList.add('visible');
   if (btns) btns.classList.add('visible');
 }
 
@@ -741,7 +905,7 @@ function rateWritingCard(rating) {
   const k = String(w.n);
   wrSrsData[k] = sm2(wrSrsData[k], rating);
   wrSrsData[k].weight = 4 - rating;
-  saveSrsData(wrSrsData);
+  saveSrsData(wrSrsData, 'meaning');
 
   if (rating === 0) {
     const insertAt = Math.min(wrIndex + 5, wrQueue.length);
@@ -750,6 +914,152 @@ function rateWritingCard(rating) {
 
   wrIndex++;
   renderWritingCard();
+}
+
+/* ── Pinyin Exercise ── */
+let pyQueue = [];
+let pyIndex = 0;
+let pyCorrect = 0;
+let pyWrong = 0;
+let pyChecked = false;
+let pySrsData = {};
+
+function startPinyinSession() {
+  pySrsData = loadSrsData('pinyin');
+  const lesson = document.getElementById('pyLessonFilter').value;
+  const limit = parseInt(document.getElementById('pyCardCount').value) || 0;
+  const filtered = weightedShuffle(words.filter(w => !lesson || w.lesson == lesson), pySrsData);
+  pyQueue = limit > 0 ? filtered.slice(0, limit) : filtered;
+  pyIndex = 0;
+  pyCorrect = 0;
+  pyWrong = 0;
+  pyChecked = false;
+  updatePyStats();
+  renderPinyinCard();
+}
+
+function updatePyStats() {
+  document.getElementById('pyCorrect').textContent = pyCorrect;
+  document.getElementById('pyWrong').textContent = pyWrong;
+  document.getElementById('pyRemaining').textContent = Math.max(0, pyQueue.length - pyIndex);
+}
+
+function renderPinyinCard() {
+  const content = document.getElementById('py-content');
+
+  if (pyQueue.length === 0) {
+    content.innerHTML = `
+      <div class="fc-message">
+        <h3>No words available</h3>
+        <p>Select a lesson to start practicing.</p>
+      </div>`;
+    return;
+  }
+
+  if (pyIndex >= pyQueue.length) {
+    const pct = pyQueue.length > 0 ? Math.round(pyCorrect / pyQueue.length * 100) : 0;
+    content.innerHTML = `
+      <div class="fc-message">
+        <h3>Session Complete!</h3>
+        <p>Score: <strong>${pyCorrect}/${pyQueue.length}</strong> (${pct}%)</p>
+        <div class="fc-msg-actions">
+          <button onclick="startPinyinSession()">Try Again</button>
+          <button onclick="switchMode('browse')">Back to Browse</button>
+        </div>
+      </div>`;
+    return;
+  }
+
+  const w = pyQueue[pyIndex];
+  pyChecked = false;
+  const posHtml = w.pos ? `<span class="badge ${posClass(w.pos)}">${w.pos}</span>` : '';
+
+  content.innerHTML = `
+    <div class="card-area">
+      <div class="card-container entering">
+        <div class="card-inner">
+          <div class="card-face card-front">
+            <div class="card-pinyin" style="font-size:24px;font-style:italic">${w.pinyin}</div>
+            <div style="margin-top:6px">${posHtml}</div>
+            <div class="answer-group">
+              <div class="answer-row"><label>Character</label><input type="text" id="pyInputChar" placeholder="汉字" autocomplete="off"></div>
+              <div class="answer-row"><label>Meaning</label><input type="text" id="pyInputMeaning" placeholder="Vietnamese meaning" autocomplete="off"></div>
+            </div>
+            <button class="check-btn" onclick="checkPinyin()">Check</button>
+          </div>
+          <div class="card-face card-back">
+            <div class="card-char">${w.char}</div>
+            <div class="card-pinyin">${w.pinyin}</div>
+            <div class="card-meaning">${w.viet}</div>
+            <div id="pyFeedback"></div>
+          </div>
+        </div>
+      </div>
+      <div class="rating-hint" id="pyRatingHint">Rate how well you knew it — harder words will appear more often</div>
+      <div class="rating-btns" id="pyRatingBtns">
+        <button class="rate-btn again" onclick="ratePinyinCard(0)">Forgot<span class="rate-desc">Don't remember</span></button>
+        <button class="rate-btn hard" onclick="ratePinyinCard(1)">Hard<span class="rate-desc">Barely recalled</span></button>
+        <button class="rate-btn good" onclick="ratePinyinCard(2)">Good<span class="rate-desc">Remembered</span></button>
+        <button class="rate-btn easy" onclick="ratePinyinCard(3)">Easy<span class="rate-desc">Knew instantly</span></button>
+      </div>
+      <div class="fc-progress">Card ${pyIndex + 1} of ${pyQueue.length}</div>
+      <div class="fc-keyboard-hint">Enter to check &middot; 1-4 to rate</div>
+    </div>`;
+
+  setTimeout(() => {
+    const c = document.querySelector('#py-content .card-container');
+    if (c) c.classList.remove('entering');
+    const inp = document.getElementById('pyInputChar');
+    if (inp) inp.focus();
+  }, 300);
+}
+
+function normalizeViet(str) {
+  return str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').replace(/[^a-z0-9\s]/g, '').trim();
+}
+
+function checkPinyin() {
+  if (pyChecked) return;
+  pyChecked = true;
+
+  const w = pyQueue[pyIndex];
+  const charVal = (document.getElementById('pyInputChar').value || '').trim();
+  const meaningVal = (document.getElementById('pyInputMeaning').value || '').trim();
+  const charOk = charVal.length > 0 && charVal === w.char;
+  const meaningOk = checkViet(meaningVal, w);
+
+  if (charOk && meaningOk) pyCorrect++;
+  else pyWrong++;
+  updatePyStats();
+
+  const feedback = document.getElementById('pyFeedback');
+  if (feedback) {
+    feedback.innerHTML = `<div class="feedback-row">${feedbackHtml('Character', charVal, charOk)}</div><div class="feedback-row">${feedbackHtml('Meaning', meaningVal, meaningOk)}</div>`;
+  }
+
+  const inner = document.querySelector('#py-content .card-inner');
+  if (inner) inner.classList.add('flipped');
+  const hint = document.getElementById('pyRatingHint');
+  const btns = document.getElementById('pyRatingBtns');
+  if (hint) hint.classList.add('visible');
+  if (btns) btns.classList.add('visible');
+}
+
+function ratePinyinCard(rating) {
+  if (!pyChecked) return;
+  const w = pyQueue[pyIndex];
+  const k = String(w.n);
+  pySrsData[k] = sm2(pySrsData[k], rating);
+  pySrsData[k].weight = 4 - rating;
+  saveSrsData(pySrsData, 'pinyin');
+
+  if (rating === 0) {
+    const insertAt = Math.min(pyIndex + 5, pyQueue.length);
+    pyQueue.splice(insertAt, 0, w);
+  }
+
+  pyIndex++;
+  renderPinyinCard();
 }
 
 /* ── Keyboard Shortcuts ── */
@@ -775,6 +1085,17 @@ document.addEventListener('keydown', (e) => {
     if (wrChecked && e.key >= '1' && e.key <= '4') {
       e.preventDefault();
       rateWritingCard(parseInt(e.key) - 1);
+    }
+  } else if (currentMode === 'pinyin') {
+    if (e.key === 'Enter' && !pyChecked) {
+      e.preventDefault();
+      checkPinyin();
+      return;
+    }
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+    if (pyChecked && e.key >= '1' && e.key <= '4') {
+      e.preventDefault();
+      ratePinyinCard(parseInt(e.key) - 1);
     }
   }
 });
