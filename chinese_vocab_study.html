@@ -48,6 +48,7 @@ tbody td { padding: 8px 10px; vertical-align: middle; }
 
 /* Flashcard View */
 #flashcard-view { display: none; }
+#writing-view { display: none; }
 .fc-controls { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1rem; align-items: center; }
 .fc-controls select { padding: 6px 10px; border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); font-size: 14px; background: var(--color-background-primary); color: var(--color-text-primary); }
 .fc-stats { display: flex; gap: 12px; margin-bottom: 1.5rem; flex-wrap: wrap; }
@@ -120,6 +121,7 @@ tbody td { padding: 8px 10px; vertical-align: middle; }
   <div class="mode-toggle">
     <button class="mode-btn active" onclick="switchMode('browse')">Browse Table</button>
     <button class="mode-btn" onclick="switchMode('flashcard')">Flashcards</button>
+    <button class="mode-btn" onclick="switchMode('writing')">Write Chinese</button>
   </div>
 
   <!-- Browse View -->
@@ -179,6 +181,24 @@ tbody td { padding: 8px 10px; vertical-align: middle; }
     </div>
     <div id="fc-content"></div>
   </div>
+
+  <!-- Writing View -->
+  <div id="writing-view">
+    <div class="fc-controls">
+      <select id="wrLessonFilter" onchange="startWritingSession()">
+        <option value="">All lessons</option>
+        <option value="1">Lesson 1</option>
+        <option value="2">Lesson 2</option>
+        <option value="3">Lesson 3</option>
+      </select>
+    </div>
+    <div class="fc-stats">
+      <div class="fc-stat"><span id="wrCorrect">0</span> correct</div>
+      <div class="fc-stat"><span id="wrWrong">0</span> wrong</div>
+      <div class="fc-stat"><span id="wrRemaining">0</span> remaining</div>
+    </div>
+    <div id="wr-content"></div>
+  </div>
 </div>
 
 <script src="words.js"></script>
@@ -226,12 +246,15 @@ let currentMode = 'browse';
 
 function switchMode(mode) {
   currentMode = mode;
+  const modes = ['browse', 'flashcard', 'writing'];
   document.querySelectorAll('.mode-btn').forEach((btn, i) => {
-    btn.classList.toggle('active', (i === 0 && mode === 'browse') || (i === 1 && mode === 'flashcard'));
+    btn.classList.toggle('active', modes[i] === mode);
   });
   document.getElementById('browse-view').style.display = mode === 'browse' ? 'block' : 'none';
   document.getElementById('flashcard-view').style.display = mode === 'flashcard' ? 'block' : 'none';
+  document.getElementById('writing-view').style.display = mode === 'writing' ? 'block' : 'none';
   if (mode === 'flashcard') startFlashcardSession();
+  if (mode === 'writing') startWritingSession();
 }
 
 /* ── SRS Data Layer ── */
@@ -303,8 +326,8 @@ function buildQueue(srsData, lessonFilter) {
 
   due.sort((a, b) => (srsData[a.n].dueDate || '').localeCompare(srsData[b.n].dueDate || ''));
 
-  const maxNew = 10;
-  return [...due, ...newCards.slice(0, maxNew)];
+  const maxNew = 20;
+  return [...due, ...shuffle(newCards).slice(0, maxNew)];
 }
 
 function getStats(srsData, lessonFilter) {
@@ -503,21 +526,148 @@ function rateCard(rating) {
   renderCard();
 }
 
-/* ── Keyboard Shortcuts ── */
-document.addEventListener('keydown', (e) => {
-  if (currentMode !== 'flashcard') return;
+/* ── Writing Exercise ── */
+let wrQueue = [];
+let wrIndex = 0;
+let wrCorrect = 0;
+let wrWrong = 0;
+let wrChecked = false;
 
-  if (e.key === 'Enter' && !fcFlipped) {
-    e.preventDefault();
-    checkAnswer();
+function startWritingSession() {
+  const lesson = document.getElementById('wrLessonFilter').value;
+  const filtered = words.filter(w => !lesson || w.lesson == lesson);
+  wrQueue = shuffle(filtered);
+  wrIndex = 0;
+  wrCorrect = 0;
+  wrWrong = 0;
+  wrChecked = false;
+  updateWrStats();
+  renderWritingCard();
+}
+
+function updateWrStats() {
+  document.getElementById('wrCorrect').textContent = wrCorrect;
+  document.getElementById('wrWrong').textContent = wrWrong;
+  document.getElementById('wrRemaining').textContent = Math.max(0, wrQueue.length - wrIndex);
+}
+
+function renderWritingCard() {
+  const content = document.getElementById('wr-content');
+
+  if (wrQueue.length === 0) {
+    content.innerHTML = `
+      <div class="fc-message">
+        <h3>No words available</h3>
+        <p>Select a lesson to start practicing.</p>
+      </div>`;
     return;
   }
 
-  if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+  if (wrIndex >= wrQueue.length) {
+    const pct = wrQueue.length > 0 ? Math.round(wrCorrect / wrQueue.length * 100) : 0;
+    content.innerHTML = `
+      <div class="fc-message">
+        <h3>Session Complete!</h3>
+        <p>Score: <strong>${wrCorrect}/${wrQueue.length}</strong> (${pct}%)</p>
+        <div class="fc-msg-actions">
+          <button onclick="startWritingSession()">Try Again</button>
+          <button onclick="switchMode('browse')">Back to Browse</button>
+        </div>
+      </div>`;
+    return;
+  }
 
-  if (fcFlipped && e.key >= '1' && e.key <= '4') {
-    e.preventDefault();
-    rateCard(parseInt(e.key) - 1);
+  const w = wrQueue[wrIndex];
+  wrChecked = false;
+  const posHtml = w.pos ? `<span class="badge ${posClass(w.pos)}">${w.pos}</span>` : '';
+
+  content.innerHTML = `
+    <div class="card-area">
+      <div class="card-container entering">
+        <div class="card-inner">
+          <div class="card-face card-front">
+            <div class="card-meaning" style="font-size:18px;color:var(--color-text-primary);text-align:center">${w.viet}</div>
+            <div style="margin-top:6px">${posHtml}</div>
+            <input type="text" class="answer-input" id="wrInput" placeholder="Type Chinese character..." autocomplete="off">
+            <button class="check-btn" onclick="checkWriting()">Check</button>
+          </div>
+          <div class="card-face card-back">
+            <div class="card-char">${w.char}</div>
+            <div class="card-pinyin">${w.pinyin}</div>
+            <div class="card-meaning">${w.viet}</div>
+            <div id="wrFeedback"></div>
+          </div>
+        </div>
+      </div>
+      <div class="rating-btns visible" id="wrNextBtn" style="opacity:0;pointer-events:none">
+        <button class="rate-btn good" onclick="nextWritingCard()" style="flex:none;padding:10px 40px">Next</button>
+      </div>
+      <div class="fc-progress">Card ${wrIndex + 1} of ${wrQueue.length}</div>
+      <div class="fc-keyboard-hint">Enter to check &middot; Enter again for next</div>
+    </div>`;
+
+  setTimeout(() => {
+    const c = document.querySelector('.card-container');
+    if (c) c.classList.remove('entering');
+    const inp = document.getElementById('wrInput');
+    if (inp) inp.focus();
+  }, 300);
+}
+
+function checkWriting() {
+  if (wrChecked) return;
+  wrChecked = true;
+
+  const inp = document.getElementById('wrInput');
+  const userAnswer = (inp ? inp.value : '').trim();
+  const w = wrQueue[wrIndex];
+  const isCorrect = userAnswer.length > 0 && userAnswer === w.char;
+
+  if (isCorrect) wrCorrect++;
+  else wrWrong++;
+  updateWrStats();
+
+  const feedback = document.getElementById('wrFeedback');
+  if (feedback) {
+    if (userAnswer.length === 0) {
+      feedback.innerHTML = `<div class="answer-result incorrect">Skipped</div>`;
+    } else if (isCorrect) {
+      feedback.innerHTML = `<div class="answer-result correct">Correct!</div><div class="your-answer">Your answer: ${userAnswer}</div>`;
+    } else {
+      feedback.innerHTML = `<div class="answer-result incorrect">Incorrect</div><div class="your-answer">Your answer: ${userAnswer}</div>`;
+    }
+  }
+
+  const inner = document.querySelector('.card-inner');
+  if (inner) inner.classList.add('flipped');
+  const nextBtn = document.getElementById('wrNextBtn');
+  if (nextBtn) { nextBtn.style.opacity = '1'; nextBtn.style.pointerEvents = 'auto'; }
+}
+
+function nextWritingCard() {
+  wrIndex++;
+  renderWritingCard();
+}
+
+/* ── Keyboard Shortcuts ── */
+document.addEventListener('keydown', (e) => {
+  if (currentMode === 'flashcard') {
+    if (e.key === 'Enter' && !fcFlipped) {
+      e.preventDefault();
+      checkAnswer();
+      return;
+    }
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+    if (fcFlipped && e.key >= '1' && e.key <= '4') {
+      e.preventDefault();
+      rateCard(parseInt(e.key) - 1);
+    }
+  } else if (currentMode === 'writing') {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (!wrChecked) checkWriting();
+      else nextWritingCard();
+    }
   }
 });
 
