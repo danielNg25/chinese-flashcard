@@ -159,8 +159,9 @@ th.rating-col.show { display: table-cell; }
   .stats { gap: 6px; }
   .stat { padding: 8px 12px; font-size: 14px; }
   .stat span { font-size: 15px; }
-  .fc-stats { gap: 6px; flex-wrap: wrap; }
-  .fc-stat { padding: 8px 12px; font-size: 14px; }
+  .fc-stats { gap: 6px; flex-wrap: wrap; align-items: center; }
+  .fc-stat { padding: 6px 10px; font-size: 12px; }
+  .fc-stat span { font-size: 13px; }
 
   /* Hide table, show card list */
   table { display: none; }
@@ -173,19 +174,24 @@ th.rating-col.show { display: table-cell; }
   .mobile-card-right .viet { font-size: 15px; color: var(--color-text-primary); display: block; }
   .mobile-card-meta { display: flex; gap: 6px; align-items: center; margin-top: 4px; }
 
-  /* Card area */
+  /* Card area — no flip on mobile, stack front/back */
   .card-area { max-width: 100%; }
-  .card-container { aspect-ratio: 4/3; }
-  .card-face { padding: 20px; }
-  .card-front .card-char { font-size: 40px; margin-bottom: 8px; }
-  .card-back .card-char { font-size: 32px; }
+  .card-container { perspective: none; aspect-ratio: auto; height: auto; cursor: default; }
+  .card-inner { transform-style: flat; transition: none; }
+  .card-inner.flipped { transform: none; }
+  .card-face { position: relative; width: 100%; height: auto; backface-visibility: visible; -webkit-backface-visibility: visible; padding: 20px; border-radius: 12px; border: 1px solid var(--color-border-secondary); background: var(--color-background-primary); box-shadow: 0 2px 8px rgba(0,0,0,0.06); display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .card-back { transform: none; display: none; margin-top: 8px; }
+  .card-inner.flipped .card-front { display: none; }
+  .card-inner.flipped .card-back { display: flex; }
+  .card-front .card-char { font-size: 36px; margin-bottom: 8px; }
+  .card-back .card-char { font-size: 28px; }
   .card-back .card-pinyin { font-size: 18px; }
   .card-back .card-meaning { font-size: 16px; }
   .answer-input { width: 90%; font-size: 16px; padding: 10px 12px; }
-  .answer-group { width: 95%; }
-  .answer-row label { min-width: 45px; font-size: 11px; }
-  .answer-row input { font-size: 16px; padding: 9px 8px; }
-  .check-btn { padding: 12px 32px; font-size: 16px; }
+  .answer-group { width: 100%; }
+  .answer-row label { min-width: 50px; font-size: 12px; }
+  .answer-row input { font-size: 16px; padding: 10px 8px; }
+  .check-btn { padding: 12px 32px; font-size: 16px; margin-top: 12px; }
 
   /* Rating buttons stack 2x2 */
   .rating-btns { flex-wrap: wrap; gap: 6px; }
