@@ -483,7 +483,8 @@ function checkAllHs() {
 function hsCell(w, field, value) {
   const h = hsHidden[w.n];
   if (!hsMode || !h || !h[field]) return null;
-  return `<input type="text" class="hs-input" id="hs-${field}-${w.n}" placeholder="?" autocomplete="off">`;
+  const labels = { char: 'Character', pinyin: 'Pinyin', viet: 'Meaning' };
+  return `<input type="text" class="hs-input" id="hs-${field}-${w.n}" placeholder="${labels[field]}" autocomplete="off">`;
 }
 
 function render() {
@@ -518,9 +519,9 @@ function render() {
   }).join('');
   document.getElementById('mobileCards').innerHTML = filtered.map(w => {
     const h = hsMode && hsHidden[w.n];
-    const charHtml = h && h.char ? `<input type="text" class="hs-input" id="hs-m-char-${w.n}" placeholder="?" autocomplete="off">` : `<span class="char">${w.char}</span>`;
-    const pinyinHtml = h && h.pinyin ? `<input type="text" class="hs-input" id="hs-m-pinyin-${w.n}" placeholder="?" autocomplete="off" style="margin-top:4px">` : `<span class="pinyin">${w.pinyin}</span>`;
-    const vietHtml = h && h.viet ? `<input type="text" class="hs-input" id="hs-m-viet-${w.n}" placeholder="?" autocomplete="off">` : `<span class="viet">${w.viet}</span>`;
+    const charHtml = h && h.char ? `<input type="text" class="hs-input" id="hs-m-char-${w.n}" placeholder="Character" autocomplete="off">` : `<span class="char">${w.char}</span>`;
+    const pinyinHtml = h && h.pinyin ? `<input type="text" class="hs-input" id="hs-m-pinyin-${w.n}" placeholder="Pinyin" autocomplete="off" style="margin-top:4px">` : `<span class="pinyin">${w.pinyin}</span>`;
+    const vietHtml = h && h.viet ? `<input type="text" class="hs-input" id="hs-m-viet-${w.n}" placeholder="Meaning" autocomplete="off">` : `<span class="viet">${w.viet}</span>`;
     const checkBtn = h ? `<button class="hs-check-btn" onclick="checkRowHsMobile(${w.n})" style="margin-top:6px">Check</button>` : '';
     return `
     <div class="mobile-card">

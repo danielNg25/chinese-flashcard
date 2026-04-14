@@ -69,6 +69,7 @@ const words = [
   { char:"杂志",   pinyin:"zázhì",         pos:"n.",    viet:"tạp chí",                                             lesson:3 },
   { char:"音乐",   pinyin:"yīnyuè",        pos:"n.",    viet:"âm nhạc",                                            lesson:3 },
   { char:"朋友",   pinyin:"péngyou",       pos:"n.",    viet:"bạn, bạn bè",                                        lesson:3 },
+  { char:"语言",   pinyin:"yǔyán",        pos:"n.",    viet:"ngôn ngữ",                                           lesson:3 },
 
   // ── Add new words below ──
 ];
