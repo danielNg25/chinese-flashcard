@@ -55,6 +55,18 @@ tbody td { padding: 8px 10px; vertical-align: middle; }
 th.rating-col.show { display: table-cell; }
 .viet { color: var(--color-text-secondary); font-size: 13px; }
 
+/* Hide & Seek */
+.hs-controls { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin-bottom: 1rem; }
+.hs-input { width: 100%; padding: 4px 6px; border: 1.5px solid var(--color-border-secondary); border-radius: 4px; font-size: 13px; font-family: inherit; text-align: center; background: var(--color-background-primary); color: var(--color-text-primary); outline: none; }
+.hs-input:focus { border-color: #0C447C; }
+.hs-input.correct { border-color: #27500A; background: #EAF3DE; }
+.hs-input.incorrect { border-color: #72243E; background: #FBEAF0; }
+.hs-check-btn { padding: 2px 8px; border: none; border-radius: 4px; font-size: 11px; cursor: pointer; font-family: inherit; background: var(--color-background-secondary); color: var(--color-text-secondary); }
+.hs-check-btn:hover { background: #E6F1FB; color: #0C447C; }
+.hs-result { font-size: 12px; margin-top: 2px; }
+.hs-result.correct { color: #27500A; }
+.hs-result.incorrect { color: #72243E; }
+
 /* Flashcard View */
 #flashcard-view { display: none; }
 #writing-view { display: none; }
@@ -206,6 +218,17 @@ th.rating-col.show { display: table-cell; }
 
   /* Keyboard hints hidden on mobile */
   .fc-keyboard-hint { display: none; }
+
+  /* Hide & Seek mobile */
+  .hs-input { font-size: 16px; padding: 8px 6px; }
+  .mobile-card-left .hs-input { width: 80px; }
+  .mobile-card-right .hs-input { width: 100%; margin-bottom: 4px; }
+  .hs-check-btn { padding: 6px 14px; font-size: 13px; }
+  .hs-controls { flex-direction: column; }
+
+  /* Stats buttons wrap on mobile */
+  .stats { flex-wrap: wrap; align-items: center; }
+  .fc-reset-btn { font-size: 12px; padding: 6px 10px; }
 }
 </style>
 
@@ -242,6 +265,9 @@ th.rating-col.show { display: table-cell; }
       <div class="stat"><span id="filteredCount">46</span> showing</div>
       <button class="fc-reset-btn" id="toggleRatingsBtn" onclick="toggleRatings()">Show Ratings</button>
       <button class="fc-reset-btn" id="clearRatingsBtn" onclick="clearRatings()" style="display:none">Clear Ratings</button>
+      <button class="fc-reset-btn" id="hsBtn" onclick="startHideSeek()">Hide &amp; Seek</button>
+      <button class="fc-reset-btn" id="hsCheckAllBtn" onclick="checkAllHs()" style="display:none">Check All</button>
+      <button class="fc-reset-btn" id="hsStopBtn" onclick="stopHideSeek()" style="display:none">Stop</button>
     </div>
     <table>
       <thead>
@@ -376,6 +402,90 @@ function toggleRatings() {
   render();
 }
 
+let hsMode = false;
+let hsHidden = {}; // per word n: { char, pinyin, viet } — which fields are hidden
+
+const HS_MODES = [
+  { char: true, pinyin: true, viet: false },   // hide char + pinyin
+  { char: false, pinyin: true, viet: false },   // hide pinyin only
+  { char: false, pinyin: false, viet: true },   // hide meaning only
+  { char: false, pinyin: true, viet: true },    // hide pinyin + meaning
+];
+
+function startHideSeek() {
+  hsMode = true;
+  hsHidden = {};
+  const q = document.getElementById('search').value.toLowerCase();
+  const pos = document.getElementById('posFilter').value;
+  const les = document.getElementById('lessonFilter').value;
+  const filtered = words.filter(w => {
+    const matchQ = !q || w.char.includes(q) || w.pinyin.toLowerCase().includes(q) || w.viet.toLowerCase().includes(q);
+    const matchPos = !pos || w.pos === pos || w.pos.startsWith(pos.replace('.',''));
+    const matchLes = !les || w.lesson == les;
+    return matchQ && matchPos && matchLes;
+  });
+  filtered.forEach(w => {
+    hsHidden[w.n] = HS_MODES[Math.floor(Math.random() * HS_MODES.length)];
+  });
+  document.getElementById('hsBtn').style.display = 'none';
+  document.getElementById('hsCheckAllBtn').style.display = '';
+  document.getElementById('hsStopBtn').style.display = '';
+  render();
+}
+
+function stopHideSeek() {
+  hsMode = false;
+  hsHidden = {};
+  document.getElementById('hsBtn').style.display = '';
+  document.getElementById('hsCheckAllBtn').style.display = 'none';
+  document.getElementById('hsStopBtn').style.display = 'none';
+  render();
+}
+
+function checkRowHs(n) {
+  const w = words.find(x => x.n === n);
+  if (!w) return;
+  const h = hsHidden[n];
+  if (!h) return;
+  if (h.char) {
+    const inp = document.getElementById('hs-char-' + n);
+    if (inp) {
+      const ok = inp.value.trim() === w.char;
+      inp.classList.remove('correct', 'incorrect');
+      inp.classList.add(ok ? 'correct' : 'incorrect');
+    }
+  }
+  if (h.pinyin) {
+    const inp = document.getElementById('hs-pinyin-' + n);
+    if (inp) {
+      const ok = checkPinyinMatch(inp.value.trim(), w);
+      inp.classList.remove('correct', 'incorrect');
+      inp.classList.add(ok ? 'correct' : 'incorrect');
+    }
+  }
+  if (h.viet) {
+    const inp = document.getElementById('hs-viet-' + n);
+    if (inp) {
+      const ok = checkViet(inp.value.trim(), w);
+      inp.classList.remove('correct', 'incorrect');
+      inp.classList.add(ok ? 'correct' : 'incorrect');
+    }
+  }
+}
+
+function checkAllHs() {
+  Object.keys(hsHidden).forEach(n => {
+    checkRowHs(parseInt(n));
+    checkRowHsMobile(parseInt(n));
+  });
+}
+
+function hsCell(w, field, value) {
+  const h = hsHidden[w.n];
+  if (!hsMode || !h || !h[field]) return null;
+  return `<input type="text" class="hs-input" id="hs-${field}-${w.n}" placeholder="?" autocomplete="off">`;
+}
+
 function render() {
   const q = document.getElementById('search').value.toLowerCase();
   const pos = document.getElementById('posFilter').value;
@@ -390,33 +500,64 @@ function render() {
   document.getElementById('totalCount').textContent = words.length;
   const rcls = showRatings ? 'rating-col show' : 'rating-col';
   const tb = document.getElementById('tbody');
-  tb.innerHTML = filtered.map((w,i) => `
+  tb.innerHTML = filtered.map((w,i) => {
+    const charCell = hsCell(w, 'char') || `<span class="char">${w.char}</span>`;
+    const pinyinCell = hsCell(w, 'pinyin') || `<span class="pinyin">${w.pinyin}</span>`;
+    const vietCell = hsCell(w, 'viet') || `<span class="viet">${w.viet}</span>`;
+    const checkBtn = hsMode && hsHidden[w.n] ? `<button class="hs-check-btn" onclick="checkRowHs(${w.n})">Check</button>` : '';
+    return `
     <tr>
       <td style="color:var(--color-text-tertiary);font-size:12px">${i+1}</td>
-      <td class="char">${w.char}</td>
-      <td class="pinyin">${w.pinyin}</td>
+      <td>${charCell}</td>
+      <td>${pinyinCell}</td>
       <td>${w.pos ? `<span class="badge ${posClass(w.pos)}">${w.pos}</span>` : '<span style="color:var(--color-text-tertiary);font-size:12px">—</span>'}</td>
-      <td class="viet">${w.viet}</td>
-      <td><span class="lesson-tag">L${w.lesson}</span></td>
+      <td>${vietCell}</td>
+      <td><span class="lesson-tag">L${w.lesson}</span>${checkBtn}</td>
       <td class="${rcls}">${weightLabel(w)}</td>
-    </tr>
-  `).join('');
-  document.getElementById('mobileCards').innerHTML = filtered.map(w => `
+    </tr>`;
+  }).join('');
+  document.getElementById('mobileCards').innerHTML = filtered.map(w => {
+    const h = hsMode && hsHidden[w.n];
+    const charHtml = h && h.char ? `<input type="text" class="hs-input" id="hs-m-char-${w.n}" placeholder="?" autocomplete="off">` : `<span class="char">${w.char}</span>`;
+    const pinyinHtml = h && h.pinyin ? `<input type="text" class="hs-input" id="hs-m-pinyin-${w.n}" placeholder="?" autocomplete="off" style="margin-top:4px">` : `<span class="pinyin">${w.pinyin}</span>`;
+    const vietHtml = h && h.viet ? `<input type="text" class="hs-input" id="hs-m-viet-${w.n}" placeholder="?" autocomplete="off">` : `<span class="viet">${w.viet}</span>`;
+    const checkBtn = h ? `<button class="hs-check-btn" onclick="checkRowHsMobile(${w.n})" style="margin-top:6px">Check</button>` : '';
+    return `
     <div class="mobile-card">
       <div class="mobile-card-left">
-        <span class="char">${w.char}</span>
-        <span class="pinyin">${w.pinyin}</span>
+        ${charHtml}
+        ${pinyinHtml}
       </div>
       <div class="mobile-card-right">
-        <span class="viet">${w.viet}</span>
+        ${vietHtml}
         <div class="mobile-card-meta">
           ${w.pos ? `<span class="badge ${posClass(w.pos)}">${w.pos}</span>` : ''}
           <span class="lesson-tag">L${w.lesson}</span>
+          ${checkBtn}
           ${showRatings ? weightLabel(w) : ''}
         </div>
       </div>
-    </div>
-  `).join('');
+    </div>`;
+  }).join('');
+}
+
+function checkRowHsMobile(n) {
+  const w = words.find(x => x.n === n);
+  if (!w) return;
+  const h = hsHidden[n];
+  if (!h) return;
+  if (h.char) {
+    const inp = document.getElementById('hs-m-char-' + n);
+    if (inp) { inp.classList.remove('correct','incorrect'); inp.classList.add(inp.value.trim() === w.char ? 'correct' : 'incorrect'); }
+  }
+  if (h.pinyin) {
+    const inp = document.getElementById('hs-m-pinyin-' + n);
+    if (inp) { inp.classList.remove('correct','incorrect'); inp.classList.add(checkPinyinMatch(inp.value.trim(), w) ? 'correct' : 'incorrect'); }
+  }
+  if (h.viet) {
+    const inp = document.getElementById('hs-m-viet-' + n);
+    if (inp) { inp.classList.remove('correct','incorrect'); inp.classList.add(checkViet(inp.value.trim(), w) ? 'correct' : 'incorrect'); }
+  }
 }
 
 /* ── Mode Toggle ── */
