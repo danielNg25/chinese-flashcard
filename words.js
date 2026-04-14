@@ -70,6 +70,8 @@ const words = [
   { char:"音乐",   pinyin:"yīnyuè",        pos:"n.",    viet:"âm nhạc",                                            lesson:3 },
   { char:"朋友",   pinyin:"péngyou",       pos:"n.",    viet:"bạn, bạn bè",                                        lesson:3 },
   { char:"语言",   pinyin:"yǔyán",        pos:"n.",    viet:"ngôn ngữ",                                           lesson:3 },
+  { char:"说",     pinyin:"shuō",         pos:"v.",    viet:"nói",                                                 lesson:3 },
+  { char:"会",     pinyin:"huì",          pos:"v.",    viet:"biết (qua rèn luyện, học hỏi)",                       lesson:3 },
 
   // ── Add new words below ──
 ];

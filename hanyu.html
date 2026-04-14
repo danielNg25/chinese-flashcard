@@ -307,7 +307,6 @@ th.rating-col.show { display: table-cell; }
       <div class="fc-stat"><span id="fcCorrect">0</span> correct</div>
       <div class="fc-stat"><span id="fcWrong">0</span> wrong</div>
       <div class="fc-stat"><span id="fcRemaining">0</span> remaining</div>
-      <button class="fc-reset-btn" onclick="resetProgress()">Reset</button>
     </div>
     <div id="fc-content"></div>
   </div>
@@ -887,16 +886,16 @@ function checkAnswer() {
 
   const pinyinVal = (document.getElementById('fcInputPinyin').value || '').trim();
   const meaningVal = (document.getElementById('fcInputMeaning').value || '').trim();
-  const pinyinOk = checkPinyinMatch(pinyinVal, w);
-  const meaningOk = checkViet(meaningVal, w);
-
-  if (pinyinOk && meaningOk) { fcCorrect.add(w.n); fcWrong.delete(w.n); }
+  const pinyinOk = pinyinVal ? checkPinyinMatch(pinyinVal, w) : null;
+  const meaningOk = meaningVal ? checkViet(meaningVal, w) : null;
+  const filled = [pinyinOk, meaningOk].filter(v => v !== null);
+  if (filled.length > 0 && filled.every(v => v)) { fcCorrect.add(w.n); fcWrong.delete(w.n); }
   else if (!fcCorrect.has(w.n)) { fcWrong.add(w.n); }
   updateFcStats();
 
   const feedback = document.getElementById('answerFeedback');
   if (feedback) {
-    feedback.innerHTML = `<div class="feedback-row">${feedbackHtml('Pinyin', pinyinVal, pinyinOk)}</div><div class="feedback-row">${feedbackHtml('Meaning', meaningVal, meaningOk)}</div>`;
+    feedback.innerHTML = `<div class="feedback-row">${feedbackHtml('Pinyin', pinyinVal, pinyinOk === null ? false : pinyinOk)}</div><div class="feedback-row">${feedbackHtml('Meaning', meaningVal, meaningOk === null ? false : meaningOk)}</div>`;
   }
 
   flipCard();
@@ -1040,16 +1039,16 @@ function checkWriting() {
   const w = wrQueue[wrIndex];
   const charVal = (document.getElementById('wrInputChar').value || '').trim();
   const pinyinVal = (document.getElementById('wrInputPinyin').value || '').trim();
-  const charOk = charVal.length > 0 && charVal === w.char;
-  const pinyinOk = checkPinyinMatch(pinyinVal, w);
-
-  if (charOk && pinyinOk) { wrCorrect.add(w.n); wrWrong.delete(w.n); }
+  const charOk = charVal ? charVal === w.char : null;
+  const pinyinOk = pinyinVal ? checkPinyinMatch(pinyinVal, w) : null;
+  const filled = [charOk, pinyinOk].filter(v => v !== null);
+  if (filled.length > 0 && filled.every(v => v)) { wrCorrect.add(w.n); wrWrong.delete(w.n); }
   else if (!wrCorrect.has(w.n)) { wrWrong.add(w.n); }
   updateWrStats();
 
   const feedback = document.getElementById('wrFeedback');
   if (feedback) {
-    feedback.innerHTML = `<div class="feedback-row">${feedbackHtml('Character', charVal, charOk)}</div><div class="feedback-row">${feedbackHtml('Pinyin', pinyinVal, pinyinOk)}</div>`;
+    feedback.innerHTML = `<div class="feedback-row">${feedbackHtml('Character', charVal, charOk === null ? false : charOk)}</div><div class="feedback-row">${feedbackHtml('Pinyin', pinyinVal, pinyinOk === null ? false : pinyinOk)}</div>`;
   }
 
   const inner = document.querySelector('#wr-content .card-inner');
@@ -1189,16 +1188,16 @@ function checkPinyin() {
   const w = pyQueue[pyIndex];
   const charVal = (document.getElementById('pyInputChar').value || '').trim();
   const meaningVal = (document.getElementById('pyInputMeaning').value || '').trim();
-  const charOk = charVal.length > 0 && charVal === w.char;
-  const meaningOk = checkViet(meaningVal, w);
-
-  if (charOk && meaningOk) { pyCorrect.add(w.n); pyWrong.delete(w.n); }
+  const charOk = charVal ? charVal === w.char : null;
+  const meaningOk = meaningVal ? checkViet(meaningVal, w) : null;
+  const filled = [charOk, meaningOk].filter(v => v !== null);
+  if (filled.length > 0 && filled.every(v => v)) { pyCorrect.add(w.n); pyWrong.delete(w.n); }
   else if (!pyCorrect.has(w.n)) { pyWrong.add(w.n); }
   updatePyStats();
 
   const feedback = document.getElementById('pyFeedback');
   if (feedback) {
-    feedback.innerHTML = `<div class="feedback-row">${feedbackHtml('Character', charVal, charOk)}</div><div class="feedback-row">${feedbackHtml('Meaning', meaningVal, meaningOk)}</div>`;
+    feedback.innerHTML = `<div class="feedback-row">${feedbackHtml('Character', charVal, charOk === null ? false : charOk)}</div><div class="feedback-row">${feedbackHtml('Meaning', meaningVal, meaningOk === null ? false : meaningOk)}</div>`;
   }
 
   const inner = document.querySelector('#py-content .card-inner');
