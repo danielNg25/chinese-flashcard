@@ -72,6 +72,11 @@ const words = [
   { char:"语言",   pinyin:"yǔyán",        pos:"n.",    viet:"ngôn ngữ",                                           lesson:3 },
   { char:"说",     pinyin:"shuō",         pos:"v.",    viet:"nói",                                                 lesson:3 },
   { char:"会",     pinyin:"huì",          pos:"v.",    viet:"biết (qua rèn luyện, học hỏi)",                       lesson:3 },
+  { char:"本",     pinyin:"běn",          pos:"mw.",   viet:"cuốn, quyển",                                         lesson:3 },
+  { char:"一",     pinyin:"yī",           pos:"num.",  viet:"một, 1",                                              lesson:3 },
+  { char:"喜欢",   pinyin:"xǐhuan",       pos:"v.",    viet:"thích",                                               lesson:3 },
+  { char:"看",     pinyin:"kàn",          pos:"v.",    viet:"xem, nhìn, đọc",                                      lesson:3 },
+  { char:"听",     pinyin:"tīng",         pos:"v.",    viet:"nghe",                                                lesson:3 },
 
   // ── Add new words below ──
 ];

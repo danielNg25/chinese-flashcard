@@ -13,7 +13,7 @@
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: var(--font-sans); }
-.wrap { padding: 1rem 0; }
+.wrap { padding: 1rem 3rem; max-width: 1400px; margin: 0 auto; }
 
 /* Mode Toggle */
 .mode-toggle { display: flex; gap: 0; margin-bottom: 1rem; border: 1px solid var(--color-border-secondary); border-radius: var(--border-radius-md); overflow: hidden; width: fit-content; }
@@ -54,6 +54,8 @@ tbody td { padding: 8px 10px; vertical-align: middle; }
 .rating-col.show { display: table-cell; }
 th.rating-col.show { display: table-cell; }
 .viet { color: var(--color-text-secondary); font-size: 13px; }
+.audio-btn { background: none; border: none; cursor: pointer; font-size: 16px; padding: 2px 4px; opacity: 0.5; transition: opacity 0.15s; vertical-align: middle; }
+.audio-btn:hover { opacity: 1; }
 
 /* Hide & Seek */
 .hs-controls { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin-bottom: 1rem; }
@@ -401,6 +403,18 @@ function toggleRatings() {
   render();
 }
 
+function speakZh(text) {
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'zh-CN';
+  u.rate = 0.8;
+  speechSynthesis.cancel();
+  speechSynthesis.speak(u);
+}
+
+function audioBtn(char) {
+  return `<button class="audio-btn" onclick="event.stopPropagation();speakZh('${char.replace(/'/g, "\\'")}')" title="Listen">&#128264;</button>`;
+}
+
 let hsMode = false;
 let hsHidden = {}; // per word n: { char, pinyin, viet } — which fields are hidden
 
@@ -501,7 +515,7 @@ function render() {
   const rcls = showRatings ? 'rating-col show' : 'rating-col';
   const tb = document.getElementById('tbody');
   tb.innerHTML = filtered.map((w,i) => {
-    const charCell = hsCell(w, 'char') || `<span class="char">${w.char}</span>`;
+    const charCell = hsCell(w, 'char') || `<span class="char">${w.char}</span>${audioBtn(w.char)}`;
     const pinyinCell = hsCell(w, 'pinyin') || `<span class="pinyin">${w.pinyin}</span>`;
     const vietCell = hsCell(w, 'viet') || `<span class="viet">${w.viet}</span>`;
     const checkBtn = hsMode && hsHidden[w.n] ? `<button class="hs-check-btn" onclick="checkRowHs(${w.n})">Check</button>` : '';
@@ -518,7 +532,7 @@ function render() {
   }).join('');
   document.getElementById('mobileCards').innerHTML = filtered.map(w => {
     const h = hsMode && hsHidden[w.n];
-    const charHtml = h && h.char ? `<input type="text" class="hs-input" id="hs-m-char-${w.n}" placeholder="Character" autocomplete="off">` : `<span class="char">${w.char}</span>`;
+    const charHtml = h && h.char ? `<input type="text" class="hs-input" id="hs-m-char-${w.n}" placeholder="Character" autocomplete="off">` : `<span class="char">${w.char}</span>${audioBtn(w.char)}`;
     const pinyinHtml = h && h.pinyin ? `<input type="text" class="hs-input" id="hs-m-pinyin-${w.n}" placeholder="Pinyin" autocomplete="off" style="margin-top:4px">` : `<span class="pinyin">${w.pinyin}</span>`;
     const vietHtml = h && h.viet ? `<input type="text" class="hs-input" id="hs-m-viet-${w.n}" placeholder="Meaning" autocomplete="off">` : `<span class="viet">${w.viet}</span>`;
     const checkBtn = h ? `<button class="hs-check-btn" onclick="checkRowHsMobile(${w.n})" style="margin-top:6px">Check</button>` : '';
@@ -810,7 +824,7 @@ function renderCard() {
       <div class="card-container entering">
         <div class="card-inner">
           <div class="card-face card-front">
-            <div class="card-char">${w.char}</div>
+            <div class="card-char">${w.char} ${audioBtn(w.char)}</div>
             <div class="answer-group">
               <div class="answer-row"><label>Pinyin</label><input type="text" id="fcInputPinyin" placeholder="nǐ hǎo" autocomplete="off"></div>
               <div class="answer-row"><label>Meaning</label><input type="text" id="fcInputMeaning" placeholder="Vietnamese meaning" autocomplete="off"></div>
@@ -818,7 +832,7 @@ function renderCard() {
             <button class="check-btn" onclick="checkAnswer()">Check</button>
           </div>
           <div class="card-face card-back">
-            <div class="card-char">${w.char}</div>
+            <div class="card-char">${w.char} ${audioBtn(w.char)}</div>
             <div class="card-pinyin">${w.pinyin}</div>
             <div class="card-meaning">${w.viet}</div>
             <div class="card-pos">${posHtml}</div>
@@ -1006,7 +1020,7 @@ function renderWritingCard() {
             <button class="check-btn" onclick="checkWriting()">Check</button>
           </div>
           <div class="card-face card-back">
-            <div class="card-char">${w.char}</div>
+            <div class="card-char">${w.char} ${audioBtn(w.char)}</div>
             <div class="card-pinyin">${w.pinyin}</div>
             <div class="card-meaning">${w.viet}</div>
             <div id="wrFeedback"></div>
@@ -1151,7 +1165,7 @@ function renderPinyinCard() {
             <button class="check-btn" onclick="checkPinyin()">Check</button>
           </div>
           <div class="card-face card-back">
-            <div class="card-char">${w.char}</div>
+            <div class="card-char">${w.char} ${audioBtn(w.char)}</div>
             <div class="card-pinyin">${w.pinyin}</div>
             <div class="card-meaning">${w.viet}</div>
             <div id="pyFeedback"></div>
