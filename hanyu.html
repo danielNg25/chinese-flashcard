@@ -304,9 +304,9 @@ th.rating-col.show { display: table-cell; }
       </select>
     </div>
     <div class="fc-stats">
-      <div class="fc-stat due"><span id="fcDue">0</span> due</div>
-      <div class="fc-stat new-cards"><span id="fcNew">0</span> new</div>
-      <div class="fc-stat learned"><span id="fcLearned">0</span> learned</div>
+      <div class="fc-stat"><span id="fcCorrect">0</span> correct</div>
+      <div class="fc-stat"><span id="fcWrong">0</span> wrong</div>
+      <div class="fc-stat"><span id="fcRemaining">0</span> remaining</div>
       <button class="fc-reset-btn" onclick="resetProgress()">Reset</button>
     </div>
     <div id="fc-content"></div>
@@ -702,6 +702,8 @@ let fcQueue = [];
 let fcIndex = 0;
 let fcFlipped = false;
 let fcAnswerChecked = false;
+let fcCorrect = new Set();
+let fcWrong = new Set();
 let fcSrsData = {};
 
 function shuffle(arr) {
@@ -754,16 +756,17 @@ function startFlashcardSession() {
   if (limit > 0) fcQueue = fcQueue.slice(0, limit);
   fcIndex = 0;
   fcFlipped = false;
+  fcCorrect = new Set();
+  fcWrong = new Set();
   updateFcStats();
   renderCard();
 }
 
 function updateFcStats() {
-  const lesson = document.getElementById('fcLessonFilter').value;
-  const stats = getStats(fcSrsData, lesson);
-  document.getElementById('fcDue').textContent = stats.due;
-  document.getElementById('fcNew').textContent = stats.new;
-  document.getElementById('fcLearned').textContent = stats.learned;
+  document.getElementById('fcCorrect').textContent = fcCorrect.size;
+  document.getElementById('fcWrong').textContent = fcWrong.size;
+  const unique = new Set(fcQueue.slice(fcIndex).map(w => w.n));
+  document.getElementById('fcRemaining').textContent = unique.size;
 }
 
 function renderCard() {
@@ -789,7 +792,7 @@ function renderCard() {
     content.innerHTML = `
       <div class="fc-message">
         <h3>Session Complete!</h3>
-        <p>You reviewed <strong>${new Set(fcQueue.map(w => w.n)).size}</strong> cards.</p>
+        <p>Score: <strong>${fcCorrect.size}/${fcCorrect.size + fcWrong.size}</strong> (${(fcCorrect.size + fcWrong.size) > 0 ? Math.round(fcCorrect.size / (fcCorrect.size + fcWrong.size) * 100) : 0}%)</p>
         <div class="fc-msg-actions">
           <button onclick="startFlashcardSession()">Review Again</button>
           <button onclick="switchMode('browse')">Back to Browse</button>
@@ -831,7 +834,7 @@ function renderCard() {
         <button class="rate-btn good" onclick="rateCard(2)">Good<span class="rate-desc">Remembered</span><span class="rate-label">${getIntervalLabel(fcQueue[fcIndex], 2)}</span></button>
         <button class="rate-btn easy" onclick="rateCard(3)">Easy<span class="rate-desc">Knew instantly</span><span class="rate-label">${getIntervalLabel(fcQueue[fcIndex], 3)}</span></button>
       </div>
-      <div class="fc-progress">Card ${fcIndex + 1} of ${new Set(fcQueue.map(w => w.n)).size}</div>
+      <div class="fc-progress">Card ${fcCorrect.size + fcWrong.size + 1} of ${new Set(fcQueue.map(w => w.n)).size}</div>
       <div class="fc-keyboard-hint">Enter to check &middot; 1-4 to rate</div>
     </div>`;
 
@@ -886,6 +889,10 @@ function checkAnswer() {
   const meaningVal = (document.getElementById('fcInputMeaning').value || '').trim();
   const pinyinOk = checkPinyinMatch(pinyinVal, w);
   const meaningOk = checkViet(meaningVal, w);
+
+  if (pinyinOk && meaningOk) { fcCorrect.add(w.n); fcWrong.delete(w.n); }
+  else if (!fcCorrect.has(w.n)) { fcWrong.add(w.n); }
+  updateFcStats();
 
   const feedback = document.getElementById('answerFeedback');
   if (feedback) {
