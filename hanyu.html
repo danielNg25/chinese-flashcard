@@ -406,10 +406,20 @@ function toggleRatings() {
 function speakZh(text) {
   const u = new SpeechSynthesisUtterance(text);
   u.lang = 'zh-CN';
-  u.rate = 0.8;
+  u.rate = 0.85;
+  u.pitch = 1;
+  // Try to find a good Chinese voice
+  const voices = speechSynthesis.getVoices();
+  const zhVoice = voices.find(v => v.lang === 'zh-CN' && v.name.includes('Google')) ||
+                  voices.find(v => v.lang === 'zh-CN' && v.name.includes('Ting')) ||
+                  voices.find(v => v.lang.startsWith('zh-CN')) ||
+                  voices.find(v => v.lang.startsWith('zh'));
+  if (zhVoice) u.voice = zhVoice;
   speechSynthesis.cancel();
   speechSynthesis.speak(u);
 }
+// Preload voices
+speechSynthesis.getVoices();
 
 function audioBtn(char) {
   return `<button class="audio-btn" onclick="event.stopPropagation();speakZh('${char.replace(/'/g, "\\'")}')" title="Listen">&#128264;</button>`;
