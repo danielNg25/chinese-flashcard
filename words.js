@@ -78,6 +78,31 @@ const words = [
   { char:"看",     pinyin:"kàn",          pos:"v.",    viet:"xem, nhìn, đọc",                                      lesson:3 },
   { char:"听",     pinyin:"tīng",         pos:"v.",    viet:"nghe",                                                lesson:3 },
 
+  // ── Lesson 4 ──
+  { char:"请问",   pinyin:"qǐngwèn",      pos:"v.",    viet:"xin hỏi",                                             lesson:4 },
+  { char:"图书馆", pinyin:"túshūguǎn",    pos:"n.",    viet:"thư viện",                                            lesson:4 },
+  { char:"在",     pinyin:"zài",          pos:"v./adv.", viet:"ở, đang",                                           lesson:4 },
+  { char:"哪儿",   pinyin:"nǎr",          pos:"pron.", viet:"ở đâu, chỗ nào",                                      lesson:4 },
+  { char:"哪里",   pinyin:"nǎli",         pos:"pron.", viet:"ở đâu, chỗ nào",                                      lesson:4 },
+  { char:"对不起", pinyin:"duìbuqǐ",      pos:"v.",    viet:"xin lỗi",                                             lesson:4 },
+  { char:"个",     pinyin:"gè",           pos:"mw.",   viet:"lượng từ chung (cho người, đồ vật)",                 lesson:4 },
+  { char:"学校",   pinyin:"xuéxiào",      pos:"n.",    viet:"trường học",                                          lesson:4 },
+  { char:"知道",   pinyin:"zhīdào",       pos:"v.",    viet:"biết",                                                lesson:4 },
+  { char:"没关系", pinyin:"méi guānxi",   pos:"",      viet:"không sao, không có gì",                              lesson:4 },
+  { char:"这儿",   pinyin:"zhèr",         pos:"pron.", viet:"chỗ này, nơi này",                                    lesson:4 },
+  { char:"这里",   pinyin:"zhèli",        pos:"pron.", viet:"chỗ này, nơi này",                                    lesson:4 },
+  // { char:"教学",   pinyin:"jiàoxué",      pos:"n.",    viet:"dạy học",                                             lesson:4 },
+  { char:"楼",     pinyin:"lóu",          pos:"n.",    viet:"tòa nhà",                                             lesson:4 },
+  { char:"那儿",   pinyin:"nàr",          pos:"pron.", viet:"chỗ kia, nơi kia",                                    lesson:4 },
+  { char:"那里",   pinyin:"nàli",         pos:"pron.", viet:"chỗ kia, nơi kia",                                    lesson:4 },
+  // { char:"宿舍",   pinyin:"sùshè",        pos:"n.",    viet:"ký túc xá",                                           lesson:4 },
+  // { char:"北边",   pinyin:"běibian",      pos:"n.",    viet:"phía bắc",                                            lesson:4 },
+  // { char:"左边",   pinyin:"zuǒbian",      pos:"n.",    viet:"bên trái",                                            lesson:4 },
+  // { char:"右边",   pinyin:"yòubian",      pos:"n.",    viet:"bên phải",                                            lesson:4 },
+  // { char:"不用谢", pinyin:"búyòng xiè",   pos:"",      viet:"không cần cảm ơn, không có gì",                       lesson:4 },
+  // { char:"不用",   pinyin:"búyòng",       pos:"adv.",  viet:"không cần",                                           lesson:4 },
+  { char:"对",     pinyin:"duì",          pos:"adj.",  viet:"đúng",                                                lesson:4 },
+
   // ── Add new words below ──
 ];
 
