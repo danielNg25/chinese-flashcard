@@ -15,6 +15,14 @@
 body { font-family: var(--font-sans); }
 .wrap { padding: 1rem 3rem; max-width: 1400px; margin: 0 auto; }
 
+/* App Header */
+.app-header { display: flex; align-items: center; gap: 16px; padding: 0.75rem 3rem; border-bottom: 1px solid var(--color-border-tertiary); background: var(--color-background-primary); }
+.app-title { font-size: 18px; font-weight: 600; color: var(--color-text-primary); letter-spacing: 0.02em; }
+.app-nav { display: flex; gap: 0; border: 1px solid var(--color-border-secondary); border-radius: var(--border-radius-md); overflow: hidden; }
+.app-nav-btn { padding: 6px 18px; font-size: 14px; text-decoration: none; color: var(--color-text-secondary); background: var(--color-background-primary); transition: all 0.2s; }
+.app-nav-btn.active { background: var(--color-background-secondary); color: var(--color-text-primary); font-weight: 600; }
+.app-nav-btn:hover:not(.active) { background: var(--color-background-secondary); }
+
 /* Mode Toggle */
 .mode-toggle { display: flex; gap: 0; margin-bottom: 1rem; border: 1px solid var(--color-border-secondary); border-radius: var(--border-radius-md); overflow: hidden; width: fit-content; }
 .mode-btn { padding: 8px 20px; font-size: 14px; border: none; cursor: pointer; background: var(--color-background-primary); color: var(--color-text-secondary); transition: all 0.2s; font-family: inherit; }
@@ -158,6 +166,11 @@ th.rating-col.show { display: table-cell; }
 @media (max-width: 600px) {
   .wrap { padding: 0.75rem 0.5rem; }
 
+  /* App header */
+  .app-header { padding: 0.75rem; }
+  .app-title { font-size: 16px; }
+  .app-nav-btn { padding: 6px 14px; font-size: 13px; }
+
   /* Mode toggle full width */
   .mode-toggle { width: 100%; }
   .mode-btn { flex: 1; padding: 12px 8px; font-size: 13px; text-align: center; }
@@ -234,6 +247,14 @@ th.rating-col.show { display: table-cell; }
 }
 </style>
 
+<div class="app-header">
+  <span class="app-title">汉语学习</span>
+  <nav class="app-nav">
+    <a class="app-nav-btn" href="lesson.html">Lessons</a>
+    <a class="app-nav-btn active" href="hanyu.html">Vocabulary</a>
+    <a class="app-nav-btn" href="grammar.html">Grammar</a>
+  </nav>
+</div>
 <div class="wrap">
   <div class="mode-toggle">
     <button class="mode-btn active" onclick="switchMode('browse')">Browse</button>

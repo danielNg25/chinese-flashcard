@@ -1,0 +1,230 @@
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lessons — 汉语学习</title>
+<style>
+:root {
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --color-background-primary: #ffffff;
+  --color-background-secondary: #f5f5f5;
+  --color-text-primary: #1a1a1a;
+  --color-text-secondary: #666666;
+  --color-text-tertiary: #999999;
+  --color-border-secondary: #e0e0e0;
+  --color-border-tertiary: #eeeeee;
+  --border-radius-md: 8px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-sans); }
+.wrap { padding: 1rem 3rem; max-width: 1400px; margin: 0 auto; }
+
+/* App Header */
+.app-header { display: flex; align-items: center; gap: 16px; padding: 0.75rem 3rem; border-bottom: 1px solid var(--color-border-tertiary); background: var(--color-background-primary); }
+.app-title { font-size: 18px; font-weight: 600; color: var(--color-text-primary); letter-spacing: 0.02em; }
+.app-nav { display: flex; gap: 0; border: 1px solid var(--color-border-secondary); border-radius: var(--border-radius-md); overflow: hidden; }
+.app-nav-btn { padding: 6px 18px; font-size: 14px; text-decoration: none; color: var(--color-text-secondary); background: var(--color-background-primary); transition: all 0.2s; }
+.app-nav-btn.active { background: var(--color-background-secondary); color: var(--color-text-primary); font-weight: 600; }
+.app-nav-btn:hover:not(.active) { background: var(--color-background-secondary); }
+
+/* Lesson selector */
+.lesson-selector { display: flex; gap: 0; border: 1px solid var(--color-border-secondary); border-radius: var(--border-radius-md); overflow: hidden; width: fit-content; margin-bottom: 2rem; }
+.lesson-btn { padding: 8px 24px; font-size: 14px; border: none; cursor: pointer; background: var(--color-background-primary); color: var(--color-text-secondary); transition: all 0.2s; font-family: inherit; }
+.lesson-btn.active { background: var(--color-background-secondary); color: var(--color-text-primary); font-weight: 600; }
+.lesson-btn:hover:not(.active) { background: var(--color-background-secondary); }
+
+/* Section heading */
+.section-heading { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-text-tertiary); margin-bottom: 0.75rem; margin-top: 2rem; padding-bottom: 6px; border-bottom: 1px solid var(--color-border-tertiary); }
+.section-heading:first-of-type { margin-top: 0; }
+
+/* Vocabulary table */
+table { width: 100%; border-collapse: collapse; font-size: 14px; margin-bottom: 1rem; }
+thead th { text-align: left; font-weight: 500; font-size: 12px; color: var(--color-text-secondary); padding: 6px 10px; border-bottom: 0.5px solid var(--color-border-tertiary); text-transform: uppercase; letter-spacing: 0.04em; }
+tbody tr { border-bottom: 0.5px solid var(--color-border-tertiary); }
+tbody tr:hover { background: var(--color-background-secondary); }
+tbody td { padding: 8px 10px; vertical-align: middle; }
+.char { font-size: 22px; font-weight: 500; }
+.pinyin { color: var(--color-text-secondary); font-style: italic; }
+.viet { color: var(--color-text-secondary); font-size: 13px; }
+.badge { display: inline-block; font-size: 11px; padding: 2px 7px; border-radius: 99px; font-weight: 500; }
+.n    { background: #E6F1FB; color: #0C447C; }
+.v    { background: #EAF3DE; color: #27500A; }
+.pron { background: #EEEDFE; color: #3C3489; }
+.adv  { background: #FAEEDA; color: #633806; }
+.adj  { background: #FBEAF0; color: #72243E; }
+.part { background: #FAECE7; color: #712B13; }
+.other{ background: #F1EFE8; color: #444441; }
+
+/* Grammar table */
+.gr-table { width: 100%; border-collapse: collapse; font-size: 14px; margin-bottom: 1rem; }
+.gr-table thead th { text-align: left; font-weight: 500; font-size: 12px; color: var(--color-text-secondary); padding: 6px 10px; border-bottom: 0.5px solid var(--color-border-tertiary); text-transform: uppercase; letter-spacing: 0.04em; }
+.gr-table tbody tr.pattern-row { border-bottom: 0.5px solid var(--color-border-tertiary); cursor: pointer; }
+.gr-table tbody tr.pattern-row:hover { background: var(--color-background-secondary); }
+.gr-table tbody tr.pattern-row.open { background: var(--color-background-secondary); }
+.gr-table tbody td { padding: 8px 10px; vertical-align: middle; }
+.gr-structure { font-size: 15px; font-weight: 500; color: var(--color-text-primary); }
+.gr-title { font-size: 13px; color: var(--color-text-secondary); margin-top: 2px; }
+.diff-badge { display: inline-block; font-size: 11px; padding: 2px 7px; border-radius: 99px; font-weight: 500; }
+.diff-1 { background: #EAF3DE; color: #27500A; }
+.diff-2 { background: #FAEEDA; color: #633806; }
+
+/* Expandable grammar detail */
+.detail-row td { padding: 0; border-bottom: 0.5px solid var(--color-border-tertiary); }
+.detail-panel { padding: 16px 20px 20px; background: #FAFAFA; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+.detail-section h4 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-text-tertiary); margin-bottom: 8px; }
+.detail-explanation { font-size: 14px; line-height: 1.6; color: var(--color-text-primary); }
+.detail-examples { list-style: none; }
+.detail-examples li { margin-bottom: 6px; }
+.detail-examples .zh { font-size: 16px; font-weight: 500; display: block; }
+.detail-examples .vi { font-size: 12px; color: var(--color-text-secondary); display: block; }
+.detail-notes { list-style: none; }
+.detail-notes li { font-size: 13px; color: var(--color-text-secondary); padding-left: 14px; position: relative; margin-bottom: 4px; line-height: 1.5; }
+.detail-notes li::before { content: "⚠"; position: absolute; left: 0; font-size: 11px; }
+
+/* Inner tabs */
+.inner-tabs { display: flex; gap: 0; border: 1px solid var(--color-border-secondary); border-radius: var(--border-radius-md); overflow: hidden; width: fit-content; margin-bottom: 1.5rem; }
+.inner-tab { padding: 7px 20px; font-size: 14px; border: none; cursor: pointer; background: var(--color-background-primary); color: var(--color-text-secondary); transition: all 0.2s; font-family: inherit; }
+.inner-tab.active { background: var(--color-background-secondary); color: var(--color-text-primary); font-weight: 600; }
+.inner-tab:hover:not(.active) { background: var(--color-background-secondary); }
+
+/* Empty */
+.empty-msg { padding: 32px; text-align: center; color: var(--color-text-tertiary); font-size: 14px; }
+
+@media (max-width: 600px) {
+  .wrap { padding: 0.75rem 0.5rem; }
+  .app-header { padding: 0.75rem; }
+  .app-title { font-size: 16px; }
+  .app-nav-btn { padding: 6px 14px; font-size: 13px; }
+  .lesson-selector { width: 100%; }
+  .lesson-btn { flex: 1; padding: 10px 8px; font-size: 13px; }
+  .char { font-size: 18px; }
+  .detail-panel { grid-template-columns: 1fr; gap: 14px; }
+}
+</style>
+
+<div class="app-header">
+  <span class="app-title">汉语学习</span>
+  <nav class="app-nav">
+    <a class="app-nav-btn active" href="lesson.html">Lessons</a>
+    <a class="app-nav-btn" href="hanyu.html">Vocabulary</a>
+    <a class="app-nav-btn" href="grammar.html">Grammar</a>
+  </nav>
+</div>
+
+<div class="wrap">
+  <div class="lesson-selector">
+    <button class="lesson-btn" data-lesson="1" onclick="selectLesson(1)">Lesson 1</button>
+    <button class="lesson-btn" data-lesson="2" onclick="selectLesson(2)">Lesson 2</button>
+    <button class="lesson-btn" data-lesson="3" onclick="selectLesson(3)">Lesson 3</button>
+    <button class="lesson-btn" data-lesson="4" onclick="selectLesson(4)">Lesson 4</button>
+  </div>
+
+  <div class="inner-tabs">
+    <button class="inner-tab active" data-tab="vocabulary" onclick="selectTab('vocabulary')">Vocabulary</button>
+    <button class="inner-tab" data-tab="grammar" onclick="selectTab('grammar')">Grammar</button>
+  </div>
+
+  <div id="vocab-view"></div>
+  <div id="grammar-view" style="display:none;"></div>
+</div>
+
+<script src="words.js"></script>
+<script src="grammar_data.js"></script>
+<script>
+let currentLesson = 1;
+let currentTab = 'vocabulary';
+
+function selectLesson(n) {
+  currentLesson = n;
+  document.querySelectorAll('.lesson-btn').forEach(b => {
+    b.classList.toggle('active', Number(b.dataset.lesson) === n);
+  });
+  render();
+}
+
+function selectTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll('.inner-tab').forEach(b => {
+    b.classList.toggle('active', b.dataset.tab === tab);
+  });
+  document.getElementById('vocab-view').style.display = tab === 'vocabulary' ? '' : 'none';
+  document.getElementById('grammar-view').style.display = tab === 'grammar' ? '' : 'none';
+}
+
+function posClass(pos) {
+  if (!pos) return 'other';
+  if (pos.startsWith('n.')) return 'n';
+  if (pos.startsWith('v.')) return 'v';
+  if (pos.startsWith('pron.')) return 'pron';
+  if (pos.startsWith('adv.')) return 'adv';
+  if (pos.startsWith('adj.')) return 'adj';
+  if (pos.startsWith('part.')) return 'part';
+  return 'other';
+}
+
+function render() {
+  const lessonWords = words.filter(w => w.lesson === currentLesson);
+  const lessonPatterns = grammarPatterns.filter(p => p.lesson === currentLesson);
+
+  const wordRows = lessonWords.map((w, i) => `
+    <tr>
+      <td style="color:var(--color-text-tertiary); font-size:13px;">${i + 1}</td>
+      <td><span class="char">${w.char}</span></td>
+      <td><span class="pinyin">${w.pinyin}</span></td>
+      <td>${w.pos ? `<span class="badge ${posClass(w.pos)}">${w.pos}</span>` : ''}</td>
+      <td><span class="viet">${w.viet}</span></td>
+    </tr>`).join('');
+
+  const grammarRows = lessonPatterns.map((p, i) => `
+    <tr class="pattern-row open" id="lrow-${p.id}" onclick="toggleDetail('${p.id}')">
+      <td style="color:var(--color-text-tertiary); font-size:13px;">${i + 1}</td>
+      <td><div class="gr-structure">${p.structure}</div></td>
+      <td><div class="gr-title">${p.title}</div></td>
+      <td><span class="diff-badge ${p.difficulty === 'beginner-1' ? 'diff-1' : 'diff-2'}">${p.difficulty === 'beginner-1' ? 'Beginner 1' : 'Beginner 2'}</span></td>
+      <td style="color:var(--color-text-tertiary); font-size:12px;" id="lchev-${p.id}">▾</td>
+    </tr>
+    <tr class="detail-row" id="ldetail-${p.id}">
+      <td colspan="5">
+        <div class="detail-panel">
+          <div class="detail-section">
+            <h4>Explanation</h4>
+            <div class="detail-explanation">${p.explanation}</div>
+          </div>
+          <div class="detail-section">
+            <h4>Examples</h4>
+            <ul class="detail-examples">
+              ${p.examples.map(e => `<li><span class="zh">${e.zh}</span><span class="vi">${e.vi}</span></li>`).join('')}
+            </ul>
+          </div>
+          <div class="detail-section">
+            <h4>Notes</h4>
+            <ul class="detail-notes">
+              ${p.notes.map(n => `<li>${n}</li>`).join('')}
+            </ul>
+          </div>
+        </div>
+      </td>
+    </tr>`).join('');
+
+  document.getElementById('vocab-view').innerHTML = lessonWords.length ? `
+    <table>
+      <thead><tr><th>#</th><th>Character</th><th>Pinyin</th><th>Type</th><th>Vietnamese meaning</th></tr></thead>
+      <tbody>${wordRows}</tbody>
+    </table>` : '<div class="empty-msg">No vocabulary for this lesson yet.</div>';
+
+  document.getElementById('grammar-view').innerHTML = lessonPatterns.length ? `
+    <table class="gr-table">
+      <thead><tr><th>#</th><th>Structure</th><th>Grammar Point</th><th>Level</th><th></th></tr></thead>
+      <tbody>${grammarRows}</tbody>
+    </table>` : '<div class="empty-msg">No grammar patterns for this lesson yet.</div>';
+}
+
+function toggleDetail(id) {
+  const detail = document.getElementById('ldetail-' + id);
+  const row = document.getElementById('lrow-' + id);
+  const chev = document.getElementById('lchev-' + id);
+  const isOpen = detail.style.display !== 'none';
+  detail.style.display = isOpen ? 'none' : 'table-row';
+  row.classList.toggle('open', !isOpen);
+  chev.textContent = isOpen ? '▸' : '▾';
+}
+
+selectLesson(1);
+</script>

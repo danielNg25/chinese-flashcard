@@ -1,0 +1,703 @@
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ngữ Pháp — Hán ngữ</title>
+<style>
+:root {
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --color-background-primary: #ffffff;
+  --color-background-secondary: #f5f5f5;
+  --color-text-primary: #1a1a1a;
+  --color-text-secondary: #666666;
+  --color-text-tertiary: #999999;
+  --color-border-secondary: #e0e0e0;
+  --color-border-tertiary: #eeeeee;
+  --border-radius-md: 8px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-sans); }
+.wrap { padding: 1rem 3rem; max-width: 1400px; margin: 0 auto; }
+
+/* App Header */
+.app-header { display: flex; align-items: center; gap: 16px; padding: 0.75rem 3rem; border-bottom: 1px solid var(--color-border-tertiary); background: var(--color-background-primary); }
+.app-title { font-size: 18px; font-weight: 600; color: var(--color-text-primary); letter-spacing: 0.02em; }
+.app-nav { display: flex; gap: 0; border: 1px solid var(--color-border-secondary); border-radius: var(--border-radius-md); overflow: hidden; }
+.app-nav-btn { padding: 6px 18px; font-size: 14px; text-decoration: none; color: var(--color-text-secondary); background: var(--color-background-primary); transition: all 0.2s; }
+.app-nav-btn.active { background: var(--color-background-secondary); color: var(--color-text-primary); font-weight: 600; }
+.app-nav-btn:hover:not(.active) { background: var(--color-background-secondary); }
+
+.mode-toggle { display: flex; gap: 0; margin-bottom: 1rem; border: 1px solid var(--color-border-secondary); border-radius: var(--border-radius-md); overflow: hidden; width: fit-content; flex-wrap: wrap; }
+.mode-btn { padding: 8px 18px; font-size: 14px; border: none; cursor: pointer; background: var(--color-background-primary); color: var(--color-text-secondary); transition: all 0.2s; font-family: inherit; }
+.mode-btn.active { background: var(--color-background-secondary); color: var(--color-text-primary); font-weight: 600; }
+.mode-btn:hover:not(.active) { background: var(--color-background-secondary); }
+
+.gr-controls { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1rem; align-items: center; }
+.gr-controls select { padding: 6px 10px; border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); font-size: 14px; background: var(--color-background-primary); color: var(--color-text-primary); }
+.gr-reset-btn { padding: 8px 14px; font-size: 13px; font-family: inherit; border: 1px solid var(--color-border-secondary); border-radius: var(--border-radius-md); background: var(--color-background-primary); color: var(--color-text-secondary); cursor: pointer; transition: background 0.15s; }
+.gr-reset-btn:hover { background: var(--color-background-secondary); }
+
+.gr-stats { display: flex; gap: 12px; margin-bottom: 1.5rem; flex-wrap: wrap; }
+.gr-stat { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 8px 14px; font-size: 13px; color: var(--color-text-secondary); }
+.gr-stat span { font-weight: 600; margin-right: 4px; }
+.gr-stat.correct-stat span { color: #27500A; }
+.gr-stat.wrong-stat span { color: #72243E; }
+
+.ex-card { border: 1px solid var(--color-border-secondary); border-radius: 12px; padding: 28px; background: var(--color-background-primary); box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+.ex-type-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-text-tertiary); margin-bottom: 14px; }
+.ex-prompt { font-size: 22px; font-weight: 500; margin-bottom: 20px; line-height: 1.6; }
+.ex-prompt .blank { display: inline-block; min-width: 56px; border-bottom: 2px solid var(--color-text-primary); margin: 0 6px; vertical-align: bottom; }
+
+.options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 4px; }
+.opt-btn { padding: 14px 16px; border: 1.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); font-size: 20px; font-family: inherit; cursor: pointer; background: var(--color-background-primary); color: var(--color-text-primary); transition: all 0.15s; }
+.opt-btn:hover:not(:disabled) { background: var(--color-background-secondary); border-color: #0C447C; }
+.opt-btn.selected-correct { background: #EAF3DE; border-color: #27500A; color: #27500A; }
+.opt-btn.selected-wrong { background: #FBEAF0; border-color: #72243E; color: #72243E; }
+.opt-btn.reveal-correct { background: #EAF3DE; border-color: #27500A; color: #27500A; }
+.opt-btn:disabled { cursor: default; }
+
+.ex-feedback { margin-top: 16px; padding: 12px 16px; border-radius: var(--border-radius-md); font-size: 14px; line-height: 1.6; display: none; }
+.ex-feedback.correct { background: #EAF3DE; color: #27500A; display: block; }
+.ex-feedback.incorrect { background: #FBEAF0; color: #72243E; display: block; }
+.ex-feedback .explanation { margin-top: 6px; }
+.ex-feedback .hv-hint { margin-top: 8px; font-size: 13px; opacity: 0.9; font-style: italic; }
+
+.ex-next-btn { margin-top: 16px; padding: 10px 28px; border: none; border-radius: var(--border-radius-md); background: #0C447C; color: #fff; font-size: 14px; font-family: inherit; cursor: pointer; transition: background 0.15s; display: none; }
+.ex-next-btn:hover { background: #093562; }
+.ex-next-btn.visible { display: inline-block; }
+
+.check-btn { margin-top: 16px; padding: 10px 28px; border: none; border-radius: var(--border-radius-md); background: #0C447C; color: #fff; font-size: 14px; font-family: inherit; cursor: pointer; transition: background 0.15s; }
+.check-btn:hover { background: #093562; }
+
+.ex-progress { font-size: 12px; color: var(--color-text-tertiary); text-align: center; margin-top: 16px; }
+
+/* Sentence Builder */
+.sb-zone-label { font-size: 12px; color: var(--color-text-tertiary); margin-bottom: 6px; }
+.sb-answer { display: flex; flex-wrap: wrap; gap: 8px; min-height: 52px; padding: 12px; border: 1.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); margin-bottom: 16px; background: var(--color-background-secondary); align-items: center; }
+.sb-pool { display: flex; flex-wrap: wrap; gap: 8px; min-height: 52px; padding: 12px; border: 1.5px dashed var(--color-border-secondary); border-radius: var(--border-radius-md); margin-bottom: 4px; align-items: center; }
+.chip { padding: 8px 14px; border: 1.5px solid var(--color-border-secondary); border-radius: 20px; font-size: 18px; cursor: pointer; background: var(--color-background-primary); color: var(--color-text-primary); transition: all 0.15s; user-select: none; }
+.chip:hover { background: var(--color-background-secondary); }
+.chip.in-answer { background: #E6F1FB; border-color: #0C447C; color: #0C447C; }
+.chip.correct-pos { background: #EAF3DE; border-color: #27500A; color: #27500A; cursor: default; }
+.chip.wrong-pos { background: #FBEAF0; border-color: #72243E; color: #72243E; cursor: default; }
+
+/* Error Correction */
+.ec-instruction { font-size: 14px; color: var(--color-text-secondary); margin-bottom: 16px; }
+.ec-sentence { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
+.token-btn { padding: 8px 12px; border: 1.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); font-size: 22px; cursor: pointer; background: var(--color-background-primary); color: var(--color-text-primary); transition: all 0.15s; font-family: inherit; }
+.token-btn:hover:not(:disabled) { background: #FAEEDA; border-color: #633806; color: #633806; }
+.token-btn.correct-token { background: #EAF3DE; border-color: #27500A; color: #27500A; }
+.token-btn.wrong-token { background: #FBEAF0; border-color: #72243E; color: #72243E; }
+.token-btn:disabled { cursor: default; }
+.ec-corrected { font-size: 17px; margin-top: 12px; padding: 10px 14px; background: #EAF3DE; border-radius: var(--border-radius-md); color: #27500A; display: none; }
+.ec-corrected.show { display: block; }
+.ec-corrected-label { font-size: 12px; margin-bottom: 4px; opacity: 0.7; }
+
+/* Pattern Matching */
+.pm-instruction { font-size: 14px; color: var(--color-text-secondary); margin-bottom: 16px; }
+.pm-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 4px; }
+.pm-col { display: flex; flex-direction: column; gap: 8px; }
+.pm-col-label { font-size: 11px; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 2px; }
+.pm-btn { padding: 10px 14px; border: 1.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); font-size: 14px; cursor: pointer; background: var(--color-background-primary); color: var(--color-text-primary); transition: all 0.15s; font-family: inherit; text-align: left; min-height: 48px; line-height: 1.4; }
+.pm-btn:hover:not(:disabled):not(.matched) { background: var(--color-background-secondary); }
+.pm-btn.selected { background: #E6F1FB; border-color: #0C447C; color: #0C447C; font-weight: 600; }
+.pm-btn.matched { background: #EAF3DE; border-color: #27500A; color: #27500A; cursor: default; }
+.pm-btn.wrong-flash { background: #FBEAF0; border-color: #72243E; color: #72243E; }
+
+/* Translation */
+.tr-source { font-size: 20px; font-weight: 500; margin-bottom: 4px; line-height: 1.5; }
+.tr-direction { font-size: 12px; color: var(--color-text-tertiary); margin-bottom: 12px; }
+.tr-input { width: 100%; padding: 10px 14px; border: 1.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); font-size: 17px; font-family: inherit; margin-top: 12px; background: var(--color-background-primary); color: var(--color-text-primary); outline: none; transition: border-color 0.2s; resize: vertical; }
+.tr-input:focus { border-color: #0C447C; }
+.tr-input.correct { border-color: #27500A; background: #EAF3DE; }
+.tr-input.incorrect { border-color: #72243E; }
+
+/* Session complete / empty */
+.session-msg { text-align: center; padding: 56px 24px; }
+.session-msg h3 { font-size: 22px; font-weight: 600; margin-bottom: 10px; }
+.session-msg p { font-size: 15px; color: var(--color-text-secondary); margin-bottom: 6px; }
+.session-msg .msg-actions { display: flex; gap: 8px; justify-content: center; margin-top: 24px; flex-wrap: wrap; }
+.session-msg button { padding: 10px 24px; border-radius: var(--border-radius-md); font-size: 14px; font-family: inherit; cursor: pointer; border: 1px solid var(--color-border-secondary); background: var(--color-background-primary); color: var(--color-text-primary); transition: background 0.15s; }
+.session-msg button:hover { background: var(--color-background-secondary); }
+.session-msg button.primary { background: #27500A; color: #fff; border-color: #27500A; }
+.session-msg button.primary:hover { background: #1e3d08; }
+
+/* Abbreviation legend */
+.abbr-bar { display: flex; flex-wrap: wrap; gap: 6px 16px; margin-bottom: 1.25rem; padding: 10px 14px; background: var(--color-background-secondary); border-radius: var(--border-radius-md); font-size: 12px; color: var(--color-text-secondary); }
+.abbr-bar strong { color: var(--color-text-primary); margin-right: 3px; }
+
+/* Browse table — same structure as vocabulary page */
+.gr-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.gr-table thead th { text-align: left; font-weight: 500; font-size: 12px; color: var(--color-text-secondary); padding: 6px 10px; border-bottom: 0.5px solid var(--color-border-tertiary); text-transform: uppercase; letter-spacing: 0.04em; }
+.gr-table tbody tr.pattern-row { border-bottom: 0.5px solid var(--color-border-tertiary); cursor: pointer; }
+.gr-table tbody tr.pattern-row:hover { background: var(--color-background-secondary); }
+.gr-table tbody tr.pattern-row.open { background: var(--color-background-secondary); }
+.gr-table tbody td { padding: 8px 10px; vertical-align: middle; }
+.gr-structure { font-size: 15px; font-weight: 500; color: var(--color-text-primary); }
+.gr-title { font-size: 13px; color: var(--color-text-secondary); margin-top: 2px; }
+.diff-badge { display: inline-block; font-size: 11px; padding: 2px 7px; border-radius: 99px; font-weight: 500; }
+.diff-1 { background: #EAF3DE; color: #27500A; }
+.diff-2 { background: #FAEEDA; color: #633806; }
+/* Expandable detail row */
+.detail-row td { padding: 0; border-bottom: 0.5px solid var(--color-border-tertiary); }
+.detail-panel { padding: 16px 20px 20px; background: #FAFAFA; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+.detail-section h4 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-text-tertiary); margin-bottom: 8px; }
+.detail-explanation { font-size: 14px; line-height: 1.6; color: var(--color-text-primary); }
+.detail-examples { list-style: none; }
+.detail-examples li { margin-bottom: 6px; }
+.detail-examples .zh { font-size: 16px; font-weight: 500; display: block; }
+.detail-examples .vi { font-size: 12px; color: var(--color-text-secondary); display: block; }
+.detail-notes { list-style: none; }
+.detail-notes li { font-size: 13px; color: var(--color-text-secondary); padding-left: 14px; position: relative; margin-bottom: 4px; line-height: 1.5; }
+.detail-notes li::before { content: "⚠"; position: absolute; left: 0; font-size: 11px; }
+@media (max-width: 700px) { .detail-panel { grid-template-columns: 1fr; gap: 14px; } }
+
+/* Views hidden by default */
+#browse-view, #fill-blank-view, #sentence-builder-view, #error-correction-view,
+#pattern-match-view, #translation-view { display: none; }
+
+@media (max-width: 600px) {
+  .wrap { padding: 0.75rem 0.5rem; }
+  .app-header { padding: 0.75rem; }
+  .app-title { font-size: 16px; }
+  .app-nav-btn { padding: 6px 14px; font-size: 13px; }
+  .mode-toggle { width: 100%; }
+  .mode-btn { flex: 1; padding: 10px 4px; font-size: 12px; text-align: center; }
+  .gr-controls { flex-direction: column; gap: 6px; }
+  .gr-controls select { width: 100%; font-size: 16px; padding: 10px 12px; }
+  .ex-card { padding: 16px; }
+  .ex-prompt { font-size: 20px; }
+  .options-grid { gap: 8px; }
+  .opt-btn { font-size: 18px; padding: 14px 8px; }
+  .chip { font-size: 16px; padding: 8px 12px; }
+  .token-btn { font-size: 19px; padding: 8px 10px; }
+  .pm-grid { grid-template-columns: 1fr; }
+  .pm-btn { font-size: 13px; }
+  .tr-input { font-size: 16px; padding: 12px 14px; }
+  .session-msg .msg-actions { flex-direction: column; }
+  .session-msg button { width: 100%; }
+  .check-btn, .ex-next-btn { padding: 12px 28px; font-size: 16px; width: 100%; }
+}
+</style>
+
+<div class="app-header">
+  <span class="app-title">汉语学习</span>
+  <nav class="app-nav">
+    <a class="app-nav-btn" href="lesson.html">Lessons</a>
+    <a class="app-nav-btn" href="hanyu.html">Vocabulary</a>
+    <a class="app-nav-btn active" href="grammar.html">Grammar</a>
+  </nav>
+</div>
+<div class="wrap">
+  <div class="mode-toggle">
+    <button class="mode-btn active" data-type="browse" onclick="switchExType('browse')">Browse</button>
+    <button class="mode-btn" data-type="fill-blank" onclick="switchExType('fill-blank')">Fill in Blank</button>
+    <button class="mode-btn" data-type="sentence-builder" onclick="switchExType('sentence-builder')">Sentence Order</button>
+    <button class="mode-btn" data-type="error-correction" onclick="switchExType('error-correction')">Error Correction</button>
+    <button class="mode-btn" data-type="pattern-match" onclick="switchExType('pattern-match')">Pattern Match</button>
+    <button class="mode-btn" data-type="translation" onclick="switchExType('translation')">Translation</button>
+  </div>
+
+  <div class="gr-controls">
+    <select id="gr-lesson" onchange="onFilter()">
+      <option value="">All lessons</option>
+      <option value="1">Lesson 1</option>
+      <option value="2">Lesson 2</option>
+      <option value="3">Lesson 3</option>
+    </select>
+    <select id="gr-difficulty" onchange="onFilter()">
+      <option value="">All levels</option>
+      <option value="beginner-1">Beginner 1</option>
+      <option value="beginner-2">Beginner 2</option>
+    </select>
+    <button class="gr-reset-btn" id="gr-restart-btn" onclick="startSession()" style="display:none">Restart</button>
+  </div>
+
+  <div class="gr-stats">
+    <div class="gr-stat correct-stat"><span id="stat-correct">0</span> Correct</div>
+    <div class="gr-stat wrong-stat"><span id="stat-wrong">0</span> Wrong</div>
+    <div class="gr-stat"><span id="stat-total">0</span> Done</div>
+  </div>
+
+  <div class="abbr-bar">
+    <span><strong>CN/S</strong> Chủ ngữ</span>
+    <span><strong>VN/P</strong> Vị ngữ</span>
+    <span><strong>TN/O</strong> Tân ngữ</span>
+    <span><strong>DT/N</strong> Danh từ</span>
+    <span><strong>TT/Adj</strong> Tính từ</span>
+    <span><strong>ĐT/V</strong> Động từ</span>
+    <span><strong>ĐN/Mod</strong> Định ngữ</span>
+    <span><strong>LT/MW</strong> Lượng từ</span>
+  </div>
+
+  <div id="browse-view"></div>
+  <div id="fill-blank-view"></div>
+  <div id="sentence-builder-view"></div>
+  <div id="error-correction-view"></div>
+  <div id="pattern-match-view"></div>
+  <div id="translation-view"></div>
+</div>
+
+<script src="grammar_data.js"></script>
+<script>
+const ALL_VIEWS = ['browse','fill-blank','sentence-builder','error-correction','pattern-match','translation'];
+const EX_TYPES  = ['fill-blank','sentence-builder','error-correction','pattern-match','translation'];
+
+let currentType = 'fill-blank';
+let queue = [];
+let qIdx = 0;
+let sessionCorrect = 0, sessionWrong = 0;
+
+// Per-exercise state
+let _fbQ = null;
+let _sbQ = null, sbPool = [], sbAnswer = [];
+let _ecQ = null;
+let _pmQ = null, pmSelLeft = null, pmSelRight = null, pmMatches = {}, pmHasWrong = false;
+let _trQ = null;
+
+function switchExType(type) {
+  currentType = type;
+  document.querySelectorAll('.mode-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.type === type);
+  });
+  const isBrowse = type === 'browse';
+  document.getElementById('gr-restart-btn').style.display = isBrowse ? 'none' : '';
+  document.querySelector('.gr-stats').style.display = isBrowse ? 'none' : '';
+  if (isBrowse) renderBrowse();
+  else startSession();
+}
+
+function onFilter() {
+  if (currentType === 'browse') renderBrowse();
+  else startSession();
+}
+
+function buildQueue(type) {
+  const lesson = document.getElementById('gr-lesson').value;
+  const diff = document.getElementById('gr-difficulty').value;
+  let qs = grammarQuestions.filter(q => q.type === type);
+  if (lesson) qs = qs.filter(q => String(q.lesson) === lesson);
+  if (diff) qs = qs.filter(q => q.difficulty === diff);
+  for (let i = qs.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [qs[i], qs[j]] = [qs[j], qs[i]];
+  }
+  return qs;
+}
+
+function startSession() {
+  sessionCorrect = 0; sessionWrong = 0;
+  updateStats();
+  queue = buildQueue(currentType);
+  qIdx = 0;
+  showQuestion();
+}
+
+function updateStats() {
+  document.getElementById('stat-correct').textContent = sessionCorrect;
+  document.getElementById('stat-wrong').textContent = sessionWrong;
+  document.getElementById('stat-total').textContent = sessionCorrect + sessionWrong;
+}
+
+function getView() { return document.getElementById(currentType + '-view'); }
+
+function renderBrowse() {
+  ALL_VIEWS.forEach(t => { document.getElementById(t + '-view').style.display = 'none'; });
+  const lesson = document.getElementById('gr-lesson').value;
+  const diff = document.getElementById('gr-difficulty').value;
+  let patterns = grammarPatterns;
+  if (lesson) patterns = patterns.filter(p => String(p.lesson) === lesson);
+  if (diff) patterns = patterns.filter(p => p.difficulty === diff);
+
+  const rows = patterns.map((p, i) => `
+    <tr class="pattern-row open" onclick="toggleDetail('${p.id}')" id="row-${p.id}">
+      <td style="color:var(--color-text-tertiary); font-size:13px;">${i + 1}</td>
+      <td><div class="gr-structure">${p.structure}</div></td>
+      <td><div class="gr-title">${p.title}</div></td>
+      <td style="white-space:nowrap;">Lesson ${p.lesson}</td>
+      <td><span class="diff-badge ${p.difficulty === 'beginner-1' ? 'diff-1' : 'diff-2'}">${p.difficulty === 'beginner-1' ? 'Beginner 1' : 'Beginner 2'}</span></td>
+      <td style="color:var(--color-text-tertiary); font-size:12px;" id="chevron-${p.id}">▾</td>
+    </tr>
+    <tr class="detail-row" id="detail-${p.id}">
+      <td colspan="6">
+        <div class="detail-panel">
+          <div class="detail-section">
+            <h4>Explanation</h4>
+            <div class="detail-explanation">${p.explanation}</div>
+          </div>
+          <div class="detail-section">
+            <h4>Examples</h4>
+            <ul class="detail-examples">
+              ${p.examples.map(e => `<li><span class="zh">${e.zh}</span><span class="vi">${e.vi}</span></li>`).join('')}
+            </ul>
+          </div>
+          <div class="detail-section">
+            <h4>Notes</h4>
+            <ul class="detail-notes">
+              ${p.notes.map(n => `<li>${n}</li>`).join('')}
+            </ul>
+          </div>
+        </div>
+      </td>
+    </tr>`).join('');
+
+  document.getElementById('browse-view').style.display = 'block';
+  document.getElementById('browse-view').innerHTML = patterns.length ? `
+    <table class="gr-table">
+      <thead><tr><th>#</th><th>Structure</th><th>Grammar Point</th><th>Lesson</th><th>Level</th><th></th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>` :
+    '<p style="padding:24px; color:var(--color-text-tertiary);">No patterns match.</p>';
+}
+
+function toggleDetail(id) {
+  const detail = document.getElementById('detail-' + id);
+  const row = document.getElementById('row-' + id);
+  const chevron = document.getElementById('chevron-' + id);
+  const isOpen = detail.style.display !== 'none';
+  detail.style.display = isOpen ? 'none' : 'table-row';
+  row.classList.toggle('open', !isOpen);
+  chevron.textContent = isOpen ? '▸' : '▾';
+}
+
+function showQuestion() {
+  ALL_VIEWS.forEach(t => { document.getElementById(t + '-view').style.display = 'none'; });
+  const view = getView();
+  view.style.display = 'block';
+
+  if (!queue.length) {
+    view.innerHTML = `<div class="session-msg"><p>No questions match the current filters.</p></div>`;
+    return;
+  }
+  if (qIdx >= queue.length) { showComplete(); return; }
+
+  const q = queue[qIdx];
+  if (currentType === 'fill-blank') renderFillBlank(q);
+  else if (currentType === 'sentence-builder') renderSentenceBuilder(q);
+  else if (currentType === 'error-correction') renderErrorCorrection(q);
+  else if (currentType === 'pattern-match') renderPatternMatch(q);
+  else if (currentType === 'translation') renderTranslation(q);
+}
+
+function nextQuestion() { qIdx++; showQuestion(); }
+
+function progress() {
+  return `<div class="ex-progress">${qIdx + 1} / ${queue.length}</div>`;
+}
+
+
+function feedbackHtml(ok, explanation) {
+  return (ok ? '✓ Correct!' : '✗ Wrong!') +
+    `<div class="explanation">${explanation}</div>`;
+}
+
+// ── Fill-in-the-Blank ──────────────────────────────────────────────────────
+
+function renderFillBlank(q) {
+  _fbQ = q;
+  const promptHtml = q.prompt.replace('___', '<span class="blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>');
+  getView().innerHTML = `
+    <div class="ex-card">
+      <div class="ex-type-label">Fill in Blank</div>
+      <div class="ex-prompt">${promptHtml}</div>
+      <div class="options-grid" id="fb-opts">
+        ${q.options.map((opt, i) => `<button class="opt-btn" onclick="checkFb(${i})">${opt}</button>`).join('')}
+      </div>
+      <div class="ex-feedback" id="fb-fb"></div>
+      <button class="ex-next-btn" id="fb-next" onclick="nextQuestion()">Next →</button>
+      ${progress()}
+    </div>`;
+}
+
+function checkFb(idx) {
+  const q = _fbQ;
+  const opts = document.querySelectorAll('#fb-opts .opt-btn');
+  opts.forEach(b => b.disabled = true);
+  const ok = q.options[idx] === q.answer;
+  opts[idx].classList.add(ok ? 'selected-correct' : 'selected-wrong');
+  if (!ok) {
+    opts[q.options.indexOf(q.answer)].classList.add('reveal-correct');
+    sessionWrong++;
+  } else {
+    sessionCorrect++;
+  }
+  updateStats();
+  saveProgress(q.id, ok);
+  const fb = document.getElementById('fb-fb');
+  fb.className = 'ex-feedback ' + (ok ? 'correct' : 'incorrect');
+  fb.innerHTML = feedbackHtml(ok, q.explanation);
+  document.getElementById('fb-next').classList.add('visible');
+}
+
+// ── Sentence Builder ───────────────────────────────────────────────────────
+
+function renderSentenceBuilder(q) {
+  _sbQ = q;
+  sbPool = [...q.fragments].sort(() => Math.random() - 0.5);
+  sbAnswer = [];
+  getView().innerHTML = `
+    <div class="ex-card">
+      <div class="ex-type-label">Sentence Order</div>
+      <div class="sb-zone-label">Your sentence:</div>
+      <div class="sb-answer" id="sb-ans"></div>
+      <div class="sb-zone-label" style="margin-top:4px;">Word bank:</div>
+      <div class="sb-pool" id="sb-pool"></div>
+      <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+        <button class="check-btn" onclick="checkSb()">Check</button>
+        <button class="gr-reset-btn" style="margin-top:16px;" onclick="renderSentenceBuilder(_sbQ)">Reshuffle</button>
+      </div>
+      <div class="ex-feedback" id="sb-fb"></div>
+      <button class="ex-next-btn" id="sb-next" onclick="nextQuestion()">Next →</button>
+      ${progress()}
+    </div>`;
+  renderSbChips();
+}
+
+function renderSbChips() {
+  const poolEl = document.getElementById('sb-pool');
+  const ansEl = document.getElementById('sb-ans');
+  if (!poolEl || !ansEl) return;
+  poolEl.innerHTML = sbPool.map((f, i) =>
+    `<span class="chip" onclick="sbPick(${i})">${f}</span>`).join('') || '<span style="color:var(--color-text-tertiary);font-size:13px;">—</span>';
+  ansEl.innerHTML = sbAnswer.map((f, i) =>
+    `<span class="chip in-answer" onclick="sbReturn(${i})">${f}</span>`).join('') ||
+    '<span style="color:var(--color-text-tertiary);font-size:13px;">Pick words below...</span>';
+}
+
+function sbPick(i) { sbAnswer.push(sbPool.splice(i, 1)[0]); renderSbChips(); }
+function sbReturn(i) { sbPool.push(sbAnswer.splice(i, 1)[0]); renderSbChips(); }
+
+function checkSb() {
+  const q = _sbQ;
+  if (sbAnswer.length !== q.answer.length) {
+    const fb = document.getElementById('sb-fb');
+    fb.className = 'ex-feedback incorrect';
+    fb.textContent = 'Place all words into the sentence first.';
+    return;
+  }
+  const ok = sbAnswer.every((f, i) => f === q.answer[i]);
+  const ansEl = document.getElementById('sb-ans');
+  ansEl.querySelectorAll('.chip').forEach((chip, i) => {
+    chip.classList.remove('in-answer');
+    chip.classList.add(sbAnswer[i] === q.answer[i] ? 'correct-pos' : 'wrong-pos');
+    chip.onclick = null;
+  });
+  document.querySelectorAll('#sb-pool .chip').forEach(c => c.onclick = null);
+  if (ok) sessionCorrect++; else sessionWrong++;
+  updateStats();
+  saveProgress(q.id, ok);
+  const fb = document.getElementById('sb-fb');
+  fb.className = 'ex-feedback ' + (ok ? 'correct' : 'incorrect');
+  fb.innerHTML = (ok ? '✓ Correct!' : `✗ Correct order: <strong>${q.answer.join(' ')}</strong>`) +
+    `<div class="explanation">${q.explanation}</div>`;
+  document.getElementById('sb-next').classList.add('visible');
+}
+
+// ── Error Correction ───────────────────────────────────────────────────────
+
+function renderErrorCorrection(q) {
+  _ecQ = q;
+  getView().innerHTML = `
+    <div class="ex-card">
+      <div class="ex-type-label">Error Correction</div>
+      <div class="ec-instruction">Click the word or phrase with a grammar error:</div>
+      <div class="ec-sentence" id="ec-sent">
+        ${q.tokens.map((tok, i) => `<button class="token-btn" onclick="checkEc(${i})">${tok}</button>`).join('')}
+      </div>
+      <div class="ec-corrected" id="ec-fixed">
+        <div class="ec-corrected-label">Corrected sentence:</div>
+        <span id="ec-fixed-text"></span>
+      </div>
+      <div class="ex-feedback" id="ec-fb"></div>
+      <button class="ex-next-btn" id="ec-next" onclick="nextQuestion()">Next →</button>
+      ${progress()}
+    </div>`;
+}
+
+function checkEc(idx) {
+  const q = _ecQ;
+  const toks = document.querySelectorAll('#ec-sent .token-btn');
+  toks.forEach(t => { t.disabled = true; t.onclick = null; });
+  const ok = idx === q.errorIndex;
+  toks[idx].classList.add(ok ? 'correct-token' : 'wrong-token');
+  if (!ok) toks[q.errorIndex].classList.add('correct-token');
+  if (ok) sessionCorrect++; else sessionWrong++;
+  updateStats();
+  saveProgress(q.id, ok);
+  document.getElementById('ec-fixed-text').textContent = q.correction.join(' ');
+  document.getElementById('ec-fixed').classList.add('show');
+  const fb = document.getElementById('ec-fb');
+  fb.className = 'ex-feedback ' + (ok ? 'correct' : 'incorrect');
+  fb.innerHTML = (ok ? `✓ Correct! The error was "${q.tokens[q.errorIndex]}".` : `✗ The error was "${q.tokens[q.errorIndex]}".`) +
+    `<div class="explanation">${q.explanation}</div>`;
+  document.getElementById('ec-next').classList.add('visible');
+}
+
+// ── Pattern Matching ───────────────────────────────────────────────────────
+
+function renderPatternMatch(q) {
+  _pmQ = q;
+  pmSelLeft = null; pmSelRight = null; pmMatches = {}; pmHasWrong = false;
+
+  // Shuffle right column
+  const right = q.pairs.map((p, i) => ({ text: p.right, pairIdx: i }))
+    .sort(() => Math.random() - 0.5);
+
+  getView().innerHTML = `
+    <div class="ex-card">
+      <div class="ex-type-label">Pattern Match</div>
+      <div class="pm-instruction">Match each structure on the left with its meaning on the right:</div>
+      <div class="pm-grid">
+        <div class="pm-col">
+          <div class="pm-col-label">Structure</div>
+          ${q.pairs.map((p, i) => `<button class="pm-btn" id="pm-L${i}" onclick="pmLeft(${i})">${p.left}</button>`).join('')}
+        </div>
+        <div class="pm-col">
+          <div class="pm-col-label">Meaning / Example</div>
+          ${right.map((item, i) => `<button class="pm-btn" id="pm-R${i}" data-pair="${item.pairIdx}" onclick="pmRight(${i},${item.pairIdx})">${item.text}</button>`).join('')}
+        </div>
+      </div>
+      <div class="ex-feedback" id="pm-fb"></div>
+      <button class="ex-next-btn" id="pm-next" onclick="nextQuestion()">Next →</button>
+      ${progress()}
+    </div>`;
+}
+
+function pmLeft(idx) {
+  if (document.getElementById('pm-L' + idx).classList.contains('matched')) return;
+  document.querySelectorAll('[id^="pm-L"]').forEach(b => { if (!b.classList.contains('matched')) b.classList.remove('selected'); });
+  pmSelLeft = idx;
+  document.getElementById('pm-L' + idx).classList.add('selected');
+  if (pmSelRight !== null) pmTryMatch();
+}
+
+function pmRight(dispIdx, pairIdx) {
+  if (document.getElementById('pm-R' + dispIdx).classList.contains('matched')) return;
+  document.querySelectorAll('[id^="pm-R"]').forEach(b => { if (!b.classList.contains('matched')) b.classList.remove('selected'); });
+  pmSelRight = { dispIdx, pairIdx };
+  document.getElementById('pm-R' + dispIdx).classList.add('selected');
+  if (pmSelLeft !== null) pmTryMatch();
+}
+
+function pmTryMatch() {
+  if (pmSelLeft === null || pmSelRight === null) return;
+  const { dispIdx, pairIdx } = pmSelRight;
+  const leftIdx = pmSelLeft;
+  const lBtn = document.getElementById('pm-L' + leftIdx);
+  const rBtn = document.getElementById('pm-R' + dispIdx);
+  pmSelLeft = null; pmSelRight = null;
+
+  if (leftIdx === pairIdx) {
+    lBtn.classList.remove('selected'); rBtn.classList.remove('selected');
+    lBtn.classList.add('matched'); rBtn.classList.add('matched');
+    lBtn.disabled = true; rBtn.disabled = true;
+    pmMatches[leftIdx] = true;
+
+    if (Object.keys(pmMatches).length === _pmQ.pairs.length) {
+      if (!pmHasWrong) sessionCorrect++; else sessionWrong++;
+      updateStats();
+      saveProgress(_pmQ.id, !pmHasWrong);
+      const fb = document.getElementById('pm-fb');
+      fb.className = 'ex-feedback correct';
+      fb.innerHTML = '✓ All matched!' + (_pmQ.explanation ? `<div class="explanation">${_pmQ.explanation}</div>` : '');
+      document.getElementById('pm-next').classList.add('visible');
+    }
+  } else {
+    pmHasWrong = true;
+    lBtn.classList.add('wrong-flash'); rBtn.classList.add('wrong-flash');
+    setTimeout(() => {
+      lBtn.classList.remove('wrong-flash', 'selected');
+      rBtn.classList.remove('wrong-flash', 'selected');
+    }, 500);
+  }
+}
+
+// ── Translation ────────────────────────────────────────────────────────────
+
+function renderTranslation(q) {
+  _trQ = q;
+  const isAuto = q.acceptedVariants !== null;
+  const dirLabel = q.direction === 'vi-to-zh' ? 'Translate to Chinese:' : 'Translate to Vietnamese:';
+  const placeholder = q.direction === 'vi-to-zh' ? 'Type in Chinese...' : 'Type in Vietnamese...';
+  getView().innerHTML = `
+    <div class="ex-card">
+      <div class="ex-type-label">Translation</div>
+      <div class="tr-direction">${dirLabel}</div>
+      <div class="tr-source">"${q.sourceText}"</div>
+      <textarea class="tr-input" id="tr-in" rows="2" placeholder="${placeholder}"
+        onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();${isAuto ? 'checkTr()' : 'showTrAnswer()'}}"></textarea>
+      <div style="display:flex; gap:8px; margin-top:0; flex-wrap:wrap;">
+        ${isAuto
+          ? `<button class="check-btn" onclick="checkTr()">Submit</button>`
+          : `<button class="check-btn" onclick="showTrAnswer()">Show answer</button>`}
+      </div>
+      <div class="ex-feedback" id="tr-fb"></div>
+      <button class="ex-next-btn" id="tr-next" onclick="nextQuestion()">Next →</button>
+      ${progress()}
+    </div>`;
+  document.getElementById('tr-in').focus();
+}
+
+
+function normZh(s) {
+  return s.replace(/[。？！，、；：""''「」【】（）?!,.;: ]/g, '').trim();
+}
+
+function checkTr() {
+  const q = _trQ;
+  const el = document.getElementById('tr-in');
+  const raw = el.value.trim();
+  if (!raw) return;
+  el.disabled = true;
+  const ok = q.acceptedVariants.some(v => normZh(v) === normZh(raw));
+  el.classList.add(ok ? 'correct' : 'incorrect');
+  if (ok) sessionCorrect++; else sessionWrong++;
+  updateStats();
+  saveProgress(q.id, ok);
+  const fb = document.getElementById('tr-fb');
+  fb.className = 'ex-feedback ' + (ok ? 'correct' : 'incorrect');
+  fb.innerHTML = (ok ? '✓ Correct!' : `✗ Answer: <strong>${q.targetText}</strong>`) +
+    `<div class="explanation">${q.explanation}</div>`;
+  document.getElementById('tr-next').classList.add('visible');
+}
+
+function showTrAnswer() {
+  const q = _trQ;
+  const el = document.getElementById('tr-in');
+  el.disabled = true;
+  const fb = document.getElementById('tr-fb');
+  fb.className = 'ex-feedback correct';
+  fb.innerHTML = `Reference answer: <strong>${q.targetText}</strong>` +
+    `<div class="explanation">${q.explanation}</div>`;
+  document.getElementById('tr-next').classList.add('visible');
+}
+
+// ── Session complete ───────────────────────────────────────────────────────
+
+function showComplete() {
+  ALL_VIEWS.forEach(t => { document.getElementById(t + '-view').style.display = 'none'; });
+  const view = getView();
+  view.style.display = 'block';
+  const total = sessionCorrect + sessionWrong;
+  const pct = total > 0 ? Math.round(sessionCorrect / total * 100) : 0;
+  view.innerHTML = `
+    <div class="session-msg">
+      <h3>Done! 🎉</h3>
+      <p>Correct: <strong>${sessionCorrect}</strong> / ${total} (${pct}%)</p>
+      <div class="msg-actions">
+        <button class="primary" onclick="startSession()">Restart</button>
+        <button onclick="window.location.href='hanyu.html'">← Vocabulary</button>
+      </div>
+    </div>`;
+}
+
+// ── Progress ───────────────────────────────────────────────────────────────
+
+function saveProgress(qId, correct) {
+  let p = {};
+  try { p = JSON.parse(localStorage.getItem('grammar_progress')) || {}; } catch(e) {}
+  if (!p[qId]) p[qId] = { correct: 0, wrong: 0 };
+  if (correct) p[qId].correct++; else p[qId].wrong++;
+  try { localStorage.setItem('grammar_progress', JSON.stringify(p)); } catch(e) {}
+}
+
+// ── Init ───────────────────────────────────────────────────────────────────
+switchExType('browse');
+</script>
