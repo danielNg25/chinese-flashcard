@@ -92,6 +92,69 @@ tbody td { padding: 8px 10px; vertical-align: middle; }
 .abbr::after { content: attr(data-tip); position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 6px 10px; border-radius: 6px; white-space: nowrap; font-size: 12px; font-weight: 400; pointer-events: none; opacity: 0; visibility: hidden; transition: opacity 0.15s, visibility 0.15s; z-index: 9999; }
 .abbr:hover::after, .abbr:focus::after, .abbr.active::after { opacity: 1; visibility: visible; }
 
+/* Quiz mode */
+.q-intro { max-width: 480px; margin: 2rem auto; text-align: center; padding: 24px; }
+.q-intro h2 { font-size: 24px; font-weight: 600; margin-bottom: 10px; }
+.q-intro p { color: var(--color-text-secondary); margin-bottom: 20px; font-size: 14px; }
+.q-intro-controls { display: flex; flex-direction: column; gap: 12px; align-items: center; margin-top: 18px; }
+.q-intro-controls label { font-size: 13px; color: var(--color-text-secondary); }
+.q-intro-controls select { padding: 8px 14px; border: 1px solid var(--color-border-secondary); border-radius: var(--border-radius-md); font-size: 14px; font-family: inherit; background: var(--color-background-primary); color: var(--color-text-primary); margin-left: 6px; }
+.q-start-btn { margin-top: 8px; padding: 10px 32px; background: #0C447C; color: #fff; border: none; border-radius: var(--border-radius-md); font-size: 15px; font-family: inherit; cursor: pointer; transition: background 0.15s; }
+.q-start-btn:hover { background: #093562; }
+
+.q-progress-bar { height: 4px; background: var(--color-border-secondary); border-radius: 2px; overflow: hidden; margin-bottom: 6px; }
+.q-progress-fill { height: 100%; background: #27500A; transition: width 0.25s ease; width: 0%; }
+.q-counter { font-size: 12px; color: var(--color-text-tertiary); text-align: center; margin-bottom: 16px; }
+
+.q-card { max-width: 480px; margin: 0 auto; padding: 24px; border: 1px solid var(--color-border-secondary); border-radius: 12px; background: var(--color-background-primary); box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+.q-card .card-char { font-size: 44px; font-weight: 600; text-align: center; margin-bottom: 8px; }
+.q-pos { text-align: center; margin-bottom: 16px; }
+.q-prompt { font-size: 20px; line-height: 1.7; text-align: center; margin-bottom: 18px; color: var(--color-text-primary); }
+.q-blank { display: inline-block; min-width: 48px; border-bottom: 2px solid var(--color-text-primary); margin: 0 4px; vertical-align: bottom; }
+.q-instruction { font-size: 13px; color: var(--color-text-secondary); text-align: center; margin-bottom: 12px; }
+
+.q-options { display: flex; flex-direction: column; gap: 8px; }
+.q-option { width: 100%; padding: 12px 14px; border: 1.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); background: var(--color-background-primary); color: var(--color-text-primary); font-size: 15px; font-family: inherit; cursor: pointer; text-align: left; transition: all 0.15s; }
+.q-option:hover:not(:disabled):not(.correct):not(.wrong) { background: var(--color-background-secondary); border-color: #0C447C; }
+.q-option.correct { background: #EAF3DE; border-color: #27500A; color: #27500A; font-weight: 500; }
+.q-option.wrong { background: #FBEAF0; border-color: #72243E; color: #72243E; font-weight: 500; }
+.q-option:disabled { cursor: default; }
+.q-options.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+.q-sb-pool { display: flex; flex-wrap: wrap; gap: 8px; min-height: 48px; padding: 10px; border: 1.5px dashed var(--color-border-secondary); border-radius: var(--border-radius-md); margin-bottom: 10px; }
+.q-sb-answer { display: flex; flex-wrap: wrap; gap: 8px; min-height: 52px; padding: 10px 12px; border: 1.5px solid var(--color-border-secondary); background: var(--color-background-secondary); border-radius: var(--border-radius-md); margin-bottom: 8px; align-items: center; }
+.q-sb-answer .placeholder { color: var(--color-text-tertiary); font-size: 13px; font-style: italic; }
+.q-chip { display: inline-block; padding: 6px 14px; border: 1.5px solid var(--color-border-secondary); border-radius: 20px; background: var(--color-background-primary); color: var(--color-text-primary); font-size: 17px; font-family: inherit; cursor: pointer; user-select: none; transition: all 0.15s; }
+.q-chip:hover:not(.correct):not(.wrong):not(:disabled) { background: var(--color-background-secondary); border-color: #0C447C; }
+.q-chip.in-answer { background: #E6F1FB; border-color: #0C447C; color: #0C447C; }
+.q-chip.correct { background: #EAF3DE; border-color: #27500A; color: #27500A; cursor: default; }
+.q-chip.wrong { background: #FBEAF0; border-color: #72243E; color: #72243E; cursor: default; }
+.q-sb-correct-line { margin-top: 10px; padding: 10px 14px; background: #EAF3DE; color: #27500A; border-radius: var(--border-radius-md); font-size: 15px; display: none; }
+.q-sb-correct-line.show { display: block; }
+.q-sb-correct-line .label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.75; margin-right: 8px; }
+
+.q-feedback { margin-top: 14px; padding: 12px 14px; border-radius: var(--border-radius-md); font-size: 14px; line-height: 1.55; display: none; }
+.q-feedback.show { display: block; }
+.q-feedback.correct { background: #EAF3DE; color: #27500A; }
+.q-feedback.wrong { background: #FBEAF0; color: #72243E; }
+.q-hv-hint { margin-top: 8px; font-size: 12px; color: #7c5c00; background: #fdf3dc; border-radius: 6px; padding: 4px 10px; display: inline-block; }
+
+.q-actions { margin-top: 16px; text-align: center; }
+.q-check-btn, .q-next-btn { padding: 10px 28px; border: none; border-radius: var(--border-radius-md); background: #0C447C; color: #fff; font-size: 14px; font-family: inherit; cursor: pointer; transition: background 0.15s; }
+.q-check-btn:disabled { opacity: 0.4; cursor: default; }
+.q-check-btn:hover:not(:disabled), .q-next-btn:hover { background: #093562; }
+
+.q-complete { max-width: 480px; margin: 2rem auto; text-align: center; padding: 32px; }
+.q-complete h2 { font-size: 28px; margin-bottom: 12px; }
+.q-complete .score { font-size: 22px; font-weight: 600; margin-bottom: 6px; }
+.q-complete .percent { font-size: 15px; color: var(--color-text-secondary); margin-bottom: 10px; }
+.q-complete .msg { font-size: 15px; margin-bottom: 22px; color: var(--color-text-primary); }
+.q-complete .actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+.q-complete button { padding: 10px 22px; border: 1px solid var(--color-border-secondary); border-radius: var(--border-radius-md); background: var(--color-background-primary); color: var(--color-text-primary); font-size: 14px; font-family: inherit; cursor: pointer; transition: background 0.15s; }
+.q-complete button:hover { background: var(--color-background-secondary); }
+.q-complete button.primary { background: #27500A; color: #fff; border-color: #27500A; }
+.q-complete button.primary:hover { background: #1e3d08; }
+
 @media (max-width: 600px) {
   .wrap { padding: 0.75rem 0.5rem; }
   .app-header { padding: 0.75rem; }
@@ -101,6 +164,12 @@ tbody td { padding: 8px 10px; vertical-align: middle; }
   .lesson-btn { flex: 1; padding: 10px 8px; font-size: 13px; }
   .char { font-size: 18px; }
   .detail-panel { grid-template-columns: 1fr; gap: 14px; }
+  .q-card { padding: 16px; }
+  .q-card .card-char { font-size: 36px; }
+  .q-prompt { font-size: 18px; }
+  .q-options.grid-2 { grid-template-columns: 1fr; }
+  .q-option { font-size: 16px; padding: 14px 12px; }
+  .q-chip { font-size: 16px; padding: 8px 14px; }
 }
 </style>
 
@@ -124,10 +193,12 @@ tbody td { padding: 8px 10px; vertical-align: middle; }
   <div class="inner-tabs">
     <button class="inner-tab active" data-tab="vocabulary" onclick="selectTab('vocabulary')">Vocabulary</button>
     <button class="inner-tab" data-tab="grammar" onclick="selectTab('grammar')">Grammar</button>
+    <button class="inner-tab" data-tab="quiz" onclick="selectTab('quiz')">Quiz</button>
   </div>
 
   <div id="vocab-view"></div>
   <div id="grammar-view" style="display:none;"></div>
+  <div id="quiz-view" style="display:none;"></div>
 </div>
 
 <script src="words.js"></script>
@@ -172,6 +243,8 @@ function selectTab(tab) {
   });
   document.getElementById('vocab-view').style.display = tab === 'vocabulary' ? '' : 'none';
   document.getElementById('grammar-view').style.display = tab === 'grammar' ? '' : 'none';
+  document.getElementById('quiz-view').style.display = tab === 'quiz' ? '' : 'none';
+  if (tab === 'quiz' && !quizActive) renderQuizIntro();
 }
 
 function posClass(pos) {
@@ -250,6 +323,423 @@ function toggleDetail(id) {
   detail.style.display = isOpen ? 'none' : 'table-row';
   row.classList.toggle('open', !isOpen);
   chev.textContent = isOpen ? '▸' : '▾';
+}
+
+/* ── Quiz mode ── */
+let quizLessonFilter = '';   // '' = all, or "1"-"4"
+let quizCount = 20;          // 20 | 30 | 50 | 100
+let quizQueue = [];
+let quizIndex = 0;
+let quizCorrect = 0;
+let quizActive = false;
+let quizChecked = false;
+let quizAnswered = false;    // user has picked/arranged something for current Q
+let quizSbState = null;      // sentence-builder: { chips:[{id,text,inAnswer:bool}], order:[ids in answer] }
+
+function shuffleArr(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function renderQuizIntro() {
+  quizActive = false;
+  const view = document.getElementById('quiz-view');
+  view.innerHTML = `
+    <div class="q-intro">
+      <h2>Quiz</h2>
+      <div class="q-intro-controls">
+        <label>Lesson:
+          <select id="quizLessonSelect">
+            <option value="">All Lessons</option>
+            <option value="1">Lesson 1</option>
+            <option value="2">Lesson 2</option>
+            <option value="3">Lesson 3</option>
+            <option value="4">Lesson 4</option>
+          </select>
+        </label>
+        <label>Questions:
+          <select id="quizCountSelect">
+            <option value="20">20</option>
+            <option value="30">30</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </select>
+        </label>
+        <button class="q-start-btn" onclick="startQuiz()">Start Quiz</button>
+      </div>
+    </div>`;
+  const lSel = document.getElementById('quizLessonSelect');
+  if (lSel) lSel.value = quizLessonFilter;
+  const cSel = document.getElementById('quizCountSelect');
+  if (cSel) cSel.value = String(quizCount);
+}
+
+function pickVocabDistractors(target, pool) {
+  // Prefer same-lesson different-POS from pool; fallback to any from pool; then from all words.
+  const sameLessonDiffPos = pool.filter(w => w.n !== target.n && w.lesson === target.lesson && w.pos !== target.pos);
+  const sameLessonSamePos = pool.filter(w => w.n !== target.n && w.lesson === target.lesson && w.pos === target.pos);
+  const otherLessonFromPool = pool.filter(w => w.n !== target.n && w.lesson !== target.lesson);
+  const anyOther = words.filter(w => w.n !== target.n);
+  const ordered = [...shuffleArr(sameLessonDiffPos), ...shuffleArr(sameLessonSamePos), ...shuffleArr(otherLessonFromPool), ...shuffleArr(anyOther)];
+  const picked = [];
+  const seenViet = new Set([target.viet]);
+  for (const w of ordered) {
+    if (picked.length >= 3) break;
+    if (seenViet.has(w.viet)) continue;
+    picked.push(w);
+    seenViet.add(w.viet);
+  }
+  return picked;
+}
+
+function buildQuizQueue() {
+  const lesson = quizLessonFilter; // '' or '1'..'4'
+  const lessonMatch = w => !lesson || String(w.lesson) === lesson;
+
+  const availVocab = words.filter(lessonMatch);
+  const availGrammar = grammarQuestions.filter(q => lessonMatch(q) && (q.type === 'fill-blank' || q.type === 'sentence-builder'));
+
+  const total = quizCount;
+  const grammarCount = Math.min(availGrammar.length, Math.floor(total * 0.4));
+  const vocabCount = total - grammarCount;
+
+  // Sample grammar: unique if possible, else repeat-sample
+  const grammarItems = [];
+  if (availGrammar.length) {
+    if (grammarCount <= availGrammar.length) {
+      const shuffled = shuffleArr(availGrammar);
+      for (let i = 0; i < grammarCount; i++) grammarItems.push({ kind: 'grammar', question: shuffled[i] });
+    } else {
+      // Shouldn't happen given cap above, but guard anyway
+      for (let i = 0; i < grammarCount; i++) {
+        grammarItems.push({ kind: 'grammar', question: availGrammar[i % availGrammar.length] });
+      }
+    }
+  }
+
+  // Sample vocab: unique if possible, else repeat-sample spread out
+  const vocabItems = [];
+  if (availVocab.length) {
+    if (vocabCount <= availVocab.length) {
+      const shuffled = shuffleArr(availVocab);
+      for (let i = 0; i < vocabCount; i++) vocabItems.push({ kind: 'vocab', word: shuffled[i] });
+    } else {
+      // Repeat-sample: cycle through shuffled copies so duplicates are spread
+      const reps = Math.ceil(vocabCount / availVocab.length);
+      const expanded = [];
+      for (let r = 0; r < reps; r++) expanded.push(...shuffleArr(availVocab));
+      for (let i = 0; i < vocabCount; i++) vocabItems.push({ kind: 'vocab', word: expanded[i] });
+    }
+  }
+
+  return shuffleArr([...vocabItems, ...grammarItems]);
+}
+
+function startQuiz() {
+  const lSel = document.getElementById('quizLessonSelect');
+  if (lSel) quizLessonFilter = lSel.value;  // otherwise reuse previous (Try Again)
+  const cSel = document.getElementById('quizCountSelect');
+  if (cSel) quizCount = parseInt(cSel.value, 10) || 20;
+  quizQueue = buildQuizQueue();
+  if (!quizQueue.length) {
+    document.getElementById('quiz-view').innerHTML = `<div class="q-intro"><p>Not enough content for this lesson yet.</p><button class="q-start-btn" onclick="renderQuizIntro()">Back</button></div>`;
+    return;
+  }
+  quizIndex = 0;
+  quizCorrect = 0;
+  quizActive = true;
+  renderQuizQuestion();
+}
+
+function renderQuizQuestion() {
+  const item = quizQueue[quizIndex];
+  quizChecked = false;
+  quizAnswered = false;
+  quizSbState = null;
+
+  const total = quizQueue.length;
+  const pct = total ? Math.round((quizIndex / total) * 100) : 0;
+
+  let body = '';
+  if (item.kind === 'vocab') body = vocabQuestionHtml(item.word);
+  else body = grammarQuestionHtml(item.question);
+
+  document.getElementById('quiz-view').innerHTML = `
+    <div class="q-progress-bar"><div class="q-progress-fill" style="width:${pct}%"></div></div>
+    <div class="q-counter">Question ${quizIndex + 1} of ${total}</div>
+    ${body}`;
+
+  if (item.kind === 'vocab') wireVocabQuestion(item.word);
+  else wireGrammarQuestion(item.question);
+}
+
+/* ── Vocab question ── */
+function vocabQuestionHtml(w) {
+  const pool = quizQueue.filter(x => x.kind === 'vocab').map(x => x.word);
+  const distractors = pickVocabDistractors(w, pool);
+  const opts = shuffleArr([w, ...distractors]);
+  // Stash correct index on state
+  window._qvOpts = opts;
+  window._qvCorrectIdx = opts.findIndex(o => o.n === w.n);
+
+  const posHtml = w.pos ? `<span class="badge ${posClass(w.pos)}">${w.pos}</span>` : '';
+  const optsHtml = opts.map((o, i) => `<button class="q-option" id="qOpt${i}" onclick="selectVocabOpt(${i})">${o.viet}</button>`).join('');
+
+  return `
+    <div class="q-card">
+      <div class="card-char">${w.char}</div>
+      <div class="q-pos">${posHtml}</div>
+      <div class="q-options">${optsHtml}</div>
+      <div class="q-feedback" id="qFeedback"></div>
+      <div class="q-actions"><button class="q-next-btn" id="qNextBtn" onclick="nextQuizQuestion()" style="display:none">Next →</button></div>
+    </div>`;
+}
+
+function wireVocabQuestion(w) { /* noop — all wired via inline onclick */ }
+
+function selectVocabOpt(idx) {
+  if (quizChecked) return;
+  quizChecked = true;
+  quizAnswered = true;
+  const opts = window._qvOpts;
+  const correctIdx = window._qvCorrectIdx;
+  const isCorrect = idx === correctIdx;
+
+  opts.forEach((_, i) => {
+    const btn = document.getElementById('qOpt' + i);
+    if (btn) btn.disabled = true;
+  });
+  const chosen = document.getElementById('qOpt' + idx);
+  const correctBtn = document.getElementById('qOpt' + correctIdx);
+  if (isCorrect) {
+    chosen.classList.add('correct');
+    chosen.innerHTML = '✓ ' + chosen.innerHTML;
+    quizCorrect++;
+  } else {
+    chosen.classList.add('wrong');
+    if (correctBtn) correctBtn.classList.add('correct');
+  }
+
+  const fb = document.getElementById('qFeedback');
+  const w = quizQueue[quizIndex].word;
+  const hvLine = w.hv ? `<div class="q-hv-hint">✨ ${w.hv}</div>` : '';
+  fb.classList.add('show', isCorrect ? 'correct' : 'wrong');
+  fb.innerHTML = `<strong>${w.char}</strong> ${w.pinyin} — ${w.viet}${hvLine}`;
+
+  const nextBtn = document.getElementById('qNextBtn');
+  if (nextBtn) nextBtn.style.display = 'inline-block';
+}
+
+/* ── Grammar question ── */
+function grammarQuestionHtml(q) {
+  if (q.type === 'fill-blank') return fillBlankHtml(q);
+  if (q.type === 'sentence-builder') return sentenceBuilderHtml(q);
+  return `<div class="q-card">Unsupported question type.</div>`;
+}
+
+function wireGrammarQuestion(q) {
+  // Sentence-builder needs initial state setup
+  if (q.type === 'sentence-builder') {
+    const shuffled = shuffleArr(q.fragments);
+    quizSbState = {
+      chips: shuffled.map((text, id) => ({ id, text, inAnswer: false })),
+      order: []
+    };
+    renderSbChips();
+  }
+}
+
+function fillBlankHtml(q) {
+  const promptHtml = q.prompt.replace(/_{2,}/, '<span class="q-blank"></span>');
+  const opts = q.options;
+  window._qgOpts = opts;
+  window._qgAnswer = q.answer;
+  const optsHtml = opts.map((o, i) => `<button class="q-option" id="qOpt${i}" onclick="selectFillBlankOpt(${i})">${o}</button>`).join('');
+
+  return `
+    <div class="q-card">
+      <div class="q-instruction">Điền vào chỗ trống:</div>
+      <div class="q-prompt">${promptHtml}</div>
+      <div class="q-options grid-2">${optsHtml}</div>
+      <div class="q-feedback" id="qFeedback"></div>
+      <div class="q-actions"><button class="q-next-btn" id="qNextBtn" onclick="nextQuizQuestion()" style="display:none">Next →</button></div>
+    </div>`;
+}
+
+function selectFillBlankOpt(idx) {
+  if (quizChecked) return;
+  quizChecked = true;
+  quizAnswered = true;
+  const opts = window._qgOpts;
+  const correctIdx = opts.indexOf(window._qgAnswer);
+  const isCorrect = idx === correctIdx;
+
+  opts.forEach((_, i) => {
+    const btn = document.getElementById('qOpt' + i);
+    if (btn) btn.disabled = true;
+  });
+  const chosen = document.getElementById('qOpt' + idx);
+  const correctBtn = document.getElementById('qOpt' + correctIdx);
+  if (isCorrect) {
+    chosen.classList.add('correct');
+    chosen.innerHTML = '✓ ' + chosen.innerHTML;
+    quizCorrect++;
+  } else {
+    chosen.classList.add('wrong');
+    if (correctBtn) correctBtn.classList.add('correct');
+  }
+
+  const q = quizQueue[quizIndex].question;
+  const fb = document.getElementById('qFeedback');
+  const hvLine = q.hanVietHint ? `<div class="q-hv-hint">✨ ${q.hanVietHint}</div>` : '';
+  fb.classList.add('show', isCorrect ? 'correct' : 'wrong');
+  fb.innerHTML = `${q.explanation || ''}${hvLine}`;
+
+  const nextBtn = document.getElementById('qNextBtn');
+  if (nextBtn) nextBtn.style.display = 'inline-block';
+}
+
+function sentenceBuilderHtml(q) {
+  return `
+    <div class="q-card">
+      <div class="q-instruction">Sắp xếp các từ thành câu đúng:</div>
+      <div class="q-sb-answer" id="qSbAnswer"></div>
+      <div class="q-sb-pool" id="qSbPool"></div>
+      <div class="q-sb-correct-line" id="qSbCorrect"></div>
+      <div class="q-feedback" id="qFeedback"></div>
+      <div class="q-actions">
+        <button class="q-check-btn" id="qCheckBtn" disabled onclick="checkSentenceBuilder()">Check</button>
+        <button class="q-next-btn" id="qNextBtn" onclick="nextQuizQuestion()" style="display:none">Next →</button>
+      </div>
+    </div>`;
+}
+
+function renderSbChips() {
+  const state = quizSbState;
+  const pool = document.getElementById('qSbPool');
+  const ans = document.getElementById('qSbAnswer');
+  if (!state || !pool || !ans) return;
+
+  pool.innerHTML = state.chips
+    .filter(c => !c.inAnswer)
+    .map(c => `<button class="q-chip" id="qChip${c.id}" onclick="sbChipClick(${c.id})">${c.text}</button>`)
+    .join('');
+
+  if (state.order.length === 0) {
+    ans.innerHTML = `<span class="placeholder">Tap từ bên dưới để sắp xếp…</span>`;
+  } else {
+    ans.innerHTML = state.order
+      .map(id => {
+        const c = state.chips[id];
+        return `<button class="q-chip in-answer" onclick="sbChipClick(${c.id})">${c.text}</button>`;
+      })
+      .join('');
+  }
+
+  // Enable check when all chips placed
+  const check = document.getElementById('qCheckBtn');
+  if (check) {
+    const allPlaced = state.chips.every(c => c.inAnswer);
+    check.disabled = !allPlaced;
+  }
+}
+
+function sbChipClick(id) {
+  if (quizChecked) return;
+  const state = quizSbState;
+  const chip = state.chips[id];
+  if (!chip) return;
+  if (chip.inAnswer) {
+    chip.inAnswer = false;
+    state.order = state.order.filter(x => x !== id);
+  } else {
+    chip.inAnswer = true;
+    state.order.push(id);
+  }
+  renderSbChips();
+}
+
+function checkSentenceBuilder() {
+  if (quizChecked) return;
+  const state = quizSbState;
+  if (!state || !state.chips.every(c => c.inAnswer)) return;
+  quizChecked = true;
+  quizAnswered = true;
+
+  const q = quizQueue[quizIndex].question;
+  const userOrder = state.order.map(id => state.chips[id].text);
+  const correct = q.answer;
+  const isCorrect = userOrder.length === correct.length && userOrder.every((t, i) => t === correct[i]);
+
+  // Style chips in answer zone
+  const ansEl = document.getElementById('qSbAnswer');
+  if (ansEl) {
+    ansEl.innerHTML = state.order.map((id, i) => {
+      const c = state.chips[id];
+      const ok = c.text === correct[i];
+      return `<span class="q-chip ${ok ? 'correct' : 'wrong'}">${c.text}</span>`;
+    }).join('');
+  }
+  // Hide pool (all placed)
+  const pool = document.getElementById('qSbPool');
+  if (pool) pool.innerHTML = '';
+
+  if (!isCorrect) {
+    const line = document.getElementById('qSbCorrect');
+    if (line) {
+      line.classList.add('show');
+      line.innerHTML = `<span class="label">Correct:</span>${correct.join(' ')}`;
+    }
+  } else {
+    quizCorrect++;
+  }
+
+  const fb = document.getElementById('qFeedback');
+  if (fb && q.explanation) {
+    const hvLine = q.hanVietHint ? `<div class="q-hv-hint">✨ ${q.hanVietHint}</div>` : '';
+    fb.classList.add('show', isCorrect ? 'correct' : 'wrong');
+    fb.innerHTML = `${q.explanation}${hvLine}`;
+  }
+
+  const check = document.getElementById('qCheckBtn');
+  if (check) check.style.display = 'none';
+  const nextBtn = document.getElementById('qNextBtn');
+  if (nextBtn) nextBtn.style.display = 'inline-block';
+}
+
+function nextQuizQuestion() {
+  quizIndex++;
+  if (quizIndex >= quizQueue.length) {
+    renderQuizComplete();
+  } else {
+    renderQuizQuestion();
+  }
+}
+
+function renderQuizComplete() {
+  quizActive = false;
+  const total = quizQueue.length;
+  const score = quizCorrect;
+  const pct = total ? Math.round((score / total) * 100) : 0;
+  let msg;
+  if (pct >= 90) msg = 'Xuất sắc! 🎉';
+  else if (pct >= 70) msg = 'Tốt lắm! Keep going.';
+  else msg = 'Cần ôn thêm. Try again!';
+  document.getElementById('quiz-view').innerHTML = `
+    <div class="q-complete">
+      <h2>大功告成！</h2>
+      <div class="score">${score} / ${total}</div>
+      <div class="percent">${pct}%</div>
+      <div class="msg">${msg}</div>
+      <div class="actions">
+        <button class="primary" onclick="startQuiz()">Try Again</button>
+        <button onclick="renderQuizIntro()">Back to Lessons</button>
+      </div>
+    </div>`;
 }
 
 selectLesson(1);
