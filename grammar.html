@@ -13,6 +13,7 @@
   --border-radius-md: 8px;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
+th { text-align: left; }
 body { font-family: var(--font-sans); }
 .wrap { padding: 1rem 3rem; max-width: 1400px; margin: 0 auto; }
 
@@ -123,8 +124,18 @@ body { font-family: var(--font-sans); }
 .abbr-bar { display: flex; flex-wrap: wrap; gap: 6px 16px; margin-bottom: 1.25rem; padding: 10px 14px; background: var(--color-background-secondary); border-radius: var(--border-radius-md); font-size: 12px; color: var(--color-text-secondary); }
 .abbr-bar strong { color: var(--color-text-primary); margin-right: 3px; }
 
+/* Hoverable/tappable abbreviation tooltips */
+.abbr { display: inline-block; cursor: help; border-bottom: 1px dotted var(--color-text-tertiary); position: relative; outline: none; }
+.abbr::after { content: attr(data-tip); position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 6px 10px; border-radius: 6px; white-space: nowrap; font-size: 12px; font-weight: 400; pointer-events: none; opacity: 0; visibility: hidden; transition: opacity 0.15s, visibility 0.15s; z-index: 9999; }
+.abbr:hover::after, .abbr:focus::after, .abbr.active::after { opacity: 1; visibility: visible; }
+
 /* Browse table — same structure as vocabulary page */
-.gr-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.gr-table { width: 100%; border-collapse: collapse; font-size: 14px; table-layout: fixed; }
+.gr-table col.c-num { width: 50px; }
+.gr-table col.c-structure { width: 280px; }
+.gr-table col.c-gp { width: 600px; }
+.gr-table col.c-lesson { width: 90px; }
+.gr-table col.c-chev { width: 30px; }
 .gr-table thead th { text-align: left; font-weight: 500; font-size: 12px; color: var(--color-text-secondary); padding: 6px 10px; border-bottom: 0.5px solid var(--color-border-tertiary); text-transform: uppercase; letter-spacing: 0.04em; }
 .gr-table tbody tr.pattern-row { border-bottom: 0.5px solid var(--color-border-tertiary); cursor: pointer; }
 .gr-table tbody tr.pattern-row:hover { background: var(--color-background-secondary); }
@@ -137,7 +148,7 @@ body { font-family: var(--font-sans); }
 .diff-2 { background: #FAEEDA; color: #633806; }
 /* Expandable detail row */
 .detail-row td { padding: 0; border-bottom: 0.5px solid var(--color-border-tertiary); }
-.detail-panel { padding: 16px 20px 20px; background: #FAFAFA; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+.detail-panel { padding: 16px 20px 20px; background: #FAFAFA; display: grid; grid-template-columns: 290px 580px 1fr; gap: 20px; }
 .detail-section h4 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-text-tertiary); margin-bottom: 8px; }
 .detail-explanation { font-size: 14px; line-height: 1.6; color: var(--color-text-primary); }
 .detail-examples { list-style: none; }
@@ -240,6 +251,27 @@ body { font-family: var(--font-sans); }
 const ALL_VIEWS = ['browse','fill-blank','sentence-builder','error-correction','pattern-match','translation'];
 const EX_TYPES  = ['fill-blank','sentence-builder','error-correction','pattern-match','translation'];
 
+const ABBR_TOOLTIPS = {
+  'CN': 'Chủ ngữ (Subject)',
+  'VN': 'Vị ngữ (Predicate)',
+  'TN': 'Tân ngữ (Object)',
+  'DT': 'Danh từ (Noun)',
+  'TT': 'Tính từ (Adjective)',
+  'ĐT': 'Động từ (Verb)',
+  'ĐN': 'Định ngữ (Modifier)',
+  'LT': 'Lượng từ (Measure word)',
+};
+function addAbbrTooltips(html) {
+  if (!html) return html;
+  return String(html).replace(/(?<![A-Za-zĐđ])(CN|VN|TN|DT|TT|ĐT|ĐN|LT)(?![A-Za-zĐđ])/g, (m, a) =>
+    `<span class="abbr" data-tip="${ABBR_TOOLTIPS[a]}" tabindex="0">${a}</span>`);
+}
+document.addEventListener('click', e => {
+  const abbr = e.target.closest && e.target.closest('.abbr');
+  document.querySelectorAll('.abbr.active').forEach(el => { if (el !== abbr) el.classList.remove('active'); });
+  if (abbr) { abbr.classList.toggle('active'); e.stopPropagation(); }
+}, true);
+
 let currentType = 'fill-blank';
 let queue = [];
 let qIdx = 0;
@@ -309,18 +341,18 @@ function renderBrowse() {
   const rows = patterns.map((p, i) => `
     <tr class="pattern-row open" onclick="toggleDetail('${p.id}')" id="row-${p.id}">
       <td style="color:var(--color-text-tertiary); font-size:13px;">${i + 1}</td>
-      <td><div class="gr-structure">${p.structure}</div></td>
+      <td><div class="gr-structure">${addAbbrTooltips(p.structure)}</div></td>
       <td><div class="gr-title">${p.title}</div></td>
       <td style="white-space:nowrap;">Lesson ${p.lesson}</td>
-      <td><span class="diff-badge ${p.difficulty === 'beginner-1' ? 'diff-1' : 'diff-2'}">${p.difficulty === 'beginner-1' ? 'Beginner 1' : 'Beginner 2'}</span></td>
       <td style="color:var(--color-text-tertiary); font-size:12px;" id="chevron-${p.id}">▾</td>
+      <td></td>
     </tr>
     <tr class="detail-row" id="detail-${p.id}">
       <td colspan="6">
         <div class="detail-panel">
           <div class="detail-section">
             <h4>Explanation</h4>
-            <div class="detail-explanation">${p.explanation}</div>
+            <div class="detail-explanation">${addAbbrTooltips(p.explanation)}</div>
           </div>
           <div class="detail-section">
             <h4>Examples</h4>
@@ -331,7 +363,7 @@ function renderBrowse() {
           <div class="detail-section">
             <h4>Notes</h4>
             <ul class="detail-notes">
-              ${p.notes.map(n => `<li>${n}</li>`).join('')}
+              ${p.notes.map(n => `<li>${addAbbrTooltips(n)}</li>`).join('')}
             </ul>
           </div>
         </div>
@@ -341,7 +373,10 @@ function renderBrowse() {
   document.getElementById('browse-view').style.display = 'block';
   document.getElementById('browse-view').innerHTML = patterns.length ? `
     <table class="gr-table">
-      <thead><tr><th>#</th><th>Structure</th><th>Grammar Point</th><th>Lesson</th><th>Level</th><th></th></tr></thead>
+      <colgroup>
+        <col class="c-num"><col class="c-structure"><col class="c-gp"><col class="c-lesson"><col class="c-chev"><col>
+      </colgroup>
+      <thead><tr><th>#</th><th>Structure</th><th>Grammar Point</th><th>Lesson</th><th></th><th></th></tr></thead>
       <tbody>${rows}</tbody>
     </table>` :
     '<p style="padding:24px; color:var(--color-text-tertiary);">No patterns match.</p>';

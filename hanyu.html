@@ -81,6 +81,39 @@ th.rating-col.show { display: table-cell; }
 #flashcard-view { display: none; }
 #writing-view { display: none; }
 #pinyin-view { display: none; }
+#choose-view { display: none; }
+#listen-view { display: none; }
+#match-view { display: none; }
+
+/* Choose Mode */
+.ch-options { display: flex; flex-direction: column; gap: 10px; width: 85%; margin-top: 16px; }
+.ch-option { width: 100%; padding: 12px 16px; border-radius: var(--border-radius-md); border: 1.5px solid var(--color-border-secondary); background: var(--color-background-primary); color: var(--color-text-primary); font-size: 15px; font-family: inherit; cursor: pointer; transition: all 0.15s; text-align: left; }
+.ch-option:hover:not(:disabled):not(.correct):not(.wrong) { background: var(--color-background-secondary); border-color: #0C447C; }
+.ch-option.correct { background: #EAF3DE; border-color: #27500A; color: #27500A; font-weight: 600; }
+.ch-option.wrong { background: #FBEAF0; border-color: #72243E; color: #72243E; font-weight: 600; }
+.ch-option:disabled { cursor: default; }
+.ch-card-char { font-size: 56px; font-weight: 600; text-align: center; padding: 20px 16px; }
+.ch-next-btn { margin-top: 14px; padding: 10px 28px; border: none; border-radius: var(--border-radius-md); background: #0C447C; color: #fff; font-size: 14px; font-family: inherit; cursor: pointer; transition: background 0.15s; }
+.ch-next-btn:hover { background: #093562; }
+
+/* Listen Mode — reuses .ch-options for the options list */
+.ln-audio-btn { background: #E6F1FB; border: 2px solid #0C447C; color: #0C447C; border-radius: 50%; width: 96px; height: 96px; font-size: 44px; cursor: pointer; margin: 20px auto; display: flex; align-items: center; justify-content: center; transition: transform 0.1s, background 0.15s; padding: 0; }
+.ln-audio-btn:hover { background: #D0E3F5; }
+.ln-audio-btn:active { transform: scale(0.96); }
+.ln-reveal { margin-top: 14px; text-align: center; padding: 10px 14px; background: var(--color-background-secondary); border-radius: var(--border-radius-md); display: none; }
+.ln-reveal.visible { display: block; }
+.ln-reveal .char { font-size: 28px; font-weight: 600; }
+.ln-reveal .pinyin { color: var(--color-text-secondary); font-style: italic; margin-left: 8px; font-size: 16px; }
+
+/* Match Mode */
+.mt-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; max-width: 560px; margin: 16px auto; }
+.mt-tile { aspect-ratio: 3/2; min-height: 80px; border: 1.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); background: var(--color-background-primary); display: flex; align-items: center; justify-content: center; padding: 8px; text-align: center; cursor: pointer; transition: all 0.15s; user-select: none; }
+.mt-tile:hover:not(.matched):not(.face-up) { background: var(--color-background-secondary); }
+.mt-tile.face-down { color: var(--color-text-tertiary); font-size: 32px; font-weight: 300; }
+.mt-tile.face-up { border-color: #0C447C; background: #E6F1FB; }
+.mt-tile.matched { border-color: #27500A; background: #EAF3DE; color: #27500A; cursor: default; }
+.mt-tile .mt-char { font-size: 24px; font-weight: 600; }
+.mt-tile .mt-viet { font-size: 13px; line-height: 1.3; }
 .fc-controls { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1rem; align-items: center; }
 .fc-controls select { padding: 6px 10px; border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); font-size: 14px; background: var(--color-background-primary); color: var(--color-text-primary); }
 .fc-stats { display: flex; gap: 12px; margin-bottom: 1.5rem; flex-wrap: wrap; }
@@ -220,6 +253,21 @@ th.rating-col.show { display: table-cell; }
   .answer-row input { font-size: 16px; padding: 10px 8px; }
   .check-btn { padding: 12px 32px; font-size: 16px; margin-top: 12px; }
 
+  /* Choose mode */
+  .ch-options { width: 100%; }
+  .ch-option { font-size: 16px; padding: 14px 12px; }
+  .ch-card-char { font-size: 48px; padding: 16px 8px; }
+
+  /* Listen mode */
+  .ln-audio-btn { width: 84px; height: 84px; font-size: 36px; }
+
+  /* Match mode */
+  .mt-grid { gap: 6px; max-width: 100%; }
+  .mt-tile { min-height: 60px; padding: 4px; }
+  .mt-tile.face-down { font-size: 24px; }
+  .mt-tile .mt-char { font-size: 18px; }
+  .mt-tile .mt-viet { font-size: 11px; }
+
   /* Rating buttons stack 2x2 */
   .rating-btns { flex-wrap: wrap; gap: 6px; }
   .rate-btn { flex: 1 1 45%; padding: 14px 4px; font-size: 14px; }
@@ -261,6 +309,9 @@ th.rating-col.show { display: table-cell; }
     <button class="mode-btn" onclick="switchMode('flashcard')">Character</button>
     <button class="mode-btn" onclick="switchMode('writing')">Meaning</button>
     <button class="mode-btn" onclick="switchMode('pinyin')">Pinyin</button>
+    <button class="mode-btn" onclick="switchMode('choose')">Choose</button>
+    <button class="mode-btn" onclick="switchMode('listen')">Listen</button>
+    <button class="mode-btn" onclick="switchMode('match')">Match</button>
   </div>
 
   <!-- Browse View -->
@@ -275,6 +326,9 @@ th.rating-col.show { display: table-cell; }
         <option value="adv.">Adverb (adv.)</option>
         <option value="adj.">Adjective (adj.)</option>
         <option value="part.">Particle (part.)</option>
+        <option value="suff.">Suffix (suff.)</option>
+        <option value="mw.">Measure word (mw.)</option>
+        <option value="num.">Numeral (num.)</option>
       </select>
       <select id="lessonFilter" onchange="render()">
         <option value="">All lessons</option>
@@ -290,8 +344,15 @@ th.rating-col.show { display: table-cell; }
       <button class="fc-reset-btn" id="toggleRatingsBtn" onclick="toggleRatings()">Show Ratings</button>
       <button class="fc-reset-btn" id="clearRatingsBtn" onclick="clearRatings()" style="display:none">Clear Ratings</button>
       <button class="fc-reset-btn" id="hsBtn" onclick="startHideSeek()">Hide &amp; Seek</button>
+      <select id="hsModeSelect" onchange="if(hsMode) startHideSeek()" style="display:none;padding:6px 10px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);font-size:14px;background:var(--color-background-primary);color:var(--color-text-primary);font-family:inherit">
+        <option value="random">Random mix</option>
+        <option value="char">Characters only</option>
+        <option value="pinyin">Pinyin only</option>
+        <option value="viet">Meanings only</option>
+      </select>
       <button class="fc-reset-btn" id="hsCheckAllBtn" onclick="checkAllHs()" style="display:none">Check All</button>
       <button class="fc-reset-btn" id="hsStopBtn" onclick="stopHideSeek()" style="display:none">Stop</button>
+      <div class="stat" id="hsScore" style="display:none"></div>
     </div>
     <table>
       <thead>
@@ -362,6 +423,32 @@ th.rating-col.show { display: table-cell; }
     <div id="wr-content"></div>
   </div>
 
+  <!-- Choose View -->
+  <div id="choose-view">
+    <div class="fc-controls">
+      <select id="chLessonFilter" onchange="startChooseSession()">
+        <option value="">All lessons</option>
+        <option value="1">Lesson 1</option>
+        <option value="2">Lesson 2</option>
+        <option value="3">Lesson 3</option>
+        <option value="4">Lesson 4</option>
+      </select>
+      <select id="chCardCount" onchange="startChooseSession()">
+        <option value="10" selected>10 cards</option>
+        <option value="20">20 cards</option>
+        <option value="30">30 cards</option>
+        <option value="50">50 cards</option>
+        <option value="0">All</option>
+      </select>
+    </div>
+    <div class="fc-stats">
+      <div class="fc-stat"><span id="chCorrect">0</span> correct</div>
+      <div class="fc-stat"><span id="chWrong">0</span> wrong</div>
+      <div class="fc-stat"><span id="chRemaining">0</span> remaining</div>
+    </div>
+    <div id="ch-content"></div>
+  </div>
+
   <!-- Pinyin View -->
   <div id="pinyin-view">
     <div class="fc-controls">
@@ -386,6 +473,50 @@ th.rating-col.show { display: table-cell; }
       <div class="fc-stat"><span id="pyRemaining">0</span> remaining</div>
     </div>
     <div id="py-content"></div>
+  </div>
+
+  <!-- Listen View -->
+  <div id="listen-view">
+    <div class="fc-controls">
+      <select id="lnLessonFilter" onchange="startListenSession()">
+        <option value="">All lessons</option>
+        <option value="1">Lesson 1</option>
+        <option value="2">Lesson 2</option>
+        <option value="3">Lesson 3</option>
+        <option value="4">Lesson 4</option>
+      </select>
+      <select id="lnCardCount" onchange="startListenSession()">
+        <option value="10" selected>10 cards</option>
+        <option value="20">20 cards</option>
+        <option value="30">30 cards</option>
+        <option value="50">50 cards</option>
+        <option value="0">All</option>
+      </select>
+    </div>
+    <div class="fc-stats">
+      <div class="fc-stat"><span id="lnCorrect">0</span> correct</div>
+      <div class="fc-stat"><span id="lnWrong">0</span> wrong</div>
+      <div class="fc-stat"><span id="lnRemaining">0</span> remaining</div>
+    </div>
+    <div id="ln-content"></div>
+  </div>
+
+  <!-- Match View -->
+  <div id="match-view">
+    <div class="fc-controls">
+      <select id="mtLessonFilter" onchange="startMatchSession()">
+        <option value="">All lessons</option>
+        <option value="1">Lesson 1</option>
+        <option value="2">Lesson 2</option>
+        <option value="3">Lesson 3</option>
+        <option value="4">Lesson 4</option>
+      </select>
+    </div>
+    <div class="fc-stats">
+      <div class="fc-stat">Moves: <span id="mtMoves">0</span></div>
+      <div class="fc-stat"><span id="mtMatched">0</span> / 4 pairs matched</div>
+    </div>
+    <div id="mt-content"></div>
   </div>
 </div>
 
@@ -460,24 +591,37 @@ const HS_MODES = [
   { char: false, pinyin: true, viet: true },    // hide pinyin + meaning
 ];
 
+function hsConfigFor(mode) {
+  if (mode === 'char') return { char: true, pinyin: false, viet: false };
+  if (mode === 'pinyin') return { char: false, pinyin: true, viet: false };
+  if (mode === 'viet') return { char: false, pinyin: false, viet: true };
+  return null; // random
+}
+
 function startHideSeek() {
   hsMode = true;
   hsHidden = {};
+  const fieldMode = document.getElementById('hsModeSelect').value;
+  const fixed = hsConfigFor(fieldMode);
   const q = document.getElementById('search').value.toLowerCase();
   const pos = document.getElementById('posFilter').value;
   const les = document.getElementById('lessonFilter').value;
   const filtered = words.filter(w => {
     const matchQ = !q || w.char.includes(q) || w.pinyin.toLowerCase().includes(q) || w.viet.toLowerCase().includes(q);
-    const matchPos = !pos || w.pos === pos || w.pos.startsWith(pos.replace('.',''));
+    const matchPos = !pos || w.pos === pos || w.pos.startsWith(pos);
     const matchLes = !les || w.lesson == les;
     return matchQ && matchPos && matchLes;
   });
   filtered.forEach(w => {
-    hsHidden[w.n] = HS_MODES[Math.floor(Math.random() * HS_MODES.length)];
+    hsHidden[w.n] = fixed || HS_MODES[Math.floor(Math.random() * HS_MODES.length)];
   });
   document.getElementById('hsBtn').style.display = 'none';
   document.getElementById('hsCheckAllBtn').style.display = '';
   document.getElementById('hsStopBtn').style.display = '';
+  document.getElementById('hsModeSelect').style.display = '';
+  const score = document.getElementById('hsScore');
+  score.style.display = 'none';
+  score.textContent = '';
   render();
 }
 
@@ -487,6 +631,10 @@ function stopHideSeek() {
   document.getElementById('hsBtn').style.display = '';
   document.getElementById('hsCheckAllBtn').style.display = 'none';
   document.getElementById('hsStopBtn').style.display = 'none';
+  document.getElementById('hsModeSelect').style.display = 'none';
+  const score = document.getElementById('hsScore');
+  score.style.display = 'none';
+  score.textContent = '';
   render();
 }
 
@@ -522,10 +670,34 @@ function checkRowHs(n) {
 }
 
 function checkAllHs() {
-  Object.keys(hsHidden).forEach(n => {
-    checkRowHs(parseInt(n));
-    checkRowHsMobile(parseInt(n));
+  let correct = 0, total = 0;
+  Object.keys(hsHidden).forEach(nStr => {
+    const n = parseInt(nStr);
+    checkRowHs(n);
+    checkRowHsMobile(n);
+    const w = words.find(x => x.n === n);
+    if (!w) return;
+    const h = hsHidden[n];
+    if (!h) return;
+    ['char', 'pinyin', 'viet'].forEach(field => {
+      if (!h[field]) return;
+      total++;
+      const deskInp = document.getElementById('hs-' + field + '-' + n);
+      const mobInp = document.getElementById('hs-m-' + field + '-' + n);
+      // Prefer whichever input is currently visible in the layout
+      const inp = (deskInp && deskInp.offsetParent !== null) ? deskInp : (mobInp && mobInp.offsetParent !== null ? mobInp : (deskInp || mobInp));
+      if (!inp) return;
+      const val = inp.value.trim();
+      let ok = false;
+      if (field === 'char') ok = val === w.char;
+      else if (field === 'pinyin') ok = checkPinyinMatch(val, w);
+      else if (field === 'viet') ok = checkViet(val, w);
+      if (ok) correct++;
+    });
   });
+  const score = document.getElementById('hsScore');
+  score.innerHTML = `<span>${correct}</span> / ${total} correct`;
+  score.style.display = '';
 }
 
 function hsCell(w, field, value) {
@@ -541,7 +713,7 @@ function render() {
   const les = document.getElementById('lessonFilter').value;
   const filtered = words.filter(w => {
     const matchQ = !q || w.char.includes(q) || w.pinyin.toLowerCase().includes(q) || w.viet.toLowerCase().includes(q);
-    const matchPos = !pos || w.pos === pos || w.pos.startsWith(pos.replace('.',''));
+    const matchPos = !pos || w.pos === pos || w.pos.startsWith(pos);
     const matchLes = !les || w.lesson == les;
     return matchQ && matchPos && matchLes;
   });
@@ -614,26 +786,27 @@ let currentMode = 'browse';
 
 function switchMode(mode) {
   currentMode = mode;
-  const modes = ['browse', 'flashcard', 'writing', 'pinyin'];
+  const modes = ['browse', 'flashcard', 'writing', 'pinyin', 'choose', 'listen', 'match'];
   document.querySelectorAll('.mode-btn').forEach((btn, i) => {
     btn.classList.toggle('active', modes[i] === mode);
   });
   document.getElementById('browse-view').style.display = mode === 'browse' ? 'block' : 'none';
+  document.getElementById('choose-view').style.display = mode === 'choose' ? 'block' : 'none';
+  document.getElementById('listen-view').style.display = mode === 'listen' ? 'block' : 'none';
   document.getElementById('flashcard-view').style.display = mode === 'flashcard' ? 'block' : 'none';
   document.getElementById('writing-view').style.display = mode === 'writing' ? 'block' : 'none';
   document.getElementById('pinyin-view').style.display = mode === 'pinyin' ? 'block' : 'none';
+  document.getElementById('match-view').style.display = mode === 'match' ? 'block' : 'none';
+  if (mode === 'choose') startChooseSession();
+  if (mode === 'listen') startListenSession();
   if (mode === 'flashcard') startFlashcardSession();
   if (mode === 'writing') startWritingSession();
   if (mode === 'pinyin') startPinyinSession();
+  if (mode === 'match') startMatchSession();
 }
 
-/* ── SRS Data Layer ── */
-const SRS_KEYS = { char: 'srs_cards_char', meaning: 'srs_cards_meaning', pinyin: 'srs_cards_pinyin' };
-const WEIGHT_KEYS = { char: 'weights_char', meaning: 'weights_meaning', pinyin: 'weights_pinyin' };
-
-function todayStr() {
-  return new Date().toLocaleDateString('en-CA');
-}
+/* ── Weight Data Layer ── */
+const WEIGHT_KEYS = { char: 'weights_char', meaning: 'weights_meaning', pinyin: 'weights_pinyin', choose: 'weights_choose', audio: 'weights_audio' };
 
 function loadWeights(tab) {
   const key = WEIGHT_KEYS[tab] || WEIGHT_KEYS.char;
@@ -656,95 +829,6 @@ function getWeight(tab, wordN) {
   return v !== undefined ? v : 2;
 }
 
-function loadSrsData(tab) {
-  const key = SRS_KEYS[tab] || SRS_KEYS.char;
-  let data = {};
-  try { data = JSON.parse(localStorage.getItem(key)) || {}; } catch(e) {}
-  if (Object.keys(data).length === 0) {
-    try { data = JSON.parse(localStorage.getItem('srs_cards')) || {}; } catch(e) {}
-  }
-  const weights = loadWeights(tab);
-  words.forEach(w => {
-    const k = String(w.n);
-    if (!data[k]) {
-      data[k] = { easeFactor: 2.5, interval: 0, repetitions: 0, dueDate: todayStr(), lastReview: null, state: 'new' };
-    }
-    data[k].weight = weights[k] !== undefined ? weights[k] : 2;
-  });
-  return data;
-}
-
-function saveSrsData(data, tab) {
-  const key = SRS_KEYS[tab] || SRS_KEYS.char;
-  try { localStorage.setItem(key, JSON.stringify(data)); } catch(e) {}
-}
-
-function sm2(record, rating) {
-  const r = { ...record };
-  const today = todayStr();
-
-  if (rating < 2) {
-    r.repetitions = 0;
-    r.interval = rating === 1 ? 1 : 0;
-    r.state = 'learning';
-  } else {
-    if (r.repetitions === 0) r.interval = 1;
-    else if (r.repetitions === 1) r.interval = 6;
-    else r.interval = Math.round(r.interval * r.easeFactor);
-    r.repetitions += 1;
-    r.state = 'review';
-    if (rating === 3) r.interval = Math.round(r.interval * 1.3);
-  }
-
-  r.easeFactor += (0.1 - (2 - rating) * (0.08 + (2 - rating) * 0.02));
-  r.easeFactor = Math.max(1.3, Math.min(3.0, r.easeFactor));
-
-  const due = new Date();
-  due.setDate(due.getDate() + r.interval);
-  r.dueDate = due.toLocaleDateString('en-CA');
-  r.lastReview = today;
-  return r;
-}
-
-function buildQueue(srsData, lessonFilter, limit) {
-  const today = todayStr();
-  const filtered = words.filter(w => !lessonFilter || w.lesson == lessonFilter);
-
-  const due = [];
-  const newCards = [];
-
-  filtered.forEach(w => {
-    const k = String(w.n);
-    const rec = srsData[k];
-    if (rec.state === 'new') {
-      newCards.push(w);
-    } else if (rec.state === 'learning' || rec.dueDate <= today) {
-      due.push(w);
-    }
-  });
-
-  const all = [...due, ...newCards];
-  return limit > 0 ? all.slice(0, limit) : all;
-}
-
-function getStats(srsData, lessonFilter) {
-  const today = todayStr();
-  const filtered = words.filter(w => !lessonFilter || w.lesson == lessonFilter);
-  let dueCount = 0, newCount = 0, learnedCount = 0, nextDue = null;
-
-  filtered.forEach(w => {
-    const rec = srsData[String(w.n)];
-    if (rec.state === 'new') newCount++;
-    else if (rec.state === 'learning' || rec.dueDate <= today) dueCount++;
-    else {
-      learnedCount++;
-      if (!nextDue || rec.dueDate < nextDue) nextDue = rec.dueDate;
-    }
-  });
-
-  return { due: dueCount, new: newCount, learned: learnedCount, nextDue };
-}
-
 /* ── Flashcard Session ── */
 let fcQueue = [];
 let fcIndex = 0;
@@ -752,19 +836,21 @@ let fcFlipped = false;
 let fcAnswerChecked = false;
 let fcCorrect = new Set();
 let fcWrong = new Set();
-let fcSrsData = {};
 
-function shuffle(arr) {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
+function updateCheckBtn(inputIds, btnId) {
+  const hasValue = inputIds.some(id => {
+    const el = document.getElementById(id);
+    return el && el.value.trim().length > 0;
+  });
+  const btn = document.getElementById(btnId);
+  if (!btn) return;
+  btn.disabled = !hasValue;
+  btn.style.opacity = hasValue ? '1' : '0.4';
+  btn.style.cursor = hasValue ? 'pointer' : 'default';
 }
 
-function weightedShuffle(arr, srsData) {
-  const pool = arr.map(w => ({ word: w, weight: (srsData[String(w.n)] && srsData[String(w.n)].weight) || 2 }));
+function weightedShuffle(arr, weights) {
+  const pool = arr.map(w => ({ word: w, weight: weights[String(w.n)] !== undefined ? weights[String(w.n)] : 2 }));
   const result = [];
   while (pool.length > 0) {
     const totalWeight = pool.reduce((sum, item) => sum + item.weight, 0);
@@ -780,27 +866,18 @@ function weightedShuffle(arr, srsData) {
   return result;
 }
 
-function resetProgress() {
-  if (!confirm('Reset SRS progress? (Ratings will be kept)')) return;
-  Object.values(SRS_KEYS).forEach(k => localStorage.removeItem(k));
-  localStorage.removeItem('srs_cards');
-  startFlashcardSession();
-}
-
 function clearRatings() {
   if (!confirm('Clear all ratings? This resets weights to default.')) return;
-  Object.values(SRS_KEYS).forEach(k => localStorage.removeItem(k));
   Object.values(WEIGHT_KEYS).forEach(k => localStorage.removeItem(k));
-  localStorage.removeItem('srs_cards');
   render();
 }
 
 function startFlashcardSession() {
-  fcSrsData = loadSrsData('char');
   const lesson = document.getElementById('fcLessonFilter').value;
   const limit = parseInt(document.getElementById('fcCardCount').value) || 0;
-  const all = buildQueue(fcSrsData, lesson, 0);
-  fcQueue = weightedShuffle(all, fcSrsData);
+  const weights = loadWeights('char');
+  const filtered = words.filter(w => !lesson || w.lesson == lesson);
+  fcQueue = weightedShuffle(filtered, weights);
   if (limit > 0) fcQueue = fcQueue.slice(0, limit);
   fcIndex = 0;
   fcFlipped = false;
@@ -821,17 +898,10 @@ function renderCard() {
   const content = document.getElementById('fc-content');
 
   if (fcQueue.length === 0) {
-    const lesson = document.getElementById('fcLessonFilter').value;
-    const stats = getStats(fcSrsData, lesson);
-    const nextMsg = stats.nextDue ? `Next review: ${stats.nextDue}` : '';
     content.innerHTML = `
       <div class="fc-message">
-        <h3>All caught up!</h3>
-        <p>No cards due for review right now.</p>
-        ${nextMsg ? `<p>${nextMsg}</p>` : ''}
-        <div class="fc-msg-actions">
-          <button onclick="switchMode('browse')">Back to Browse</button>
-        </div>
+        <h3>No words available</h3>
+        <p>Select a lesson to start practicing.</p>
       </div>`;
     return;
   }
@@ -861,15 +931,16 @@ function renderCard() {
           <div class="card-face card-front">
             <div class="card-char">${w.char} ${audioBtn(w.char)}</div>
             <div class="answer-group">
-              <div class="answer-row"><label>Pinyin</label><input type="text" id="fcInputPinyin" placeholder="nǐ hǎo" autocomplete="off"></div>
-              <div class="answer-row"><label>Meaning</label><input type="text" id="fcInputMeaning" placeholder="Vietnamese meaning" autocomplete="off"></div>
+              <div class="answer-row"><label>Pinyin</label><input type="text" id="fcInputPinyin" placeholder="nǐ hǎo" autocomplete="off" oninput="updateCheckBtn(['fcInputPinyin','fcInputMeaning'],'fcCheckBtn')"></div>
+              <div class="answer-row"><label>Meaning</label><input type="text" id="fcInputMeaning" placeholder="Vietnamese meaning" autocomplete="off" oninput="updateCheckBtn(['fcInputPinyin','fcInputMeaning'],'fcCheckBtn')"></div>
             </div>
-            <button class="check-btn" onclick="checkAnswer()">Check</button>
+            <button class="check-btn" id="fcCheckBtn" disabled style="opacity:0.4;cursor:default" onclick="checkAnswer()">Check</button>
           </div>
           <div class="card-face card-back">
             <div class="card-char">${w.char} ${audioBtn(w.char)}</div>
             <div class="card-pinyin">${w.pinyin}</div>
             <div class="card-meaning">${w.viet}</div>
+            ${w.hv ? `<div style="font-size:12px;color:#7c5c00;background:#fdf3dc;border-radius:6px;padding:3px 10px;margin-top:6px">✨ ${w.hv}</div>` : ''}
             <div class="card-pos">${posHtml}</div>
             <div id="answerFeedback"></div>
           </div>
@@ -877,10 +948,10 @@ function renderCard() {
       </div>
       <div class="rating-hint" id="ratingHint">Rate how well you knew it — harder words will appear more often</div>
       <div class="rating-btns" id="ratingBtns">
-        <button class="rate-btn again" onclick="rateCard(0)">Forgot<span class="rate-desc">Don't remember</span><span class="rate-label">shows more often</span></button>
-        <button class="rate-btn hard" onclick="rateCard(1)">Hard<span class="rate-desc">Barely recalled</span><span class="rate-label">${getIntervalLabel(fcQueue[fcIndex], 1)}</span></button>
-        <button class="rate-btn good" onclick="rateCard(2)">Good<span class="rate-desc">Remembered</span><span class="rate-label">${getIntervalLabel(fcQueue[fcIndex], 2)}</span></button>
-        <button class="rate-btn easy" onclick="rateCard(3)">Easy<span class="rate-desc">Knew instantly</span><span class="rate-label">${getIntervalLabel(fcQueue[fcIndex], 3)}</span></button>
+        <button class="rate-btn again" onclick="rateCard(0)">Forgot<span class="rate-desc">Don't remember</span></button>
+        <button class="rate-btn hard" onclick="rateCard(1)">Hard<span class="rate-desc">Barely recalled</span></button>
+        <button class="rate-btn good" onclick="rateCard(2)">Good<span class="rate-desc">Remembered</span></button>
+        <button class="rate-btn easy" onclick="rateCard(3)">Easy<span class="rate-desc">Knew instantly</span></button>
       </div>
       <div class="fc-progress">Card ${fcCorrect.size + fcWrong.size + 1} of ${new Set(fcQueue.map(w => w.n)).size}</div>
       <div class="fc-keyboard-hint">Enter to check &middot; 1-4 to rate</div>
@@ -892,16 +963,6 @@ function renderCard() {
     const inp = document.getElementById('fcInputPinyin');
     if (inp) inp.focus();
   }, 300);
-}
-
-function getIntervalLabel(word, rating) {
-  const rec = fcSrsData[String(word.n)];
-  const preview = sm2(rec, rating);
-  if (preview.interval === 0) return '<1m';
-  if (preview.interval === 1) return '1d';
-  if (preview.interval < 30) return preview.interval + 'd';
-  if (preview.interval < 365) return Math.round(preview.interval / 30) + 'mo';
-  return Math.round(preview.interval / 365 * 10) / 10 + 'y';
 }
 
 function normalizePinyin(str) {
@@ -930,11 +991,11 @@ function feedbackHtml(label, userAnswer, isCorrect) {
 
 function checkAnswer() {
   if (fcFlipped) return;
-  fcAnswerChecked = true;
-  const w = fcQueue[fcIndex];
-
   const pinyinVal = (document.getElementById('fcInputPinyin').value || '').trim();
   const meaningVal = (document.getElementById('fcInputMeaning').value || '').trim();
+  if (!pinyinVal && !meaningVal) return;
+  fcAnswerChecked = true;
+  const w = fcQueue[fcIndex];
   const pinyinOk = pinyinVal ? checkPinyinMatch(pinyinVal, w) : null;
   const meaningOk = meaningVal ? checkViet(meaningVal, w) : null;
   const filled = [pinyinOk, meaningOk].filter(v => v !== null);
@@ -964,10 +1025,6 @@ function flipCard() {
 function rateCard(rating) {
   if (!fcFlipped) return;
   const w = fcQueue[fcIndex];
-  const k = String(w.n);
-  fcSrsData[k] = sm2(fcSrsData[k], rating);
-  fcSrsData[k].weight = 4 - rating;
-  saveSrsData(fcSrsData, 'char');
   saveWeight('char', w.n, 4 - rating);
 
   if (rating === 0) {
@@ -987,13 +1044,11 @@ let wrCorrect = new Set();
 let wrWrong = new Set();
 let wrChecked = false;
 
-let wrSrsData = {};
-
 function startWritingSession() {
-  wrSrsData = loadSrsData('meaning');
   const lesson = document.getElementById('wrLessonFilter').value;
   const limit = parseInt(document.getElementById('wrCardCount').value) || 0;
-  const filtered = weightedShuffle(words.filter(w => !lesson || w.lesson == lesson), wrSrsData);
+  const weights = loadWeights('meaning');
+  const filtered = weightedShuffle(words.filter(w => !lesson || w.lesson == lesson), weights);
   wrQueue = limit > 0 ? filtered.slice(0, limit) : filtered;
   wrIndex = 0;
   wrCorrect = new Set();
@@ -1049,15 +1104,16 @@ function renderWritingCard() {
             <div class="card-meaning" style="font-size:18px;color:var(--color-text-primary);text-align:center">${w.viet}</div>
             <div style="margin-top:6px">${posHtml}</div>
             <div class="answer-group">
-              <div class="answer-row"><label>Character</label><input type="text" id="wrInputChar" placeholder="汉字" autocomplete="off"></div>
-              <div class="answer-row"><label>Pinyin</label><input type="text" id="wrInputPinyin" placeholder="pīnyīn" autocomplete="off"></div>
+              <div class="answer-row"><label>Character</label><input type="text" id="wrInputChar" placeholder="汉字" autocomplete="off" oninput="updateCheckBtn(['wrInputChar','wrInputPinyin'],'wrCheckBtn')"></div>
+              <div class="answer-row"><label>Pinyin</label><input type="text" id="wrInputPinyin" placeholder="pīnyīn" autocomplete="off" oninput="updateCheckBtn(['wrInputChar','wrInputPinyin'],'wrCheckBtn')"></div>
             </div>
-            <button class="check-btn" onclick="checkWriting()">Check</button>
+            <button class="check-btn" id="wrCheckBtn" disabled style="opacity:0.4;cursor:default" onclick="checkWriting()">Check</button>
           </div>
           <div class="card-face card-back">
             <div class="card-char">${w.char} ${audioBtn(w.char)}</div>
             <div class="card-pinyin">${w.pinyin}</div>
             <div class="card-meaning">${w.viet}</div>
+            ${w.hv ? `<div style="font-size:12px;color:#7c5c00;background:#fdf3dc;border-radius:6px;padding:3px 10px;margin-top:6px">✨ ${w.hv}</div>` : ''}
             <div id="wrFeedback"></div>
           </div>
         </div>
@@ -1083,11 +1139,12 @@ function renderWritingCard() {
 
 function checkWriting() {
   if (wrChecked) return;
+  const charVal = (document.getElementById('wrInputChar').value || '').trim();
+  const pinyinVal = (document.getElementById('wrInputPinyin').value || '').trim();
+  if (!charVal && !pinyinVal) return;
   wrChecked = true;
 
   const w = wrQueue[wrIndex];
-  const charVal = (document.getElementById('wrInputChar').value || '').trim();
-  const pinyinVal = (document.getElementById('wrInputPinyin').value || '').trim();
   const charOk = charVal ? charVal === w.char : null;
   const pinyinOk = pinyinVal ? checkPinyinMatch(pinyinVal, w) : null;
   const filled = [charOk, pinyinOk].filter(v => v !== null);
@@ -1111,10 +1168,6 @@ function checkWriting() {
 function rateWritingCard(rating) {
   if (!wrChecked) return;
   const w = wrQueue[wrIndex];
-  const k = String(w.n);
-  wrSrsData[k] = sm2(wrSrsData[k], rating);
-  wrSrsData[k].weight = 4 - rating;
-  saveSrsData(wrSrsData, 'meaning');
   saveWeight('meaning', w.n, 4 - rating);
 
   if (rating === 0) {
@@ -1132,13 +1185,12 @@ let pyIndex = 0;
 let pyCorrect = new Set();
 let pyWrong = new Set();
 let pyChecked = false;
-let pySrsData = {};
 
 function startPinyinSession() {
-  pySrsData = loadSrsData('pinyin');
   const lesson = document.getElementById('pyLessonFilter').value;
   const limit = parseInt(document.getElementById('pyCardCount').value) || 0;
-  const filtered = weightedShuffle(words.filter(w => !lesson || w.lesson == lesson), pySrsData);
+  const weights = loadWeights('pinyin');
+  const filtered = weightedShuffle(words.filter(w => !lesson || w.lesson == lesson), weights);
   pyQueue = limit > 0 ? filtered.slice(0, limit) : filtered;
   pyIndex = 0;
   pyCorrect = new Set();
@@ -1194,15 +1246,16 @@ function renderPinyinCard() {
             <div class="card-pinyin" style="font-size:24px;font-style:italic">${w.pinyin}</div>
             <div style="margin-top:6px">${posHtml}</div>
             <div class="answer-group">
-              <div class="answer-row"><label>Character</label><input type="text" id="pyInputChar" placeholder="汉字" autocomplete="off"></div>
-              <div class="answer-row"><label>Meaning</label><input type="text" id="pyInputMeaning" placeholder="Vietnamese meaning" autocomplete="off"></div>
+              <div class="answer-row"><label>Character</label><input type="text" id="pyInputChar" placeholder="汉字" autocomplete="off" oninput="updateCheckBtn(['pyInputChar','pyInputMeaning'],'pyCheckBtn')"></div>
+              <div class="answer-row"><label>Meaning</label><input type="text" id="pyInputMeaning" placeholder="Vietnamese meaning" autocomplete="off" oninput="updateCheckBtn(['pyInputChar','pyInputMeaning'],'pyCheckBtn')"></div>
             </div>
-            <button class="check-btn" onclick="checkPinyin()">Check</button>
+            <button class="check-btn" id="pyCheckBtn" disabled style="opacity:0.4;cursor:default" onclick="checkPinyin()">Check</button>
           </div>
           <div class="card-face card-back">
             <div class="card-char">${w.char} ${audioBtn(w.char)}</div>
             <div class="card-pinyin">${w.pinyin}</div>
             <div class="card-meaning">${w.viet}</div>
+            ${w.hv ? `<div style="font-size:12px;color:#7c5c00;background:#fdf3dc;border-radius:6px;padding:3px 10px;margin-top:6px">✨ ${w.hv}</div>` : ''}
             <div id="pyFeedback"></div>
           </div>
         </div>
@@ -1232,11 +1285,12 @@ function normalizeViet(str) {
 
 function checkPinyin() {
   if (pyChecked) return;
+  const charVal = (document.getElementById('pyInputChar').value || '').trim();
+  const meaningVal = (document.getElementById('pyInputMeaning').value || '').trim();
+  if (!charVal && !meaningVal) return;
   pyChecked = true;
 
   const w = pyQueue[pyIndex];
-  const charVal = (document.getElementById('pyInputChar').value || '').trim();
-  const meaningVal = (document.getElementById('pyInputMeaning').value || '').trim();
   const charOk = charVal ? charVal === w.char : null;
   const meaningOk = meaningVal ? checkViet(meaningVal, w) : null;
   const filled = [charOk, meaningOk].filter(v => v !== null);
@@ -1260,10 +1314,6 @@ function checkPinyin() {
 function ratePinyinCard(rating) {
   if (!pyChecked) return;
   const w = pyQueue[pyIndex];
-  const k = String(w.n);
-  pySrsData[k] = sm2(pySrsData[k], rating);
-  pySrsData[k].weight = 4 - rating;
-  saveSrsData(pySrsData, 'pinyin');
   saveWeight('pinyin', w.n, 4 - rating);
 
   if (rating === 0) {
@@ -1273,6 +1323,527 @@ function ratePinyinCard(rating) {
 
   pyIndex++;
   renderPinyinCard();
+}
+
+/* ── Choose Exercise ── */
+let chQueue = [];
+let chIndex = 0;
+let chCorrect = new Set();
+let chWrong = new Set();
+let chChecked = false;
+let chOptions = [];
+let chCorrectIdx = -1;
+
+function startChooseSession() {
+  const lesson = document.getElementById('chLessonFilter').value;
+  const limit = parseInt(document.getElementById('chCardCount').value) || 0;
+  const weights = loadWeights('choose');
+  const filtered = weightedShuffle(words.filter(w => !lesson || w.lesson == lesson), weights);
+  chQueue = limit > 0 ? filtered.slice(0, limit) : filtered;
+  chIndex = 0;
+  chCorrect = new Set();
+  chWrong = new Set();
+  chChecked = false;
+  updateChStats();
+  renderChooseCard();
+}
+
+function updateChStats() {
+  document.getElementById('chCorrect').textContent = chCorrect.size;
+  document.getElementById('chWrong').textContent = chWrong.size;
+  const unique = new Set(chQueue.slice(chIndex).map(w => w.n));
+  document.getElementById('chRemaining').textContent = unique.size;
+}
+
+function pickChooseDistractors(target) {
+  // Prefer same-lesson, different-pos words; fallback to any other word.
+  const sameLesson = words.filter(w => w.n !== target.n && w.lesson === target.lesson);
+  const otherLesson = words.filter(w => w.n !== target.n && w.lesson !== target.lesson);
+  const diffPos = sameLesson.filter(w => w.pos !== target.pos);
+  const samePos = sameLesson.filter(w => w.pos === target.pos);
+  const pool = [...diffPos, ...samePos, ...otherLesson];
+  const picked = [];
+  const seenViet = new Set([target.viet]);
+  for (const w of pool) {
+    if (picked.length >= 3) break;
+    if (seenViet.has(w.viet)) continue;
+    picked.push(w);
+    seenViet.add(w.viet);
+  }
+  return picked;
+}
+
+function renderChooseCard() {
+  const content = document.getElementById('ch-content');
+
+  if (chQueue.length === 0) {
+    content.innerHTML = `
+      <div class="fc-message">
+        <h3>No words available</h3>
+        <p>Select a lesson to start practicing.</p>
+      </div>`;
+    return;
+  }
+
+  if (chIndex >= chQueue.length) {
+    const total = chCorrect.size + chWrong.size;
+    const pct = total > 0 ? Math.round(chCorrect.size / total * 100) : 0;
+    content.innerHTML = `
+      <div class="fc-message">
+        <h3>Session Complete!</h3>
+        <p>Score: <strong>${chCorrect.size}/${total}</strong> (${pct}%)</p>
+        <div class="fc-msg-actions">
+          <button onclick="startChooseSession()">Try Again</button>
+          <button onclick="switchMode('browse')">Back to Browse</button>
+        </div>
+      </div>`;
+    return;
+  }
+
+  const w = chQueue[chIndex];
+  chChecked = false;
+  const distractors = pickChooseDistractors(w);
+  // Build options = [correct, ...distractors], then shuffle
+  const opts = [w, ...distractors];
+  for (let i = opts.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [opts[i], opts[j]] = [opts[j], opts[i]];
+  }
+  chOptions = opts;
+  chCorrectIdx = opts.findIndex(o => o.n === w.n);
+
+  const posHtml = w.pos ? `<span class="badge ${posClass(w.pos)}">${w.pos}</span>` : '';
+
+  content.innerHTML = `
+    <div class="card-area">
+      <div class="card-container entering">
+        <div class="card-face card-front" style="position:relative;height:auto;min-height:0;padding:20px;">
+          <div class="ch-card-char">${w.char} ${audioBtn(w.char)}</div>
+          <div style="text-align:center;margin-bottom:4px;">${posHtml}</div>
+          <div class="ch-options" id="chOptionsList">
+            ${opts.map((o, i) => `<button class="ch-option" id="chOpt${i}" onclick="selectChoose(${i})">${o.viet}</button>`).join('')}
+          </div>
+          <div id="chNextWrap" style="text-align:center;display:none"><button class="ch-next-btn" onclick="nextChooseCard()">Next →</button></div>
+        </div>
+      </div>
+      <div class="rating-hint" id="chRatingHint">Rate how well you knew it — harder words will appear more often</div>
+      <div class="rating-btns" id="chRatingBtns">
+        <button class="rate-btn again" onclick="rateChooseCard(0)">Forgot<span class="rate-desc">Don't remember</span></button>
+        <button class="rate-btn hard" onclick="rateChooseCard(1)">Hard<span class="rate-desc">Barely recalled</span></button>
+        <button class="rate-btn good" onclick="rateChooseCard(2)">Good<span class="rate-desc">Remembered</span></button>
+        <button class="rate-btn easy" onclick="rateChooseCard(3)">Easy<span class="rate-desc">Knew instantly</span></button>
+      </div>
+      <div class="fc-progress">Card ${chCorrect.size + chWrong.size + 1} of ${new Set(chQueue.map(w => w.n)).size}</div>
+      <div class="fc-keyboard-hint">1-4 to choose &middot; 1-4 after to rate</div>
+    </div>`;
+
+  setTimeout(() => {
+    const c = document.querySelector('#ch-content .card-container');
+    if (c) c.classList.remove('entering');
+  }, 300);
+}
+
+function selectChoose(idx) {
+  if (chChecked) return;
+  chChecked = true;
+  const w = chQueue[chIndex];
+  const isCorrect = idx === chCorrectIdx;
+
+  // Disable all options
+  chOptions.forEach((_, i) => {
+    const btn = document.getElementById('chOpt' + i);
+    if (btn) btn.disabled = true;
+  });
+  // Highlight
+  const chosen = document.getElementById('chOpt' + idx);
+  const correctBtn = document.getElementById('chOpt' + chCorrectIdx);
+  if (isCorrect) {
+    chosen.classList.add('correct');
+    chosen.innerHTML = '✓ ' + chosen.innerHTML;
+    chCorrect.add(w.n);
+    chWrong.delete(w.n);
+  } else {
+    chosen.classList.add('wrong');
+    if (correctBtn) correctBtn.classList.add('correct');
+    chWrong.add(w.n);
+  }
+  updateChStats();
+
+  if (isCorrect) {
+    // Auto-advance after 800ms with default weight=2 (Good)
+    setTimeout(() => {
+      if (chChecked) {
+        saveWeight('choose', w.n, 2);
+        chIndex++;
+        renderChooseCard();
+      }
+    }, 800);
+  } else {
+    // Wait for rating or Next
+    const ratingBtns = document.getElementById('chRatingBtns');
+    const ratingHint = document.getElementById('chRatingHint');
+    const nextWrap = document.getElementById('chNextWrap');
+    if (ratingBtns) ratingBtns.classList.add('visible');
+    if (ratingHint) ratingHint.classList.add('visible');
+    if (nextWrap) nextWrap.style.display = 'block';
+  }
+}
+
+function rateChooseCard(rating) {
+  if (!chChecked) return;
+  const w = chQueue[chIndex];
+  saveWeight('choose', w.n, 4 - rating);
+
+  if (rating === 0) {
+    const insertAt = Math.min(chIndex + 5, chQueue.length);
+    chQueue.splice(insertAt, 0, w);
+  }
+
+  chIndex++;
+  updateChStats();
+  renderChooseCard();
+}
+
+function nextChooseCard() {
+  if (!chChecked) return;
+  const w = chQueue[chIndex];
+  // No explicit rating → save Forgot weight since user got it wrong
+  saveWeight('choose', w.n, 4);
+  const insertAt = Math.min(chIndex + 5, chQueue.length);
+  chQueue.splice(insertAt, 0, w);
+  chIndex++;
+  updateChStats();
+  renderChooseCard();
+}
+
+/* ── Listen Exercise ── */
+let lnQueue = [];
+let lnIndex = 0;
+let lnCorrect = new Set();
+let lnWrong = new Set();
+let lnChecked = false;
+let lnOptions = [];
+let lnCorrectIdx = -1;
+let lnRated = false;
+
+function startListenSession() {
+  const lesson = document.getElementById('lnLessonFilter').value;
+  const limit = parseInt(document.getElementById('lnCardCount').value) || 0;
+  const weights = loadWeights('audio');
+  const filtered = weightedShuffle(words.filter(w => !lesson || w.lesson == lesson), weights);
+  lnQueue = limit > 0 ? filtered.slice(0, limit) : filtered;
+  lnIndex = 0;
+  lnCorrect = new Set();
+  lnWrong = new Set();
+  lnChecked = false;
+  lnRated = false;
+  updateLnStats();
+  renderListenCard();
+}
+
+function updateLnStats() {
+  document.getElementById('lnCorrect').textContent = lnCorrect.size;
+  document.getElementById('lnWrong').textContent = lnWrong.size;
+  const unique = new Set(lnQueue.slice(lnIndex).map(w => w.n));
+  document.getElementById('lnRemaining').textContent = unique.size;
+}
+
+function replayListenAudio() {
+  const w = lnQueue[lnIndex];
+  if (w) speakZh(w.char);
+}
+
+function renderListenCard() {
+  const content = document.getElementById('ln-content');
+
+  if (lnQueue.length === 0) {
+    content.innerHTML = `
+      <div class="fc-message">
+        <h3>No words available</h3>
+        <p>Select a lesson to start practicing.</p>
+      </div>`;
+    return;
+  }
+
+  if (lnIndex >= lnQueue.length) {
+    const total = lnCorrect.size + lnWrong.size;
+    const pct = total > 0 ? Math.round(lnCorrect.size / total * 100) : 0;
+    content.innerHTML = `
+      <div class="fc-message">
+        <h3>Session Complete!</h3>
+        <p>Score: <strong>${lnCorrect.size}/${total}</strong> (${pct}%)</p>
+        <div class="fc-msg-actions">
+          <button onclick="startListenSession()">Try Again</button>
+          <button onclick="switchMode('browse')">Back to Browse</button>
+        </div>
+      </div>`;
+    return;
+  }
+
+  const w = lnQueue[lnIndex];
+  lnChecked = false;
+  lnRated = false;
+  const distractors = pickChooseDistractors(w);
+  const opts = [w, ...distractors];
+  for (let i = opts.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [opts[i], opts[j]] = [opts[j], opts[i]];
+  }
+  lnOptions = opts;
+  lnCorrectIdx = opts.findIndex(o => o.n === w.n);
+
+  content.innerHTML = `
+    <div class="card-area">
+      <div class="card-container entering">
+        <div class="card-face card-front" style="position:relative;height:auto;min-height:0;padding:20px;">
+          <button class="ln-audio-btn" onclick="replayListenAudio()" title="Replay (Space)">🔊</button>
+          <div class="ch-options" id="lnOptionsList">
+            ${opts.map((o, i) => `<button class="ch-option" id="lnOpt${i}" onclick="selectListen(${i})">${o.viet}</button>`).join('')}
+          </div>
+          <div class="ln-reveal" id="lnReveal"></div>
+          <div id="lnNextWrap" style="text-align:center;display:none;margin-top:12px"><button class="ch-next-btn" onclick="nextListenCard()">Next →</button></div>
+        </div>
+      </div>
+      <div class="rating-hint" id="lnRatingHint">Rate how well you knew it — harder words will appear more often</div>
+      <div class="rating-btns" id="lnRatingBtns">
+        <button class="rate-btn again" onclick="rateListenCard(0)">Forgot<span class="rate-desc">Don't remember</span></button>
+        <button class="rate-btn hard" onclick="rateListenCard(1)">Hard<span class="rate-desc">Barely recalled</span></button>
+        <button class="rate-btn good" onclick="rateListenCard(2)">Good<span class="rate-desc">Remembered</span></button>
+        <button class="rate-btn easy" onclick="rateListenCard(3)">Easy<span class="rate-desc">Knew instantly</span></button>
+      </div>
+      <div class="fc-progress">Card ${lnCorrect.size + lnWrong.size + 1} of ${new Set(lnQueue.map(w => w.n)).size}</div>
+      <div class="fc-keyboard-hint">Space replays &middot; 1-4 to choose &middot; 1-4 after to rate</div>
+    </div>`;
+
+  setTimeout(() => {
+    const c = document.querySelector('#ln-content .card-container');
+    if (c) c.classList.remove('entering');
+    speakZh(w.char);
+  }, 300);
+}
+
+function selectListen(idx) {
+  if (lnChecked) return;
+  lnChecked = true;
+  const w = lnQueue[lnIndex];
+  const isCorrect = idx === lnCorrectIdx;
+
+  lnOptions.forEach((_, i) => {
+    const btn = document.getElementById('lnOpt' + i);
+    if (btn) btn.disabled = true;
+  });
+  const chosen = document.getElementById('lnOpt' + idx);
+  const correctBtn = document.getElementById('lnOpt' + lnCorrectIdx);
+  if (isCorrect) {
+    chosen.classList.add('correct');
+    chosen.innerHTML = '✓ ' + chosen.innerHTML;
+    lnCorrect.add(w.n);
+    lnWrong.delete(w.n);
+  } else {
+    chosen.classList.add('wrong');
+    if (correctBtn) correctBtn.classList.add('correct');
+    lnWrong.add(w.n);
+    const reveal = document.getElementById('lnReveal');
+    if (reveal) {
+      reveal.innerHTML = `<span class="char">${w.char}</span><span class="pinyin">${w.pinyin}</span>`;
+      reveal.classList.add('visible');
+    }
+  }
+  updateLnStats();
+
+  const ratingBtns = document.getElementById('lnRatingBtns');
+  const ratingHint = document.getElementById('lnRatingHint');
+  if (ratingBtns) ratingBtns.classList.add('visible');
+  if (ratingHint) ratingHint.classList.add('visible');
+
+  if (isCorrect) {
+    setTimeout(() => {
+      // Auto-advance: treat as Good (weight=2) if user didn't manually rate
+      if (!lnRated) {
+        saveWeight('audio', w.n, 2);
+        lnRated = true;
+        lnIndex++;
+        updateLnStats();
+        renderListenCard();
+      }
+    }, 900);
+  } else {
+    const nextWrap = document.getElementById('lnNextWrap');
+    if (nextWrap) nextWrap.style.display = 'block';
+  }
+}
+
+function rateListenCard(rating) {
+  if (!lnChecked || lnRated) return;
+  const w = lnQueue[lnIndex];
+  lnRated = true;
+  saveWeight('audio', w.n, 4 - rating);
+
+  if (rating === 0) {
+    const insertAt = Math.min(lnIndex + 5, lnQueue.length);
+    lnQueue.splice(insertAt, 0, w);
+  }
+
+  lnIndex++;
+  updateLnStats();
+  renderListenCard();
+}
+
+function nextListenCard() {
+  if (!lnChecked || lnRated) return;
+  const w = lnQueue[lnIndex];
+  lnRated = true;
+  saveWeight('audio', w.n, 4);
+  const insertAt = Math.min(lnIndex + 5, lnQueue.length);
+  lnQueue.splice(insertAt, 0, w);
+  lnIndex++;
+  updateLnStats();
+  renderListenCard();
+}
+
+/* ── Match Mode (Pairs Memory Game) ── */
+let mtTiles = [];         // [{id, wordN, side:'char'|'viet', state:'down'|'up'|'matched'}]
+let mtFirstIdx = null;    // tile index of first flipped card this turn
+let mtLocked = false;     // when waiting during non-match reveal
+let mtMoves = 0;
+let mtMatchedCount = 0;
+
+function combinedWordWeight(wordN) {
+  // Max weight across all rating-keyed tabs — prioritize weakest words
+  const keys = ['char', 'meaning', 'pinyin', 'choose', 'audio'];
+  let max = 2;
+  for (const k of keys) {
+    const w = loadWeights(k)[String(wordN)];
+    if (w !== undefined && w > max) max = w;
+  }
+  return max;
+}
+
+function startMatchSession() {
+  const lesson = document.getElementById('mtLessonFilter').value;
+  const pool = words.filter(w => !lesson || w.lesson == lesson);
+  if (pool.length < 4) {
+    document.getElementById('mt-content').innerHTML = `
+      <div class="fc-message">
+        <h3>Not enough words</h3>
+        <p>Need at least 4 words — choose another lesson or "All lessons".</p>
+      </div>`;
+    return;
+  }
+  // Sort by combined weight desc (most difficult first), with random jitter for ties
+  const ranked = pool.slice().map(w => ({ w, score: combinedWordWeight(w.n) + Math.random() * 0.5 }));
+  ranked.sort((a, b) => b.score - a.score);
+  const chosen = ranked.slice(0, 4).map(x => x.w);
+
+  // Build 8 tiles: char side + viet side for each word
+  const tiles = [];
+  chosen.forEach(w => {
+    tiles.push({ wordN: w.n, side: 'char', state: 'down' });
+    tiles.push({ wordN: w.n, side: 'viet', state: 'down' });
+  });
+  // Shuffle
+  for (let i = tiles.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [tiles[i], tiles[j]] = [tiles[j], tiles[i]];
+  }
+  tiles.forEach((t, i) => t.id = i);
+
+  mtTiles = tiles;
+  mtFirstIdx = null;
+  mtLocked = false;
+  mtMoves = 0;
+  mtMatchedCount = 0;
+  updateMtStats();
+  renderMatch();
+}
+
+function updateMtStats() {
+  document.getElementById('mtMoves').textContent = mtMoves;
+  document.getElementById('mtMatched').textContent = mtMatchedCount;
+}
+
+function renderMatch() {
+  const content = document.getElementById('mt-content');
+
+  if (mtTiles.length === 0) {
+    content.innerHTML = `
+      <div class="fc-message">
+        <h3>No game in progress</h3>
+        <p>Select a lesson to start.</p>
+      </div>`;
+    return;
+  }
+
+  if (mtMatchedCount === 4) {
+    content.innerHTML = `
+      <div class="fc-message">
+        <h3>Matched all 4 pairs! 🎉</h3>
+        <p>Moves: <strong>${mtMoves}</strong></p>
+        <div class="fc-msg-actions">
+          <button class="primary" onclick="startMatchSession()">New Set</button>
+          <button onclick="switchMode('browse')">Back to Browse</button>
+        </div>
+      </div>`;
+    return;
+  }
+
+  const tilesHtml = mtTiles.map((t, i) => {
+    const w = words.find(x => x.n === t.wordN);
+    if (t.state === 'down') {
+      return `<div class="mt-tile face-down" onclick="flipMatchTile(${i})">?</div>`;
+    }
+    const inner = t.side === 'char'
+      ? `<div class="mt-char">${w.char}</div>`
+      : `<div class="mt-viet">${w.viet}</div>`;
+    const cls = t.state === 'matched' ? 'matched' : 'face-up';
+    const onClick = t.state === 'up' ? '' : '';
+    return `<div class="mt-tile ${cls}" ${onClick}>${inner}</div>`;
+  }).join('');
+
+  content.innerHTML = `<div class="mt-grid">${tilesHtml}</div>`;
+}
+
+function flipMatchTile(idx) {
+  if (mtLocked) return;
+  const tile = mtTiles[idx];
+  if (!tile || tile.state !== 'down') return;
+  tile.state = 'up';
+
+  if (mtFirstIdx === null) {
+    mtFirstIdx = idx;
+    renderMatch();
+    return;
+  }
+  if (mtFirstIdx === idx) return;
+
+  // Second card revealed
+  mtMoves++;
+  const first = mtTiles[mtFirstIdx];
+  const second = tile;
+  renderMatch();
+  updateMtStats();
+
+  if (first.wordN === second.wordN && first.side !== second.side) {
+    // Match
+    first.state = 'matched';
+    second.state = 'matched';
+    mtMatchedCount++;
+    mtFirstIdx = null;
+    const w = words.find(x => x.n === first.wordN);
+    if (w) speakZh(w.char);
+    updateMtStats();
+    renderMatch();
+  } else {
+    // No match — flip both back after 900ms
+    mtLocked = true;
+    setTimeout(() => {
+      first.state = 'down';
+      second.state = 'down';
+      mtFirstIdx = null;
+      mtLocked = false;
+      renderMatch();
+    }, 900);
+  }
 }
 
 /* ── Keyboard Shortcuts ── */
@@ -1299,6 +1870,15 @@ document.addEventListener('keydown', (e) => {
       e.preventDefault();
       rateWritingCard(parseInt(e.key) - 1);
     }
+  } else if (currentMode === 'choose') {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+    if (!chChecked && e.key >= '1' && e.key <= '4') {
+      e.preventDefault();
+      selectChoose(parseInt(e.key) - 1);
+    } else if (chChecked && e.key >= '1' && e.key <= '4') {
+      e.preventDefault();
+      rateChooseCard(parseInt(e.key) - 1);
+    }
   } else if (currentMode === 'pinyin') {
     if (e.key === 'Enter' && !pyChecked) {
       e.preventDefault();
@@ -1309,6 +1889,20 @@ document.addEventListener('keydown', (e) => {
     if (pyChecked && e.key >= '1' && e.key <= '4') {
       e.preventDefault();
       ratePinyinCard(parseInt(e.key) - 1);
+    }
+  } else if (currentMode === 'listen') {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+    if (e.key === ' ' || e.code === 'Space') {
+      e.preventDefault();
+      replayListenAudio();
+      return;
+    }
+    if (!lnChecked && e.key >= '1' && e.key <= '4') {
+      e.preventDefault();
+      selectListen(parseInt(e.key) - 1);
+    } else if (lnChecked && !lnRated && e.key >= '1' && e.key <= '4') {
+      e.preventDefault();
+      rateListenCard(parseInt(e.key) - 1);
     }
   }
 });

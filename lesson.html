@@ -87,6 +87,11 @@ tbody td { padding: 8px 10px; vertical-align: middle; }
 /* Empty */
 .empty-msg { padding: 32px; text-align: center; color: var(--color-text-tertiary); font-size: 14px; }
 
+/* Hoverable/tappable abbreviation tooltips */
+.abbr { display: inline-block; cursor: help; border-bottom: 1px dotted var(--color-text-tertiary); position: relative; outline: none; }
+.abbr::after { content: attr(data-tip); position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 6px 10px; border-radius: 6px; white-space: nowrap; font-size: 12px; font-weight: 400; pointer-events: none; opacity: 0; visibility: hidden; transition: opacity 0.15s, visibility 0.15s; z-index: 9999; }
+.abbr:hover::after, .abbr:focus::after, .abbr.active::after { opacity: 1; visibility: visible; }
+
 @media (max-width: 600px) {
   .wrap { padding: 0.75rem 0.5rem; }
   .app-header { padding: 0.75rem; }
@@ -130,6 +135,27 @@ tbody td { padding: 8px 10px; vertical-align: middle; }
 <script>
 let currentLesson = 1;
 let currentTab = 'vocabulary';
+
+const ABBR_TOOLTIPS = {
+  'CN': 'Chủ ngữ (Subject)',
+  'VN': 'Vị ngữ (Predicate)',
+  'TN': 'Tân ngữ (Object)',
+  'DT': 'Danh từ (Noun)',
+  'TT': 'Tính từ (Adjective)',
+  'ĐT': 'Động từ (Verb)',
+  'ĐN': 'Định ngữ (Modifier)',
+  'LT': 'Lượng từ (Measure word)',
+};
+function addAbbrTooltips(html) {
+  if (!html) return html;
+  return String(html).replace(/(?<![A-Za-zĐđ])(CN|VN|TN|DT|TT|ĐT|ĐN|LT)(?![A-Za-zĐđ])/g, (m, a) =>
+    `<span class="abbr" data-tip="${ABBR_TOOLTIPS[a]}" tabindex="0">${a}</span>`);
+}
+document.addEventListener('click', e => {
+  const abbr = e.target.closest && e.target.closest('.abbr');
+  document.querySelectorAll('.abbr.active').forEach(el => { if (el !== abbr) el.classList.remove('active'); });
+  if (abbr) { abbr.classList.toggle('active'); e.stopPropagation(); }
+}, true);
 
 function selectLesson(n) {
   currentLesson = n;
@@ -175,7 +201,7 @@ function render() {
   const grammarRows = lessonPatterns.map((p, i) => `
     <tr class="pattern-row open" id="lrow-${p.id}" onclick="toggleDetail('${p.id}')">
       <td style="color:var(--color-text-tertiary); font-size:13px;">${i + 1}</td>
-      <td><div class="gr-structure">${p.structure}</div></td>
+      <td><div class="gr-structure">${addAbbrTooltips(p.structure)}</div></td>
       <td><div class="gr-title">${p.title}</div></td>
       <td><span class="diff-badge ${p.difficulty === 'beginner-1' ? 'diff-1' : 'diff-2'}">${p.difficulty === 'beginner-1' ? 'Beginner 1' : 'Beginner 2'}</span></td>
       <td style="color:var(--color-text-tertiary); font-size:12px;" id="lchev-${p.id}">▾</td>
@@ -185,7 +211,7 @@ function render() {
         <div class="detail-panel">
           <div class="detail-section">
             <h4>Explanation</h4>
-            <div class="detail-explanation">${p.explanation}</div>
+            <div class="detail-explanation">${addAbbrTooltips(p.explanation)}</div>
           </div>
           <div class="detail-section">
             <h4>Examples</h4>
@@ -196,7 +222,7 @@ function render() {
           <div class="detail-section">
             <h4>Notes</h4>
             <ul class="detail-notes">
-              ${p.notes.map(n => `<li>${n}</li>`).join('')}
+              ${p.notes.map(n => `<li>${addAbbrTooltips(n)}</li>`).join('')}
             </ul>
           </div>
         </div>

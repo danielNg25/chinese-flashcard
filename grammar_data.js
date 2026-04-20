@@ -10,14 +10,13 @@ const grammarPatterns = [
     id: "B1-NP2", lesson: 1, difficulty: "beginner-1",
     title: "Câu chữ 是 — Câu Vị Ngữ Danh Từ",
     structure: "CN + 是/不是 + DT",
-    explanation: "Khi vị ngữ là danh từ, 是 bắt buộc phải có — không được bỏ như tiếng Anh ('She teacher' ✗). Phủ định dùng 不是.",
+    explanation: "Khi vị ngữ là danh từ, 是 bắt buộc phải có — không thể lược bỏ. Phủ định dùng 不是. Câu hỏi: thêm 吗 ở cuối (xem B1-NP3).<br><br><b>Công thức:</b><br>(1) CN + 是 + DT<br>(2) CN + 不是 + DT",
     examples: [
       { zh: "她是老师。", vi: "Cô ấy là giáo viên." },
       { zh: "我不是学生。", vi: "Tôi không phải là học sinh." },
       { zh: "你是留学生吗？", vi: "Bạn có phải là lưu học sinh không?" },
     ],
     notes: [
-      "Textbook định nghĩa 2 công thức chuẩn: (1) S + 是 + N, (2) S + 不是 + N. Câu hỏi: xem B1-NP3.",
       "是 KHÔNG dùng trước tính từ: 她是漂亮 ✗ → 她很漂亮 ✓",
       "Phủ định: 不是 (một khối), không phải 不是是",
     ],
@@ -26,7 +25,7 @@ const grammarPatterns = [
     id: "B1-NP3", lesson: 1, difficulty: "beginner-1",
     title: "Câu hỏi 吗",
     structure: "Câu khẳng định + 吗？",
-    explanation: "Thêm 吗 vào cuối câu khẳng định để tạo câu hỏi có/không. Trật tự từ không thay đổi — không cần đảo ngữ như tiếng Anh. Có 3 loại tùy vị ngữ: (1) vị ngữ DT — S+是+N+吗, (2) vị ngữ ĐT — S+V+O+吗, (3) vị ngữ TT — S+Adj+吗.",
+    explanation: "Thêm 吗 vào cuối câu khẳng định để tạo câu hỏi có/không. Trật tự từ không thay đổi — không cần đảo ngữ. Có 3 loại tùy vị ngữ: danh từ, động từ, hoặc tính từ.<br><br><b>Công thức:</b><br>(1) CN + 是 + DT + 吗？<br>(2) CN + ĐT + TN + 吗？<br>(3) CN + TT + 吗？",
     examples: [
       { zh: "你是老师吗？", vi: "Bạn có phải là giáo viên không? (vị ngữ DT)" },
       { zh: "他叫大卫吗？", vi: "Anh ấy có tên là David không? (vị ngữ ĐT)" },
@@ -57,7 +56,7 @@ const grammarPatterns = [
     id: "B1-NP5", lesson: 1, difficulty: "beginner-1",
     title: "很 trước tính từ",
     structure: "CN + 很 + TT",
-    explanation: "Tính từ làm vị ngữ bắt buộc phải có phó từ đứng trước (thường là 很). Nếu thiếu, câu mang nghĩa so sánh ngầm — nghe rất tự nhiên.",
+    explanation: "Tính từ làm vị ngữ bắt buộc phải có phó từ đứng trước (thường là 很). Nếu bỏ 很, câu nghe KHÔNG hoàn chỉnh và người Trung sẽ hiểu thành câu so sánh ngầm — ví dụ 她高兴 nghe như 'cô ấy vui HƠN ai đó', không phải 'cô ấy vui'.",
     examples: [
       { zh: "我很高兴。", vi: "Tôi rất vui." },
       { zh: "她很漂亮。", vi: "Cô ấy rất đẹp." },
@@ -65,7 +64,7 @@ const grammarPatterns = [
     ],
     notes: [
       "很 ở đây không nhất thiết mang nghĩa 'rất' — chỉ là từ đệm cú pháp bắt buộc",
-      "她高兴 nghe như so sánh: 'cô ấy vui hơn (ai đó)' ✗",
+      "她高兴 (không có 很) → nghe không tự nhiên, mang nghĩa so sánh: 'cô ấy vui HƠN người khác'",
       "Sai phổ biến: 她是高兴 ✗ — 是 không đứng trước tính từ",
     ],
   },
@@ -103,15 +102,15 @@ const grammarPatterns = [
     id: "B2-NP3", lesson: 2, difficulty: "beginner-2",
     title: "Phó từ 也 — Cũng",
     structure: "CN + 也 + VN",
-    explanation: "也 (cũng) phải đặt TRƯỚC động từ/tính từ, không được đặt cuối câu như tiếng Việt.",
+    explanation: "也 (cũng) phải đặt TRƯỚC động từ/tính từ (giống tiếng Việt: 'Tôi cũng là học sinh'). Không đặt 也 ở cuối câu như 'too' trong tiếng Anh.",
     examples: [
       { zh: "我也是学生。", vi: "Tôi cũng là học sinh." },
       { zh: "她也很高兴。", vi: "Cô ấy cũng rất vui." },
       { zh: "我也认识他。", vi: "Tôi cũng quen biết anh ấy." },
     ],
     notes: [
-      "Lỗi phổ biến của người Việt: 我是学生也 ✗ (đặt cuối kiểu tiếng Việt)",
-      "Đúng: 我也是学生 ✓ — 也 đứng sau CN, trước ĐT/TT",
+      "Lỗi phổ biến (bị tiếng Anh ảnh hưởng): 我是学生也 ✗ (giống 'I am a student too')",
+      "Đúng: 我也是学生 ✓ — 也 đứng sau CN, trước ĐT/TT (giống tiếng Việt: 'Tôi cũng là học sinh')",
     ],
   },
   {
@@ -253,7 +252,7 @@ const grammarPatterns = [
   {
     id: "CB-NP1", lesson: 3, difficulty: "beginner-2",
     title: "Lượng từ 本",
-    structure: "Số / ĐT chỉ định + 本 + DT",
+    structure: "Số / Đại từ chỉ định + 本 + DT",
     explanation: "本 là lượng từ dùng cho sách, vở, tạp chí. Lượng từ bắt buộc phải có giữa số từ/chỉ định từ và danh từ — không thể bỏ qua như tiếng Việt.",
     examples: [
       { zh: "一本书", vi: "một cuốn sách" },
@@ -321,7 +320,7 @@ const grammarQuestions = [
     hanVietHint: null },
   { id: "fb-006", grammarId: "B2-NP3", type: "fill-blank", lesson: 2, difficulty: "beginner-2",
     prompt: "我___是中国人。", options: ["也", "很", "吗", "们"], answer: "也",
-    explanation: "也 (cũng) phải đặt trước động từ/tính từ, KHÔNG đặt cuối câu như tiếng Việt.",
+    explanation: "也 (cũng) phải đặt trước động từ/tính từ (giống tiếng Việt 'cũng'). Không đặt ở cuối câu kiểu tiếng Anh 'too'.",
     hanVietHint: "也 → DÃ (cũng vậy)" },
   { id: "fb-007", grammarId: "B2-NP4", type: "fill-blank", lesson: 2, difficulty: "beginner-2",
     prompt: "我是越南人，你___？", options: ["呢", "吗", "的", "也"], answer: "呢",
