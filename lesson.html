@@ -61,9 +61,6 @@ tbody td { padding: 8px 10px; vertical-align: middle; }
 .gr-table tbody td { padding: 8px 10px; vertical-align: middle; }
 .gr-structure { font-size: 15px; font-weight: 500; color: var(--color-text-primary); }
 .gr-title { font-size: 13px; color: var(--color-text-secondary); margin-top: 2px; }
-.diff-badge { display: inline-block; font-size: 11px; padding: 2px 7px; border-radius: 99px; font-weight: 500; }
-.diff-1 { background: #EAF3DE; color: #27500A; }
-.diff-2 { background: #FAEEDA; color: #633806; }
 
 /* Expandable grammar detail */
 .detail-row td { padding: 0; border-bottom: 0.5px solid var(--color-border-tertiary); }
@@ -155,6 +152,46 @@ tbody td { padding: 8px 10px; vertical-align: middle; }
 .q-complete button.primary { background: #27500A; color: #fff; border-color: #27500A; }
 .q-complete button.primary:hover { background: #1e3d08; }
 
+/* Quiz typing rows (Character/Meaning/Pinyin) */
+.q-typing-group { width: 100%; display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+.q-typing-row { display: flex; align-items: center; gap: 8px; }
+.q-typing-row label { font-size: 12px; color: var(--color-text-tertiary); min-width: 70px; text-align: right; }
+.q-typing-input { flex: 1; padding: 8px 12px; border: 1.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); font-size: 15px; font-family: inherit; background: var(--color-background-primary); color: var(--color-text-primary); outline: none; transition: border-color 0.2s; }
+.q-typing-input:focus { border-color: #0C447C; }
+.q-typing-input:disabled { opacity: 0.6; cursor: default; }
+.q-typing-input.correct { border-color: #27500A; background: #EAF3DE; }
+.q-typing-input.wrong { border-color: #72243E; background: #FBEAF0; }
+
+/* Quiz Listen button */
+.q-listen-btn { display: flex; align-items: center; justify-content: center; width: 84px; height: 84px; margin: 12px auto 16px; padding: 0; border: 2px solid #0C447C; border-radius: 50%; background: #E6F1FB; color: #0C447C; font-size: 36px; cursor: pointer; transition: transform 0.1s, background 0.15s; }
+.q-listen-btn:hover { background: #D0E3F5; }
+.q-listen-btn:active { transform: scale(0.96); }
+
+/* Quiz error-correction tokens */
+.q-tokens { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; padding: 12px 0 16px; }
+.q-token { padding: 8px 12px; border: 1.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); background: var(--color-background-primary); color: var(--color-text-primary); font-size: 20px; font-family: inherit; cursor: pointer; transition: all 0.15s; }
+.q-token:hover:not(:disabled):not(.correct):not(.wrong) { background: #FAEEDA; border-color: #633806; color: #633806; }
+.q-token.correct { background: #EAF3DE; border-color: #27500A; color: #27500A; font-weight: 600; }
+.q-token.wrong { background: #FBEAF0; border-color: #72243E; color: #72243E; font-weight: 600; }
+.q-token:disabled { cursor: default; }
+
+/* Quiz pattern-match grid */
+.q-pm-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+.q-pm-col { display: flex; flex-direction: column; gap: 8px; }
+.q-pm-btn { padding: 10px 12px; border: 1.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); background: var(--color-background-primary); color: var(--color-text-primary); font-size: 14px; font-family: inherit; cursor: pointer; text-align: left; line-height: 1.4; transition: all 0.15s; }
+.q-pm-btn:hover:not(:disabled):not(.matched):not(.selected):not(.wrong-flash) { background: var(--color-background-secondary); border-color: #0C447C; }
+.q-pm-btn.selected { background: #E6F1FB; border-color: #0C447C; color: #0C447C; font-weight: 600; }
+.q-pm-btn.matched { background: #EAF3DE; border-color: #27500A; color: #27500A; cursor: default; }
+.q-pm-btn.wrong-flash { background: #FBEAF0; border-color: #72243E; color: #72243E; }
+.q-pm-btn:disabled { cursor: default; }
+
+/* Quiz translation input */
+.q-tr-input { width: 100%; padding: 10px 14px; border: 1.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); font-size: 17px; font-family: inherit; background: var(--color-background-primary); color: var(--color-text-primary); outline: none; transition: border-color 0.2s; margin-top: 4px; }
+.q-tr-input:focus { border-color: #0C447C; }
+.q-tr-input:disabled { opacity: 0.8; cursor: default; }
+.q-tr-input.correct { border-color: #27500A; background: #EAF3DE; }
+.q-tr-input.wrong { border-color: #72243E; background: #FBEAF0; }
+
 @media (max-width: 600px) {
   .wrap { padding: 0.75rem 0.5rem; }
   .app-header { padding: 0.75rem; }
@@ -170,6 +207,13 @@ tbody td { padding: 8px 10px; vertical-align: middle; }
   .q-options.grid-2 { grid-template-columns: 1fr; }
   .q-option { font-size: 16px; padding: 14px 12px; }
   .q-chip { font-size: 16px; padding: 8px 14px; }
+  .q-typing-row label { min-width: 60px; font-size: 11px; }
+  .q-typing-input { font-size: 16px; padding: 10px 12px; }
+  .q-token { font-size: 18px; padding: 8px 10px; }
+  .q-listen-btn { width: 72px; height: 72px; font-size: 30px; }
+  .q-pm-grid { gap: 6px; }
+  .q-pm-btn { font-size: 13px; padding: 8px 10px; }
+  .q-tr-input { font-size: 16px; padding: 10px 12px; }
 }
 </style>
 
@@ -184,10 +228,6 @@ tbody td { padding: 8px 10px; vertical-align: middle; }
 
 <div class="wrap">
   <div class="lesson-selector">
-    <button class="lesson-btn" data-lesson="1" onclick="selectLesson(1)">Lesson 1</button>
-    <button class="lesson-btn" data-lesson="2" onclick="selectLesson(2)">Lesson 2</button>
-    <button class="lesson-btn" data-lesson="3" onclick="selectLesson(3)">Lesson 3</button>
-    <button class="lesson-btn" data-lesson="4" onclick="selectLesson(4)">Lesson 4</button>
   </div>
 
   <div class="inner-tabs">
@@ -276,11 +316,10 @@ function render() {
       <td style="color:var(--color-text-tertiary); font-size:13px;">${i + 1}</td>
       <td><div class="gr-structure">${addAbbrTooltips(p.structure)}</div></td>
       <td><div class="gr-title">${p.title}</div></td>
-      <td><span class="diff-badge ${p.difficulty === 'beginner-1' ? 'diff-1' : 'diff-2'}">${p.difficulty === 'beginner-1' ? 'Beginner 1' : 'Beginner 2'}</span></td>
       <td style="color:var(--color-text-tertiary); font-size:12px;" id="lchev-${p.id}">▾</td>
     </tr>
     <tr class="detail-row" id="ldetail-${p.id}">
-      <td colspan="5">
+      <td colspan="4">
         <div class="detail-panel">
           <div class="detail-section">
             <h4>Explanation</h4>
@@ -310,7 +349,7 @@ function render() {
 
   document.getElementById('grammar-view').innerHTML = lessonPatterns.length ? `
     <table class="gr-table">
-      <thead><tr><th>#</th><th>Structure</th><th>Grammar Point</th><th>Level</th><th></th></tr></thead>
+      <thead><tr><th>#</th><th>Structure</th><th>Grammar Point</th><th></th></tr></thead>
       <tbody>${grammarRows}</tbody>
     </table>` : '<div class="empty-msg">No grammar patterns for this lesson yet.</div>';
 }
@@ -326,6 +365,9 @@ function toggleDetail(id) {
 }
 
 /* ── Quiz mode ── */
+const QUIZ_VOCAB_TYPES = ['vocab-character', 'vocab-meaning', 'vocab-pinyin', 'vocab-choose', 'vocab-listen'];
+const QUIZ_GRAMMAR_TYPES = ['fill-blank', 'sentence-builder', 'error-correction', 'pattern-match', 'translation'];
+
 let quizLessonFilter = '';   // '' = all, or "1"-"4"
 let quizCount = 20;          // 20 | 30 | 50 | 100
 let quizQueue = [];
@@ -333,8 +375,10 @@ let quizIndex = 0;
 let quizCorrect = 0;
 let quizActive = false;
 let quizChecked = false;
-let quizAnswered = false;    // user has picked/arranged something for current Q
-let quizSbState = null;      // sentence-builder: { chips:[{id,text,inAnswer:bool}], order:[ids in answer] }
+let quizAnswered = false;
+let quizSbState = null;      // sentence-builder
+let quizPmState = null;      // pattern-match: { leftSel, rightSel, matched: Set<idx>, wrongAttempts, correctMap }
+let quizTokensDisabled = false;  // error-correction
 
 function shuffleArr(arr) {
   const a = arr.slice();
@@ -343,6 +387,46 @@ function shuffleArr(arr) {
     [a[i], a[j]] = [a[j], a[i]];
   }
   return a;
+}
+
+/* Helpers ported from hanyu.html for typing + listen questions */
+function normalizePinyin(str) {
+  return str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, '').replace(/ü/g, 'v').trim();
+}
+function normalizeViet(str) {
+  return str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').replace(/[^a-z0-9\s]/g, '').trim();
+}
+function checkPinyinMatch(userAnswer, word) {
+  const parts = word.pinyin.split('/').map(s => s.trim());
+  const nu = normalizePinyin(userAnswer);
+  return userAnswer.length > 0 && parts.some(p => normalizePinyin(p) === nu);
+}
+function checkViet(userAnswer, word) {
+  const parts = word.viet.split(',').map(s => s.replace(/\(.*?\)/g, '').trim()).filter(Boolean);
+  const nu = normalizeViet(userAnswer);
+  return userAnswer.length > 0 && parts.some(p => {
+    const np = normalizeViet(p);
+    return nu === np || np.includes(nu) || nu.includes(np);
+  });
+}
+function speakZh(text) {
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'zh-CN';
+  u.rate = 0.85;
+  u.pitch = 1;
+  const voices = speechSynthesis.getVoices();
+  const zhVoice = voices.find(v => v.lang === 'zh-CN' && v.name.includes('Google')) ||
+                  voices.find(v => v.lang === 'zh-CN' && v.name.includes('Ting')) ||
+                  voices.find(v => v.lang.startsWith('zh-CN')) ||
+                  voices.find(v => v.lang.startsWith('zh'));
+  if (zhVoice) u.voice = zhVoice;
+  speechSynthesis.cancel();
+  speechSynthesis.speak(u);
+}
+if (typeof speechSynthesis !== 'undefined') speechSynthesis.getVoices();
+
+function normalizeZhText(str) {
+  return (str || '').replace(/[。？！，、\s]+/g, '').trim();
 }
 
 function renderQuizIntro() {
@@ -355,10 +439,6 @@ function renderQuizIntro() {
         <label>Lesson:
           <select id="quizLessonSelect">
             <option value="">All Lessons</option>
-            <option value="1">Lesson 1</option>
-            <option value="2">Lesson 2</option>
-            <option value="3">Lesson 3</option>
-            <option value="4">Lesson 4</option>
           </select>
         </label>
         <label>Questions:
@@ -396,45 +476,113 @@ function pickVocabDistractors(target, pool) {
   return picked;
 }
 
+// Split a count `n` across `k` buckets as uniformly as possible,
+// then randomly distribute the remainder. Returns int[] of length k.
+function evenSplit(n, k) {
+  const base = Math.floor(n / k);
+  const remainder = n - base * k;
+  const arr = new Array(k).fill(base);
+  // Random permutation of [0..k-1], assign +1 to the first `remainder`
+  const idx = shuffleArr([...Array(k).keys()]);
+  for (let i = 0; i < remainder; i++) arr[idx[i]]++;
+  return arr;
+}
+
+// Sample up to `n` items from pool without replacement; fall back to
+// repeat-sampling from shuffled copies when n > pool.length.
+function sampleN(pool, n) {
+  if (pool.length === 0 || n === 0) return [];
+  if (n <= pool.length) return shuffleArr(pool).slice(0, n);
+  const reps = Math.ceil(n / pool.length);
+  const expanded = [];
+  for (let r = 0; r < reps; r++) expanded.push(...shuffleArr(pool));
+  return expanded.slice(0, n);
+}
+
 function buildQuizQueue() {
-  const lesson = quizLessonFilter; // '' or '1'..'4'
+  const lesson = quizLessonFilter;
   const lessonMatch = w => !lesson || String(w.lesson) === lesson;
 
   const availVocab = words.filter(lessonMatch);
-  const availGrammar = grammarQuestions.filter(q => lessonMatch(q) && (q.type === 'fill-blank' || q.type === 'sentence-builder'));
+  // Partition grammar questions by the 5 supported types
+  const grammarByType = {};
+  for (const t of QUIZ_GRAMMAR_TYPES) grammarByType[t] = [];
+  for (const q of grammarQuestions) {
+    if (!lessonMatch(q)) continue;
+    if (grammarByType[q.type]) grammarByType[q.type].push(q);
+  }
+  const availGrammarTotal = QUIZ_GRAMMAR_TYPES.reduce((s, t) => s + grammarByType[t].length, 0);
 
   const total = quizCount;
-  const grammarCount = Math.min(availGrammar.length, Math.floor(total * 0.4));
-  const vocabCount = total - grammarCount;
+  let grammarCount = Math.min(availGrammarTotal, Math.floor(total * 0.4));
+  let vocabCount = total - grammarCount;
 
-  // Sample grammar: unique if possible, else repeat-sample
-  const grammarItems = [];
-  if (availGrammar.length) {
-    if (grammarCount <= availGrammar.length) {
-      const shuffled = shuffleArr(availGrammar);
-      for (let i = 0; i < grammarCount; i++) grammarItems.push({ kind: 'grammar', question: shuffled[i] });
-    } else {
-      // Shouldn't happen given cap above, but guard anyway
-      for (let i = 0; i < grammarCount; i++) {
-        grammarItems.push({ kind: 'grammar', question: availGrammar[i % availGrammar.length] });
+  // === Vocab allocation: split across 5 types, each gets ~vocabCount/5 ===
+  const vocabAlloc = evenSplit(vocabCount, QUIZ_VOCAB_TYPES.length);
+  const vocabItems = [];
+  QUIZ_VOCAB_TYPES.forEach((kind, i) => {
+    const n = vocabAlloc[i];
+    const sampled = sampleN(availVocab, n);
+    sampled.forEach(w => vocabItems.push({ kind, word: w }));
+  });
+
+  // === Grammar allocation: uniform split with overflow redistribution ===
+  // Start with uniform allocation, then push excess from short types onto others.
+  let grammarAlloc = evenSplit(grammarCount, QUIZ_GRAMMAR_TYPES.length);
+  // Redistribute: if any type's allocation exceeds its available supply,
+  // move the overflow to types that still have headroom.
+  while (true) {
+    let overflow = 0;
+    // Cap allocations to supply; accumulate overflow.
+    for (let i = 0; i < QUIZ_GRAMMAR_TYPES.length; i++) {
+      const supply = grammarByType[QUIZ_GRAMMAR_TYPES[i]].length;
+      if (grammarAlloc[i] > supply) {
+        overflow += grammarAlloc[i] - supply;
+        grammarAlloc[i] = supply;
       }
     }
-  }
-
-  // Sample vocab: unique if possible, else repeat-sample spread out
-  const vocabItems = [];
-  if (availVocab.length) {
-    if (vocabCount <= availVocab.length) {
-      const shuffled = shuffleArr(availVocab);
-      for (let i = 0; i < vocabCount; i++) vocabItems.push({ kind: 'vocab', word: shuffled[i] });
-    } else {
-      // Repeat-sample: cycle through shuffled copies so duplicates are spread
-      const reps = Math.ceil(vocabCount / availVocab.length);
-      const expanded = [];
-      for (let r = 0; r < reps; r++) expanded.push(...shuffleArr(availVocab));
-      for (let i = 0; i < vocabCount; i++) vocabItems.push({ kind: 'vocab', word: expanded[i] });
+    if (overflow === 0) break;
+    // Find types that still have room.
+    const roomIdx = [];
+    for (let i = 0; i < QUIZ_GRAMMAR_TYPES.length; i++) {
+      const supply = grammarByType[QUIZ_GRAMMAR_TYPES[i]].length;
+      if (grammarAlloc[i] < supply) roomIdx.push(i);
+    }
+    if (roomIdx.length === 0) break;  // nowhere to put extras
+    // Distribute overflow round-robin into types with room.
+    const shuffledRoom = shuffleArr(roomIdx);
+    let idx = 0;
+    while (overflow > 0 && shuffledRoom.length > 0) {
+      const i = shuffledRoom[idx % shuffledRoom.length];
+      const supply = grammarByType[QUIZ_GRAMMAR_TYPES[i]].length;
+      if (grammarAlloc[i] < supply) {
+        grammarAlloc[i]++;
+        overflow--;
+      }
+      idx++;
+      // Safety: if a full pass makes no progress, bail.
+      if (idx > shuffledRoom.length * grammarCount) break;
+    }
+    // If still overflow and no room anywhere, reduce grammarCount.
+    if (overflow > 0) {
+      grammarCount -= overflow;
+      vocabCount += overflow;
+      // Top up vocab with the extras.
+      const extra = sampleN(availVocab, overflow);
+      // Assign extras round-robin across vocab types
+      extra.forEach((w, k) => {
+        const kind = QUIZ_VOCAB_TYPES[k % QUIZ_VOCAB_TYPES.length];
+        vocabItems.push({ kind, word: w });
+      });
+      break;
     }
   }
+
+  const grammarItems = [];
+  QUIZ_GRAMMAR_TYPES.forEach((t, i) => {
+    const sampled = sampleN(grammarByType[t], grammarAlloc[i]);
+    sampled.forEach(q => grammarItems.push({ kind: 'grammar', question: q }));
+  });
 
   return shuffleArr([...vocabItems, ...grammarItems]);
 }
@@ -460,37 +608,60 @@ function renderQuizQuestion() {
   quizChecked = false;
   quizAnswered = false;
   quizSbState = null;
+  quizPmState = null;
+  quizTokensDisabled = false;
 
   const total = quizQueue.length;
   const pct = total ? Math.round((quizIndex / total) * 100) : 0;
 
   let body = '';
-  if (item.kind === 'vocab') body = vocabQuestionHtml(item.word);
-  else body = grammarQuestionHtml(item.question);
+  switch (item.kind) {
+    case 'vocab-character': body = renderCharacterQ(item.word); break;
+    case 'vocab-meaning':   body = renderMeaningQ(item.word); break;
+    case 'vocab-pinyin':    body = renderPinyinQ(item.word); break;
+    case 'vocab-choose':    body = renderChooseQ(item.word); break;
+    case 'vocab-listen':    body = renderListenQ(item.word); break;
+    case 'grammar':         body = renderGrammarQ(item.question); break;
+    default:                body = `<div class="q-card">Unknown question type.</div>`;
+  }
 
   document.getElementById('quiz-view').innerHTML = `
     <div class="q-progress-bar"><div class="q-progress-fill" style="width:${pct}%"></div></div>
     <div class="q-counter">Question ${quizIndex + 1} of ${total}</div>
     ${body}`;
 
-  if (item.kind === 'vocab') wireVocabQuestion(item.word);
-  else wireGrammarQuestion(item.question);
+  // Post-render wiring
+  if (item.kind === 'grammar' && item.question.type === 'sentence-builder') wireSentenceBuilder(item.question);
+  if (item.kind === 'grammar' && item.question.type === 'pattern-match') wirePatternMatch(item.question);
+  if (item.kind === 'vocab-listen') { setTimeout(() => speakZh(item.word.char), 200); }
+  // Auto-focus first typing input for typing-style questions
+  if (item.kind === 'vocab-character' || item.kind === 'vocab-meaning' || item.kind === 'vocab-pinyin' || (item.kind === 'grammar' && item.question.type === 'translation')) {
+    setTimeout(() => {
+      const inp = document.querySelector('#quiz-view .q-typing-input');
+      if (inp) inp.focus();
+    }, 50);
+  }
 }
 
-/* ── Vocab question ── */
-function vocabQuestionHtml(w) {
-  const pool = quizQueue.filter(x => x.kind === 'vocab').map(x => x.word);
+/* ── Vocab: Choose (char → pick Vietnamese meaning) ── */
+function vocabPoolForDistractors() {
+  // Prefer the words that are already in this quiz session
+  return quizQueue.filter(x => x.word).map(x => x.word);
+}
+
+function renderChooseQ(w) {
+  const pool = vocabPoolForDistractors();
   const distractors = pickVocabDistractors(w, pool);
   const opts = shuffleArr([w, ...distractors]);
-  // Stash correct index on state
   window._qvOpts = opts;
   window._qvCorrectIdx = opts.findIndex(o => o.n === w.n);
 
   const posHtml = w.pos ? `<span class="badge ${posClass(w.pos)}">${w.pos}</span>` : '';
-  const optsHtml = opts.map((o, i) => `<button class="q-option" id="qOpt${i}" onclick="selectVocabOpt(${i})">${o.viet}</button>`).join('');
+  const optsHtml = opts.map((o, i) => `<button class="q-option" id="qOpt${i}" onclick="selectChooseOpt(${i})">${o.viet}</button>`).join('');
 
   return `
     <div class="q-card">
+      <div class="q-instruction">Chọn nghĩa đúng:</div>
       <div class="card-char">${w.char}</div>
       <div class="q-pos">${posHtml}</div>
       <div class="q-options">${optsHtml}</div>
@@ -499,58 +670,214 @@ function vocabQuestionHtml(w) {
     </div>`;
 }
 
-function wireVocabQuestion(w) { /* noop — all wired via inline onclick */ }
-
-function selectVocabOpt(idx) {
+function selectChooseOpt(idx) {
   if (quizChecked) return;
   quizChecked = true;
   quizAnswered = true;
   const opts = window._qvOpts;
   const correctIdx = window._qvCorrectIdx;
   const isCorrect = idx === correctIdx;
-
-  opts.forEach((_, i) => {
-    const btn = document.getElementById('qOpt' + i);
-    if (btn) btn.disabled = true;
-  });
+  opts.forEach((_, i) => { const btn = document.getElementById('qOpt' + i); if (btn) btn.disabled = true; });
   const chosen = document.getElementById('qOpt' + idx);
   const correctBtn = document.getElementById('qOpt' + correctIdx);
-  if (isCorrect) {
-    chosen.classList.add('correct');
-    chosen.innerHTML = '✓ ' + chosen.innerHTML;
-    quizCorrect++;
-  } else {
-    chosen.classList.add('wrong');
-    if (correctBtn) correctBtn.classList.add('correct');
-  }
-
+  if (isCorrect) { chosen.classList.add('correct'); chosen.innerHTML = '✓ ' + chosen.innerHTML; quizCorrect++; }
+  else { chosen.classList.add('wrong'); if (correctBtn) correctBtn.classList.add('correct'); }
   const fb = document.getElementById('qFeedback');
   const w = quizQueue[quizIndex].word;
   const hvLine = w.hv ? `<div class="q-hv-hint">✨ ${w.hv}</div>` : '';
   fb.classList.add('show', isCorrect ? 'correct' : 'wrong');
   fb.innerHTML = `<strong>${w.char}</strong> ${w.pinyin} — ${w.viet}${hvLine}`;
-
-  const nextBtn = document.getElementById('qNextBtn');
-  if (nextBtn) nextBtn.style.display = 'inline-block';
+  document.getElementById('qNextBtn').style.display = 'inline-block';
 }
 
-/* ── Grammar question ── */
-function grammarQuestionHtml(q) {
-  if (q.type === 'fill-blank') return fillBlankHtml(q);
+/* ── Vocab: Listen (TTS → pick Vietnamese meaning) ── */
+function renderListenQ(w) {
+  const pool = vocabPoolForDistractors();
+  const distractors = pickVocabDistractors(w, pool);
+  const opts = shuffleArr([w, ...distractors]);
+  window._qvOpts = opts;
+  window._qvCorrectIdx = opts.findIndex(o => o.n === w.n);
+
+  const optsHtml = opts.map((o, i) => `<button class="q-option" id="qOpt${i}" onclick="selectListenOpt(${i})">${o.viet}</button>`).join('');
+
+  return `
+    <div class="q-card">
+      <div class="q-instruction">Nghe và chọn nghĩa đúng:</div>
+      <button class="q-listen-btn" onclick="replayQuizListen()" title="Phát lại">🔊</button>
+      <div class="q-options">${optsHtml}</div>
+      <div class="q-feedback" id="qFeedback"></div>
+      <div class="q-actions"><button class="q-next-btn" id="qNextBtn" onclick="nextQuizQuestion()" style="display:none">Next →</button></div>
+    </div>`;
+}
+
+function replayQuizListen() {
+  const item = quizQueue[quizIndex];
+  if (item && item.word) speakZh(item.word.char);
+}
+
+function selectListenOpt(idx) {
+  if (quizChecked) return;
+  quizChecked = true;
+  quizAnswered = true;
+  const opts = window._qvOpts;
+  const correctIdx = window._qvCorrectIdx;
+  const isCorrect = idx === correctIdx;
+  opts.forEach((_, i) => { const btn = document.getElementById('qOpt' + i); if (btn) btn.disabled = true; });
+  const chosen = document.getElementById('qOpt' + idx);
+  const correctBtn = document.getElementById('qOpt' + correctIdx);
+  if (isCorrect) { chosen.classList.add('correct'); chosen.innerHTML = '✓ ' + chosen.innerHTML; quizCorrect++; }
+  else { chosen.classList.add('wrong'); if (correctBtn) correctBtn.classList.add('correct'); }
+  const fb = document.getElementById('qFeedback');
+  const w = quizQueue[quizIndex].word;
+  const hvLine = w.hv ? `<div class="q-hv-hint">✨ ${w.hv}</div>` : '';
+  fb.classList.add('show', isCorrect ? 'correct' : 'wrong');
+  fb.innerHTML = `<strong>${w.char}</strong> ${w.pinyin} — ${w.viet}${hvLine}`;
+  document.getElementById('qNextBtn').style.display = 'inline-block';
+}
+
+/* ── Vocab typing: Character (show char → type pinyin + meaning) ── */
+function typingInputsHtml(rows) {
+  // rows: [{label, id, placeholder}]
+  return rows.map(r => `
+    <div class="q-typing-row">
+      <label>${r.label}</label>
+      <input type="text" class="q-typing-input" id="${r.id}" placeholder="${r.placeholder || ''}" autocomplete="off" oninput="onTypingInput()">
+    </div>`).join('');
+}
+
+function renderCharacterQ(w) {
+  const posHtml = w.pos ? `<span class="badge ${posClass(w.pos)}">${w.pos}</span>` : '';
+  return `
+    <div class="q-card">
+      <div class="q-instruction">Nhìn chữ, điền pinyin và nghĩa:</div>
+      <div class="card-char">${w.char}</div>
+      <div class="q-pos">${posHtml}</div>
+      <div class="q-typing-group">
+        ${typingInputsHtml([
+          { label: 'Pinyin', id: 'qInPinyin', placeholder: 'nǐ hǎo' },
+          { label: 'Meaning', id: 'qInMeaning', placeholder: 'Vietnamese meaning' }
+        ])}
+      </div>
+      <div class="q-feedback" id="qFeedback"></div>
+      <div class="q-actions">
+        <button class="q-check-btn" id="qCheckBtn" disabled onclick="checkTypingQ('character')">Check</button>
+        <button class="q-next-btn" id="qNextBtn" onclick="nextQuizQuestion()" style="display:none">Next →</button>
+      </div>
+    </div>`;
+}
+
+/* ── Vocab typing: Meaning (show viet → type char + pinyin) ── */
+function renderMeaningQ(w) {
+  const posHtml = w.pos ? `<span class="badge ${posClass(w.pos)}">${w.pos}</span>` : '';
+  return `
+    <div class="q-card">
+      <div class="q-instruction">Đọc nghĩa, viết chữ Hán và pinyin:</div>
+      <div class="q-prompt">${w.viet}</div>
+      <div class="q-pos">${posHtml}</div>
+      <div class="q-typing-group">
+        ${typingInputsHtml([
+          { label: 'Character', id: 'qInChar', placeholder: '汉字' },
+          { label: 'Pinyin', id: 'qInPinyin', placeholder: 'pīnyīn' }
+        ])}
+      </div>
+      <div class="q-feedback" id="qFeedback"></div>
+      <div class="q-actions">
+        <button class="q-check-btn" id="qCheckBtn" disabled onclick="checkTypingQ('meaning')">Check</button>
+        <button class="q-next-btn" id="qNextBtn" onclick="nextQuizQuestion()" style="display:none">Next →</button>
+      </div>
+    </div>`;
+}
+
+/* ── Vocab typing: Pinyin (show pinyin → type char + meaning) ── */
+function renderPinyinQ(w) {
+  const posHtml = w.pos ? `<span class="badge ${posClass(w.pos)}">${w.pos}</span>` : '';
+  return `
+    <div class="q-card">
+      <div class="q-instruction">Đọc pinyin, viết chữ Hán và nghĩa:</div>
+      <div class="q-prompt" style="font-style:italic">${w.pinyin}</div>
+      <div class="q-pos">${posHtml}</div>
+      <div class="q-typing-group">
+        ${typingInputsHtml([
+          { label: 'Character', id: 'qInChar', placeholder: '汉字' },
+          { label: 'Meaning', id: 'qInMeaning', placeholder: 'Vietnamese meaning' }
+        ])}
+      </div>
+      <div class="q-feedback" id="qFeedback"></div>
+      <div class="q-actions">
+        <button class="q-check-btn" id="qCheckBtn" disabled onclick="checkTypingQ('pinyin')">Check</button>
+        <button class="q-next-btn" id="qNextBtn" onclick="nextQuizQuestion()" style="display:none">Next →</button>
+      </div>
+    </div>`;
+}
+
+function onTypingInput() {
+  const inputs = document.querySelectorAll('#quiz-view .q-typing-input');
+  let hasValue = false;
+  inputs.forEach(i => { if (i.value.trim().length > 0) hasValue = true; });
+  const btn = document.getElementById('qCheckBtn');
+  if (btn) btn.disabled = !hasValue;
+}
+
+function checkTypingQ(mode) {
+  if (quizChecked) return;
+  const w = quizQueue[quizIndex].word;
+  let fields = [];
+  if (mode === 'character') {
+    fields = [
+      { key: 'pinyin',  val: (document.getElementById('qInPinyin').value || '').trim(),  check: v => checkPinyinMatch(v, w), answer: w.pinyin },
+      { key: 'meaning', val: (document.getElementById('qInMeaning').value || '').trim(), check: v => checkViet(v, w),        answer: w.viet }
+    ];
+  } else if (mode === 'meaning') {
+    fields = [
+      { key: 'char',   val: (document.getElementById('qInChar').value || '').trim(),   check: v => v === w.char,             answer: w.char },
+      { key: 'pinyin', val: (document.getElementById('qInPinyin').value || '').trim(), check: v => checkPinyinMatch(v, w),   answer: w.pinyin }
+    ];
+  } else if (mode === 'pinyin') {
+    fields = [
+      { key: 'char',    val: (document.getElementById('qInChar').value || '').trim(),    check: v => v === w.char,         answer: w.char },
+      { key: 'meaning', val: (document.getElementById('qInMeaning').value || '').trim(), check: v => checkViet(v, w),      answer: w.viet }
+    ];
+  }
+  const attempted = fields.filter(f => f.val.length > 0);
+  if (attempted.length === 0) return;
+  quizChecked = true;
+  quizAnswered = true;
+  const isCorrect = attempted.every(f => f.check(f.val));
+  if (isCorrect) quizCorrect++;
+
+  // Disable inputs
+  document.querySelectorAll('#quiz-view .q-typing-input').forEach(i => i.disabled = true);
+  const btn = document.getElementById('qCheckBtn');
+  if (btn) btn.style.display = 'none';
+
+  const fb = document.getElementById('qFeedback');
+  const hvLine = w.hv ? `<div class="q-hv-hint">✨ ${w.hv}</div>` : '';
+  const feedbackRows = fields.map(f => {
+    if (!f.val) return `<div>${f.key}: <span style="color:var(--color-text-tertiary)">—</span> → ${f.answer}</div>`;
+    return `<div>${f.key}: ${f.check(f.val) ? '✓' : '✗'} <em>${f.val}</em> → <strong>${f.answer}</strong></div>`;
+  }).join('');
+  fb.classList.add('show', isCorrect ? 'correct' : 'wrong');
+  fb.innerHTML = `<strong>${w.char}</strong> ${w.pinyin} — ${w.viet}${hvLine}<div style="margin-top:6px">${feedbackRows}</div>`;
+  document.getElementById('qNextBtn').style.display = 'inline-block';
+}
+
+/* ── Grammar question dispatcher ── */
+function renderGrammarQ(q) {
+  if (q.type === 'fill-blank')       return fillBlankHtml(q);
   if (q.type === 'sentence-builder') return sentenceBuilderHtml(q);
+  if (q.type === 'error-correction') return errorCorrectionHtml(q);
+  if (q.type === 'pattern-match')    return patternMatchHtml(q);
+  if (q.type === 'translation')      return translationHtml(q);
   return `<div class="q-card">Unsupported question type.</div>`;
 }
 
-function wireGrammarQuestion(q) {
-  // Sentence-builder needs initial state setup
-  if (q.type === 'sentence-builder') {
-    const shuffled = shuffleArr(q.fragments);
-    quizSbState = {
-      chips: shuffled.map((text, id) => ({ id, text, inAnswer: false })),
-      order: []
-    };
-    renderSbChips();
-  }
+function wireSentenceBuilder(q) {
+  const shuffled = shuffleArr(q.fragments);
+  quizSbState = {
+    chips: shuffled.map((text, id) => ({ id, text, inAnswer: false })),
+    order: []
+  };
+  renderSbChips();
 }
 
 function fillBlankHtml(q) {
@@ -711,6 +1038,207 @@ function checkSentenceBuilder() {
   if (nextBtn) nextBtn.style.display = 'inline-block';
 }
 
+/* ── Grammar: error-correction ── */
+function errorCorrectionHtml(q) {
+  const tokensHtml = q.tokens.map((t, i) => `<button class="q-token" id="qTok${i}" onclick="selectErrorToken(${i})">${t}</button>`).join('');
+  return `
+    <div class="q-card">
+      <div class="q-instruction">Tìm lỗi ngữ pháp — bấm vào từ sai:</div>
+      <div class="q-tokens">${tokensHtml}</div>
+      <div class="q-feedback" id="qFeedback"></div>
+      <div class="q-actions"><button class="q-next-btn" id="qNextBtn" onclick="nextQuizQuestion()" style="display:none">Next →</button></div>
+    </div>`;
+}
+
+function selectErrorToken(idx) {
+  if (quizChecked) return;
+  quizChecked = true;
+  quizAnswered = true;
+  const q = quizQueue[quizIndex].question;
+  const isCorrect = idx === q.errorIndex;
+  if (isCorrect) quizCorrect++;
+
+  q.tokens.forEach((_, i) => {
+    const btn = document.getElementById('qTok' + i);
+    if (!btn) return;
+    btn.disabled = true;
+    if (i === q.errorIndex) btn.classList.add('correct');
+    else if (i === idx) btn.classList.add('wrong');
+  });
+
+  const fb = document.getElementById('qFeedback');
+  const hvLine = q.hanVietHint ? `<div class="q-hv-hint">✨ ${q.hanVietHint}</div>` : '';
+  fb.classList.add('show', isCorrect ? 'correct' : 'wrong');
+  fb.innerHTML = `<div><span class="label">Correct:</span> ${q.correction.join('')}</div><div style="margin-top:6px">${q.explanation || ''}</div>${hvLine}`;
+  document.getElementById('qNextBtn').style.display = 'inline-block';
+}
+
+/* ── Grammar: pattern-match ── */
+function patternMatchHtml(q) {
+  // Setup will happen in wirePatternMatch; render placeholders here.
+  return `
+    <div class="q-card">
+      <div class="q-instruction">Ghép cặp đúng:</div>
+      <div class="q-pm-grid">
+        <div class="q-pm-col" id="qPmLeft"></div>
+        <div class="q-pm-col" id="qPmRight"></div>
+      </div>
+      <div class="q-feedback" id="qFeedback"></div>
+      <div class="q-actions"><button class="q-next-btn" id="qNextBtn" onclick="nextQuizQuestion()" style="display:none">Next →</button></div>
+    </div>`;
+}
+
+function wirePatternMatch(q) {
+  const N = q.pairs.length;
+  // Build shuffled orderings of left[] and right[] but remember original-pair indices.
+  const leftIdx = shuffleArr([...Array(N).keys()]);
+  const rightIdx = shuffleArr([...Array(N).keys()]);
+  quizPmState = {
+    pairs: q.pairs,
+    leftOrder: leftIdx,   // position -> original pair index
+    rightOrder: rightIdx,
+    leftSel: null,        // currently-selected left position
+    rightSel: null,
+    matched: new Set(),   // set of original pair indices already matched
+    wrongAttempts: 0
+  };
+  renderPmGrid();
+}
+
+function renderPmGrid() {
+  const s = quizPmState;
+  if (!s) return;
+  const left = document.getElementById('qPmLeft');
+  const right = document.getElementById('qPmRight');
+  left.innerHTML = s.leftOrder.map((pairIdx, pos) => {
+    const matched = s.matched.has(pairIdx);
+    const selected = s.leftSel === pos;
+    const cls = ['q-pm-btn'];
+    if (matched) cls.push('matched');
+    if (selected) cls.push('selected');
+    return `<button class="${cls.join(' ')}" ${matched ? 'disabled' : ''} onclick="pmClickLeft(${pos})">${s.pairs[pairIdx].left}</button>`;
+  }).join('');
+  right.innerHTML = s.rightOrder.map((pairIdx, pos) => {
+    const matched = s.matched.has(pairIdx);
+    const selected = s.rightSel === pos;
+    const cls = ['q-pm-btn'];
+    if (matched) cls.push('matched');
+    if (selected) cls.push('selected');
+    return `<button class="${cls.join(' ')}" ${matched ? 'disabled' : ''} onclick="pmClickRight(${pos})">${s.pairs[pairIdx].right}</button>`;
+  }).join('');
+}
+
+function pmClickLeft(pos) {
+  if (quizChecked) return;
+  const s = quizPmState;
+  if (s.matched.has(s.leftOrder[pos])) return;
+  s.leftSel = pos;
+  if (s.rightSel !== null) pmTryMatch();
+  else renderPmGrid();
+}
+
+function pmClickRight(pos) {
+  if (quizChecked) return;
+  const s = quizPmState;
+  if (s.matched.has(s.rightOrder[pos])) return;
+  s.rightSel = pos;
+  if (s.leftSel !== null) pmTryMatch();
+  else renderPmGrid();
+}
+
+function pmTryMatch() {
+  const s = quizPmState;
+  const leftPairIdx = s.leftOrder[s.leftSel];
+  const rightPairIdx = s.rightOrder[s.rightSel];
+  if (leftPairIdx === rightPairIdx) {
+    s.matched.add(leftPairIdx);
+    s.leftSel = null; s.rightSel = null;
+    renderPmGrid();
+    if (s.matched.size === s.pairs.length) {
+      // Completed
+      quizChecked = true;
+      quizAnswered = true;
+      const isCorrect = s.wrongAttempts === 0;
+      if (isCorrect) quizCorrect++;
+      const q = quizQueue[quizIndex].question;
+      const fb = document.getElementById('qFeedback');
+      fb.classList.add('show', isCorrect ? 'correct' : 'wrong');
+      const note = isCorrect ? 'Hoàn thành không mắc lỗi!' : `Sai ${s.wrongAttempts} lần.`;
+      fb.innerHTML = `<div>${note}</div>${q.explanation ? `<div style="margin-top:6px">${q.explanation}</div>` : ''}`;
+      document.getElementById('qNextBtn').style.display = 'inline-block';
+    }
+  } else {
+    s.wrongAttempts++;
+    // Brief wrong flash, then reset
+    const leftBtn = document.getElementById('qPmLeft').children[s.leftSel];
+    const rightBtn = document.getElementById('qPmRight').children[s.rightSel];
+    if (leftBtn) leftBtn.classList.add('wrong-flash');
+    if (rightBtn) rightBtn.classList.add('wrong-flash');
+    const prevLeft = s.leftSel, prevRight = s.rightSel;
+    setTimeout(() => {
+      s.leftSel = null; s.rightSel = null;
+      renderPmGrid();
+    }, 500);
+  }
+}
+
+/* ── Grammar: translation ── */
+function translationHtml(q) {
+  const dir = q.direction === 'zh-to-vi' ? 'Dịch sang tiếng Việt' : 'Dịch sang tiếng Trung';
+  return `
+    <div class="q-card">
+      <div class="q-instruction">${dir}:</div>
+      <div class="q-prompt">${q.sourceText}</div>
+      ${q.hanVietHint ? `<div class="q-hv-hint" style="display:block;margin-bottom:10px">✨ ${q.hanVietHint}</div>` : ''}
+      <input type="text" class="q-tr-input q-typing-input" id="qTrInput" placeholder="${q.direction === 'zh-to-vi' ? 'Vietnamese...' : '汉字...'}" autocomplete="off" oninput="onTrInput()">
+      <div class="q-feedback" id="qFeedback"></div>
+      <div class="q-actions">
+        <button class="q-check-btn" id="qCheckBtn" disabled onclick="checkTranslation()">Check</button>
+        <button class="q-next-btn" id="qNextBtn" onclick="nextQuizQuestion()" style="display:none">Next →</button>
+      </div>
+    </div>`;
+}
+
+function onTrInput() {
+  const inp = document.getElementById('qTrInput');
+  const btn = document.getElementById('qCheckBtn');
+  if (btn) btn.disabled = !inp || inp.value.trim().length === 0;
+}
+
+function checkTranslation() {
+  if (quizChecked) return;
+  const inp = document.getElementById('qTrInput');
+  const val = (inp && inp.value || '').trim();
+  if (!val) return;
+  quizChecked = true;
+  quizAnswered = true;
+
+  const q = quizQueue[quizIndex].question;
+  let isCorrect;
+  if (q.direction === 'zh-to-vi') {
+    const targets = [q.targetText, ...(q.acceptedVariants || [])];
+    const nu = normalizeViet(val);
+    isCorrect = targets.some(t => {
+      const nt = normalizeViet(t);
+      return nu === nt || nt.includes(nu) || nu.includes(nt);
+    });
+  } else {
+    const targets = [q.targetText, ...(q.acceptedVariants || [])];
+    const nu = normalizeZhText(val);
+    isCorrect = targets.some(t => normalizeZhText(t) === nu);
+  }
+  if (isCorrect) quizCorrect++;
+  if (inp) inp.disabled = true;
+  inp.classList.add(isCorrect ? 'correct' : 'wrong');
+  const btn = document.getElementById('qCheckBtn');
+  if (btn) btn.style.display = 'none';
+
+  const fb = document.getElementById('qFeedback');
+  fb.classList.add('show', isCorrect ? 'correct' : 'wrong');
+  fb.innerHTML = `<div><span class="label">Đáp án:</span> <strong>${q.targetText}</strong></div>${q.explanation ? `<div style="margin-top:6px">${q.explanation}</div>` : ''}`;
+  document.getElementById('qNextBtn').style.display = 'inline-block';
+}
+
 function nextQuizQuestion() {
   quizIndex++;
   if (quizIndex >= quizQueue.length) {
@@ -742,5 +1270,45 @@ function renderQuizComplete() {
     </div>`;
 }
 
-selectLesson(1);
+/* ── Shared: data-driven lesson dropdowns & buttons ── */
+function availableLessons() {
+  const set = new Set();
+  const addFrom = arr => { if (Array.isArray(arr)) for (const x of arr) if (Number.isInteger(x.lesson)) set.add(x.lesson); };
+  if (typeof words !== 'undefined') addFrom(words);
+  if (typeof grammarPatterns !== 'undefined') addFrom(grammarPatterns);
+  if (typeof grammarQuestions !== 'undefined') addFrom(grammarQuestions);
+  return [...set].sort((a, b) => a - b);
+}
+
+function populateLessonSelects() {
+  const lessons = availableLessons();
+  document.querySelectorAll('select').forEach(sel => {
+    const first = sel.options[0];
+    if (!first || first.value !== '' || !/lesson/i.test(first.textContent)) return;
+    const prev = sel.value;
+    while (sel.options.length > 1) sel.remove(1);
+    for (const n of lessons) {
+      const o = document.createElement('option');
+      o.value = String(n);
+      o.textContent = `Lesson ${n}`;
+      sel.appendChild(o);
+    }
+    if (prev && [...sel.options].some(o => o.value === prev)) sel.value = prev;
+  });
+}
+
+function renderLessonButtons() {
+  const container = document.querySelector('.lesson-selector');
+  if (!container) return;
+  const lessons = availableLessons();
+  container.innerHTML = lessons.map(n =>
+    `<button class="lesson-btn" data-lesson="${n}" onclick="selectLesson(${n})">Lesson ${n}</button>`
+  ).join('');
+}
+
+/* ── Init ── */
+renderLessonButtons();
+populateLessonSelects();
+const _lessons = availableLessons();
+selectLesson(_lessons.includes(1) ? 1 : (_lessons[0] || 1));
 </script>

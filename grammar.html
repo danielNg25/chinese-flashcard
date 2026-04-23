@@ -143,9 +143,6 @@ body { font-family: var(--font-sans); }
 .gr-table tbody td { padding: 8px 10px; vertical-align: middle; }
 .gr-structure { font-size: 15px; font-weight: 500; color: var(--color-text-primary); }
 .gr-title { font-size: 13px; color: var(--color-text-secondary); margin-top: 2px; }
-.diff-badge { display: inline-block; font-size: 11px; padding: 2px 7px; border-radius: 99px; font-weight: 500; }
-.diff-1 { background: #EAF3DE; color: #27500A; }
-.diff-2 { background: #FAEEDA; color: #633806; }
 /* Expandable detail row */
 .detail-row td { padding: 0; border-bottom: 0.5px solid var(--color-border-tertiary); }
 .detail-panel { padding: 16px 20px 20px; background: #FAFAFA; display: grid; grid-template-columns: 290px 580px 1fr; gap: 20px; }
@@ -209,14 +206,6 @@ body { font-family: var(--font-sans); }
   <div class="gr-controls">
     <select id="gr-lesson" onchange="onFilter()">
       <option value="">All lessons</option>
-      <option value="1">Lesson 1</option>
-      <option value="2">Lesson 2</option>
-      <option value="3">Lesson 3</option>
-    </select>
-    <select id="gr-difficulty" onchange="onFilter()">
-      <option value="">All levels</option>
-      <option value="beginner-1">Beginner 1</option>
-      <option value="beginner-2">Beginner 2</option>
     </select>
     <button class="gr-reset-btn" id="gr-restart-btn" onclick="startSession()" style="display:none">Restart</button>
   </div>
@@ -303,10 +292,8 @@ function onFilter() {
 
 function buildQueue(type) {
   const lesson = document.getElementById('gr-lesson').value;
-  const diff = document.getElementById('gr-difficulty').value;
   let qs = grammarQuestions.filter(q => q.type === type);
   if (lesson) qs = qs.filter(q => String(q.lesson) === lesson);
-  if (diff) qs = qs.filter(q => q.difficulty === diff);
   for (let i = qs.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [qs[i], qs[j]] = [qs[j], qs[i]];
@@ -333,10 +320,8 @@ function getView() { return document.getElementById(currentType + '-view'); }
 function renderBrowse() {
   ALL_VIEWS.forEach(t => { document.getElementById(t + '-view').style.display = 'none'; });
   const lesson = document.getElementById('gr-lesson').value;
-  const diff = document.getElementById('gr-difficulty').value;
   let patterns = grammarPatterns;
   if (lesson) patterns = patterns.filter(p => String(p.lesson) === lesson);
-  if (diff) patterns = patterns.filter(p => p.difficulty === diff);
 
   const rows = patterns.map((p, i) => `
     <tr class="pattern-row open" onclick="toggleDetail('${p.id}')" id="row-${p.id}">
@@ -733,6 +718,34 @@ function saveProgress(qId, correct) {
   try { localStorage.setItem('grammar_progress', JSON.stringify(p)); } catch(e) {}
 }
 
+// ── Shared: data-driven lesson dropdowns ─────────────────────────────────
+function availableLessons() {
+  const set = new Set();
+  const addFrom = arr => { if (Array.isArray(arr)) for (const x of arr) if (Number.isInteger(x.lesson)) set.add(x.lesson); };
+  if (typeof words !== 'undefined') addFrom(words);
+  if (typeof grammarPatterns !== 'undefined') addFrom(grammarPatterns);
+  if (typeof grammarQuestions !== 'undefined') addFrom(grammarQuestions);
+  return [...set].sort((a, b) => a - b);
+}
+
+function populateLessonSelects() {
+  const lessons = availableLessons();
+  document.querySelectorAll('select').forEach(sel => {
+    const first = sel.options[0];
+    if (!first || first.value !== '' || !/lesson/i.test(first.textContent)) return;
+    const prev = sel.value;
+    while (sel.options.length > 1) sel.remove(1);
+    for (const n of lessons) {
+      const o = document.createElement('option');
+      o.value = String(n);
+      o.textContent = `Lesson ${n}`;
+      sel.appendChild(o);
+    }
+    if (prev && [...sel.options].some(o => o.value === prev)) sel.value = prev;
+  });
+}
+
 // ── Init ───────────────────────────────────────────────────────────────────
+populateLessonSelects();
 switchExType('browse');
 </script>

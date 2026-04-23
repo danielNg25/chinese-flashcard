@@ -332,10 +332,6 @@ th.rating-col.show { display: table-cell; }
       </select>
       <select id="lessonFilter" onchange="render()">
         <option value="">All lessons</option>
-        <option value="1">Lesson 1</option>
-        <option value="2">Lesson 2</option>
-        <option value="3">Lesson 3</option>
-        <option value="4">Lesson 4</option>
       </select>
     </div>
     <div class="stats">
@@ -376,10 +372,6 @@ th.rating-col.show { display: table-cell; }
     <div class="fc-controls">
       <select id="fcLessonFilter" onchange="startFlashcardSession()">
         <option value="">All lessons</option>
-        <option value="1">Lesson 1</option>
-        <option value="2">Lesson 2</option>
-        <option value="3">Lesson 3</option>
-        <option value="4">Lesson 4</option>
       </select>
       <select id="fcCardCount" onchange="startFlashcardSession()">
         <option value="10" selected>10 cards</option>
@@ -402,10 +394,6 @@ th.rating-col.show { display: table-cell; }
     <div class="fc-controls">
       <select id="wrLessonFilter" onchange="startWritingSession()">
         <option value="">All lessons</option>
-        <option value="1">Lesson 1</option>
-        <option value="2">Lesson 2</option>
-        <option value="3">Lesson 3</option>
-        <option value="4">Lesson 4</option>
       </select>
       <select id="wrCardCount" onchange="startWritingSession()">
         <option value="10" selected>10 cards</option>
@@ -428,10 +416,6 @@ th.rating-col.show { display: table-cell; }
     <div class="fc-controls">
       <select id="chLessonFilter" onchange="startChooseSession()">
         <option value="">All lessons</option>
-        <option value="1">Lesson 1</option>
-        <option value="2">Lesson 2</option>
-        <option value="3">Lesson 3</option>
-        <option value="4">Lesson 4</option>
       </select>
       <select id="chCardCount" onchange="startChooseSession()">
         <option value="10" selected>10 cards</option>
@@ -454,10 +438,6 @@ th.rating-col.show { display: table-cell; }
     <div class="fc-controls">
       <select id="pyLessonFilter" onchange="startPinyinSession()">
         <option value="">All lessons</option>
-        <option value="1">Lesson 1</option>
-        <option value="2">Lesson 2</option>
-        <option value="3">Lesson 3</option>
-        <option value="4">Lesson 4</option>
       </select>
       <select id="pyCardCount" onchange="startPinyinSession()">
         <option value="10" selected>10 cards</option>
@@ -480,10 +460,6 @@ th.rating-col.show { display: table-cell; }
     <div class="fc-controls">
       <select id="lnLessonFilter" onchange="startListenSession()">
         <option value="">All lessons</option>
-        <option value="1">Lesson 1</option>
-        <option value="2">Lesson 2</option>
-        <option value="3">Lesson 3</option>
-        <option value="4">Lesson 4</option>
       </select>
       <select id="lnCardCount" onchange="startListenSession()">
         <option value="10" selected>10 cards</option>
@@ -506,10 +482,6 @@ th.rating-col.show { display: table-cell; }
     <div class="fc-controls">
       <select id="mtLessonFilter" onchange="startMatchSession()">
         <option value="">All lessons</option>
-        <option value="1">Lesson 1</option>
-        <option value="2">Lesson 2</option>
-        <option value="3">Lesson 3</option>
-        <option value="4">Lesson 4</option>
       </select>
     </div>
     <div class="fc-stats">
@@ -1907,6 +1879,34 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
+/* ── Shared: data-driven lesson dropdowns ── */
+function availableLessons() {
+  const set = new Set();
+  const addFrom = arr => { if (Array.isArray(arr)) for (const x of arr) if (Number.isInteger(x.lesson)) set.add(x.lesson); };
+  if (typeof words !== 'undefined') addFrom(words);
+  if (typeof grammarPatterns !== 'undefined') addFrom(grammarPatterns);
+  if (typeof grammarQuestions !== 'undefined') addFrom(grammarQuestions);
+  return [...set].sort((a, b) => a - b);
+}
+
+function populateLessonSelects() {
+  const lessons = availableLessons();
+  document.querySelectorAll('select').forEach(sel => {
+    const first = sel.options[0];
+    if (!first || first.value !== '' || !/lesson/i.test(first.textContent)) return;
+    const prev = sel.value;
+    while (sel.options.length > 1) sel.remove(1);
+    for (const n of lessons) {
+      const o = document.createElement('option');
+      o.value = String(n);
+      o.textContent = `Lesson ${n}`;
+      sel.appendChild(o);
+    }
+    if (prev && [...sel.options].some(o => o.value === prev)) sel.value = prev;
+  });
+}
+
 /* ── Init ── */
+populateLessonSelects();
 render();
 </script>
