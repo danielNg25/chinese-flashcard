@@ -17,7 +17,7 @@ const grammarPatterns = [
       { zh: "你是留学生吗？", vi: "Bạn có phải là lưu học sinh không?" },
     ],
     notes: [
-      "是 KHÔNG dùng trước tính từ: 她是漂亮 ✗ → 她很漂亮 ✓",
+      "是 KHÔNG dùng trước tính từ: 她是高兴 ✗ → 她很高兴 ✓",
       "Phủ định: 不是 (một khối), không phải 不是是",
     ],
   },
@@ -59,7 +59,7 @@ const grammarPatterns = [
     explanation: "Tính từ làm vị ngữ bắt buộc phải có phó từ đứng trước (thường là 很). Nếu bỏ 很, câu nghe KHÔNG hoàn chỉnh và người Trung sẽ hiểu thành câu so sánh ngầm — ví dụ 她高兴 nghe như 'cô ấy vui HƠN ai đó', không phải 'cô ấy vui'.",
     examples: [
       { zh: "我很高兴。", vi: "Tôi rất vui." },
-      { zh: "她很漂亮。", vi: "Cô ấy rất đẹp." },
+      { zh: "她很好。", vi: "Cô ấy rất tốt/khỏe." },
       { zh: "认识你很高兴。", vi: "Rất vui được quen biết bạn." },
     ],
     notes: [
@@ -76,7 +76,7 @@ const grammarPatterns = [
     examples: [
       { zh: "我们是学生。", vi: "Chúng tôi là học sinh." },
       { zh: "你们好！", vi: "Các bạn/Mọi người chào!" },
-      { zh: "老师们都很忙。", vi: "Các giáo viên đều rất bận." },
+      { zh: "同学们很高兴。", vi: "Các bạn cùng học rất vui." },
     ],
     notes: [
       "KHÔNG dùng 们 sau từ chỉ quốc tịch: 美国人们 ✗ → 美国人 ✓ (đã mang nghĩa tập thể)",
@@ -95,7 +95,7 @@ const grammarPatterns = [
     ],
     notes: [
       "Vị trí: [người sở hữu] + 的 + [vật] — định ngữ đứng TRƯỚC danh từ",
-      "Có thể bỏ 的 khi quan hệ gần gũi: 我妈妈 (không cần 我的妈妈)",
+      "Có thể bỏ 的 khi quan hệ gần gũi: 我朋友 ≈ 我的朋友",
     ],
   },
   {
@@ -140,7 +140,7 @@ const grammarPatterns = [
     ],
     notes: [
       "姓 là động từ trong cấu trúc này, không phải danh từ",
-      "Họ người Trung thường chỉ một chữ: 王, 李, 张…",
+      "Họ người Trung thường chỉ một chữ: 王, 李…",
     ],
   },
   {
@@ -180,8 +180,8 @@ const grammarPatterns = [
     explanation: "我来 + ĐT = 'để tôi làm / tôi sẽ làm'. Thể hiện sự chủ động, lịch sự. Thường dùng trong lớp học hoặc khi giúp đỡ người khác.",
     examples: [
       { zh: "我来介绍一下。", vi: "Để tôi giới thiệu một chút." },
-      { zh: "我来做。", vi: "Để tôi làm." },
-      { zh: "我来回答。", vi: "Để tôi trả lời." },
+      { zh: "我来说。", vi: "Để tôi nói." },
+      { zh: "我来看。", vi: "Để tôi xem." },
     ],
     notes: [
       "来 trong cụm này mang nghĩa 'để tôi…' — không phải nghĩa gốc 'đến'",
@@ -260,7 +260,7 @@ const grammarPatterns = [
       { zh: "那本杂志叫什么名字？", vi: "Tờ tạp chí kia tên là gì?" },
     ],
     notes: [
-      "本 chỉ dùng cho vật dạng cuốn/quyển. Các lượng từ khác: 个 (người/vật chung), 张 (tờ giấy)",
+      "本 chỉ dùng cho vật dạng cuốn/quyển. Lượng từ chung: 个 (người/vật chung)",
       "Không thể nói 一书 ✗ hay 这书 ✗ — lượng từ là bắt buộc",
     ],
   },
@@ -275,8 +275,8 @@ const grammarPatterns = [
       { zh: "你会说什么语言？", vi: "Bạn biết nói ngôn ngữ gì?" },
     ],
     notes: [
-      "会 ≠ 能: 会 = khả năng do học; 能 = khả năng do điều kiện cho phép",
-      "会说话 = biết nói (đã học xong); 能说话 = có thể nói (điều kiện OK)",
+      "会 nhấn mạnh khả năng đạt được qua học tập / luyện tập (skill)",
+      "Phủ định: 不会 + ĐT — 不会 là một khối, không tách",
     ],
   },
   {
@@ -290,7 +290,7 @@ const grammarPatterns = [
       { zh: "你喜欢看什么杂志？", vi: "Bạn thích đọc tạp chí gì?" },
     ],
     notes: [
-      "喜欢 + ĐT trực tiếp — không cần thêm 做 hay từ nối nào",
+      "喜欢 + ĐT trực tiếp — không cần thêm từ nối nào (khác tiếng Anh 'like doing')",
       "Phủ định: 不喜欢 + ĐT/DT",
     ],
   },
@@ -300,9 +300,9 @@ const grammarPatterns = [
     structure: "CN + 在 + địa điểm<br>địa điểm + 是 + CN",
     explanation: "Hai cấu trúc diễn tả vị trí, không hoán đổi được: (1) '<b>X ở đâu</b>' dùng 在 — CN là vật, vị ngữ là địa điểm. (2) '<b>Ở đâu là X</b>' dùng 是 — CN là địa điểm, vị ngữ là tên nơi/vật.",
     examples: [
-      { zh: "图书馆在前边。", vi: "Thư viện ở phía trước." },
-      { zh: "前边是图书馆。", vi: "Phía trước là thư viện." },
-      { zh: "超市在哪儿？", vi: "Siêu thị ở đâu?" },
+      { zh: "图书馆在左边。", vi: "Thư viện ở bên trái." },
+      { zh: "左边是图书馆。", vi: "Bên trái là thư viện." },
+      { zh: "宿舍在哪儿？", vi: "Ký túc xá ở đâu?" },
     ],
     notes: [
       "是 = 'là' (định nghĩa/phân loại); 在 = 'ở' (vị trí)",
@@ -312,15 +312,15 @@ const grammarPatterns = [
   {
     id: "B4-NP2", lesson: 4,
     title: "Phương vị từ + 边",
-    structure: "方位 + 边 (/ 面)",
-    explanation: "Phương vị từ đầy đủ = gốc phương hướng + 边: 左边, 右边, 前边, 后边, 上边, 下边. Ngoại lệ dùng 面: 对面 (đối diện). Khi gắn với DT: <b>N + 的 + 方位词</b> = 'bên ... của N' (ngược trật tự tiếng Việt).",
+    structure: "左/右/上/下/北 + 边",
+    explanation: "Phương vị từ đầy đủ = gốc chỉ hướng + 边: 左边, 右边, 上边, 下边, 北边. Khi gắn với DT: <b>N + 的 + phương vị từ</b> = 'bên ... của N' (ngược trật tự tiếng Việt).",
     examples: [
-      { zh: "食堂在图书馆的左边。", vi: "Căn tin ở bên trái thư viện." },
-      { zh: "超市在宿舍的右边。", vi: "Siêu thị ở bên phải ký túc xá." },
-      { zh: "对面是书店。", vi: "Đối diện là hiệu sách." },
+      { zh: "图书馆在学校的左边。", vi: "Thư viện ở bên trái trường học." },
+      { zh: "宿舍在图书馆的右边。", vi: "Ký túc xá ở bên phải thư viện." },
+      { zh: "书在课本的上边。", vi: "Sách ở bên trên sách giáo khoa." },
     ],
     notes: [
-      "Không nói chỉ '左/右/前/后' thiếu '边'",
+      "Không nói chỉ '左/右/上/下' thiếu '边'",
       "Trật tự ngược tiếng Việt: 图书馆的右边 = 'bên phải của thư viện' (tiếng Việt: 'bên phải thư viện' — định ngữ đi sau)",
     ],
   },
@@ -362,11 +362,11 @@ const grammarPatterns = [
     examples: [
       { zh: "A：对不起！ B：没关系。", vi: "A: Xin lỗi! B: Không sao." },
       { zh: "对不起，我不知道。", vi: "Xin lỗi, tôi không biết." },
-      { zh: "没关系，请进。", vi: "Không sao, mời vào." },
+      { zh: "没关系，我来介绍。", vi: "Không sao, để tôi giới thiệu." },
     ],
     notes: [
       "没关系 là cụm cố định — không dùng riêng 关系 để đáp",
-      "Tương tự nhẹ hơn: 不好意思 (ngại quá) — dùng khi mức độ xin lỗi nhỏ",
+      "Dùng 对不起 khi lỗi rõ ràng; đáp 没关系 để nói 'không phải lỗi gì'",
     ],
   },
   {
@@ -380,7 +380,7 @@ const grammarPatterns = [
       { zh: "一个老师", vi: "một giáo viên" },
     ],
     notes: [
-      "Lượng từ khác: 本 (sách/vở), 张 (tờ giấy), 口 (người trong gia đình)",
+      "本 là lượng từ cho sách/vở; 个 là lượng từ chung cho người và nhiều vật khác",
       "这 + 是 + DT (định nghĩa) ≠ 这 + 个 + DT (chỉ định cụ thể)",
     ],
   },
@@ -407,7 +407,7 @@ const grammarPatterns = [
     examples: [
       { zh: "我喜欢的人是她。", vi: "Người tôi thích là cô ấy." },
       { zh: "我认识的老师", vi: "Giáo viên tôi quen" },
-      { zh: "你说的话是对的。", vi: "Lời bạn nói là đúng." },
+      { zh: "你看的书是我的。", vi: "Cuốn sách bạn đọc là của tôi." },
     ],
     notes: [
       "Trật tự ngược tiếng Việt/Anh: [mệnh đề] + 的 + DT",
@@ -459,17 +459,17 @@ const grammarQuestions = [
     explanation: "就是 = 'tức là / chính là' — dùng để giải thích hoặc nhấn mạnh định nghĩa.",
     hanVietHint: "就是 → TỰU THỊ | 词典 → TỪ ĐIỂN" },
   { id: "fb-011", grammarId: "B4-NP1", type: "fill-blank", lesson: 4,
-    prompt: "图书馆___前边。", options: ["在", "是", "的", "有"], answer: "在",
-    explanation: "Chủ ngữ (图书馆) + 在 + địa điểm (前边): hỏi/trả lời 'ở đâu'. Ngược lại: 前边是图书馆 (địa điểm + 是 + tên nơi chốn).",
+    prompt: "图书馆___左边。", options: ["在", "是", "的", "吗"], answer: "在",
+    explanation: "Chủ ngữ (图书馆) + 在 + địa điểm (左边): hỏi/trả lời 'ở đâu'. Ngược lại: 左边是图书馆 (địa điểm + 是 + tên nơi chốn).",
     hanVietHint: "图书馆 → ĐỒ THƯ QUÁN (thư viện) | 在 → TẠI (ở)" },
   { id: "fb-012", grammarId: "B4-NP1", type: "fill-blank", lesson: 4,
-    prompt: "前边___图书馆。", options: ["是", "在", "的", "有"], answer: "是",
-    explanation: "Địa điểm (前边) + 是 + tên nơi chốn (图书馆): câu kiểu 'phía trước là thư viện'. Chú ý hướng ngược lại so với 在.",
-    hanVietHint: "前边 → TIỀN BIÊN (phía trước)" },
+    prompt: "左边___图书馆。", options: ["是", "在", "的", "吗"], answer: "是",
+    explanation: "Địa điểm (左边) + 是 + tên nơi chốn (图书馆): câu kiểu 'bên trái là thư viện'. Chú ý hướng ngược lại so với 在.",
+    hanVietHint: "左边 → TẢ BIÊN (bên trái)" },
   { id: "fb-013", grammarId: "B4-NP2", type: "fill-blank", lesson: 4,
-    prompt: "食堂在图书馆的___。", options: ["左边", "左", "边", "旁"], answer: "左边",
+    prompt: "宿舍在图书馆的___。", options: ["左边", "左", "边", "北边"], answer: "左边",
     explanation: "Phương vị từ đầy đủ = gốc phương hướng + 边. 左 (trái) + 边 = 左边 (bên trái). Không nói chỉ '左' mà thiếu '边'.",
-    hanVietHint: "食堂 → THỰC ĐƯỜNG (căn tin) | 左边 → TẢ BIÊN (bên trái)" },
+    hanVietHint: "宿舍 → TÚC XÁ (ký túc xá) | 左边 → TẢ BIÊN (bên trái)" },
   { id: "fb-014", grammarId: "B4-NP3", type: "fill-blank", lesson: 4,
     prompt: "请问，图书馆在___？", options: ["哪儿", "哪", "哪国", "哪里边"], answer: "哪儿",
     explanation: "哪儿 (= 哪里) là đại từ nghi vấn chỉ địa điểm 'ở đâu?'. Đặt sau 在 để hỏi vị trí.",
@@ -479,7 +479,7 @@ const grammarQuestions = [
     explanation: "请问 = 'Xin hỏi' — dùng để mở đầu câu hỏi lịch sự khi hỏi người lạ. Đặt ở đầu câu, theo sau là câu hỏi bình thường.",
     hanVietHint: "请问 → THỈNH VẤN (xin hỏi) | 宿舍 → TÚC XÁ (ký túc xá)" },
   { id: "fb-016", grammarId: "B4-NP5", type: "fill-blank", lesson: 4,
-    prompt: "A: 对不起！ B: ___。", options: ["没关系", "谢谢", "再见", "你好"], answer: "没关系",
+    prompt: "A: 对不起！ B: ___。", options: ["没关系", "谢谢", "不客气", "你好"], answer: "没关系",
     explanation: "没关系 = 'Không sao' — câu đáp lại cố định khi nghe 对不起. Nghĩa đen: 'không có quan hệ [gì cả]'.",
     hanVietHint: "没关系 → MỘT QUAN HỆ | 关系 → QUAN HỆ ✨ (giống hệt tiếng Việt!)" },
   { id: "fb-017", grammarId: "CB-NP4", type: "fill-blank", lesson: 4,
@@ -491,9 +491,9 @@ const grammarQuestions = [
     explanation: "知道 = biết thông tin/sự kiện. Biết tên ai → dùng 知道 (biết rằng tên là gì). Khác 会 = biết làm kỹ năng gì.",
     hanVietHint: "知道 → TRI ĐẠO | 名字 → DANH TỰ (tên)" },
   { id: "fb-019", grammarId: "CB-NP5", type: "fill-blank", lesson: 4,
-    prompt: "你___游泳吗？", options: ["会", "知道", "是", "很"], answer: "会",
-    explanation: "会 = biết làm kỹ năng (qua học hỏi, luyện tập). Bơi lội là kỹ năng → dùng 会. Không thể nói '知道游泳'.",
-    hanVietHint: "会 → HỘI (lĩnh hội, biết qua rèn luyện)" },
+    prompt: "你___说日语吗？", options: ["会", "知道", "是", "很"], answer: "会",
+    explanation: "会 = biết làm kỹ năng (qua học hỏi, luyện tập). Nói tiếng Nhật là kỹ năng → dùng 会. Không thể nói '知道说日语'.",
+    hanVietHint: "会 → HỘI (lĩnh hội, biết qua rèn luyện) | 日语 → NHẬT NGỮ" },
 
   // ── Sentence Builder ──
   { id: "sb-001", grammarId: "B1-NP2", type: "sentence-builder", lesson: 1,
@@ -525,13 +525,13 @@ const grammarQuestions = [
     explanation: "这/那 + 本 + DT: 本 là lượng từ cho sách, đứng giữa chỉ định từ và danh từ.",
     hanVietHint: "本 → BẢN (cuốn/quyển)" },
   { id: "sb-008", grammarId: "B4-NP1", type: "sentence-builder", lesson: 4,
-    fragments: ["图书馆", "在", "前边"], answer: ["图书馆", "在", "前边"],
-    explanation: "CN + 在 + 地点: 图书馆 (CN) + 在 + 前边 (địa điểm). Trật tự giống tiếng Việt: 'Thư viện ở phía trước'.",
-    hanVietHint: "图书馆 → ĐỒ THƯ QUÁN | 前边 → TIỀN BIÊN" },
+    fragments: ["图书馆", "在", "左边"], answer: ["图书馆", "在", "左边"],
+    explanation: "CN + 在 + địa điểm: 图书馆 (CN) + 在 + 左边 (địa điểm). Trật tự giống tiếng Việt: 'Thư viện ở bên trái'.",
+    hanVietHint: "图书馆 → ĐỒ THƯ QUÁN | 左边 → TẢ BIÊN" },
   { id: "sb-009", grammarId: "B4-NP2", type: "sentence-builder", lesson: 4,
-    fragments: ["超市", "在", "宿舍的", "右边"], answer: ["超市", "在", "宿舍的", "右边"],
-    explanation: "CN + 在 + N的 + 方位词: 'Siêu thị ở bên phải ký túc xá'. Chú ý N的 + 方位词 = 'bên phải của N' (trật tự ngược tiếng Việt: 'bên phải ký túc xá' vs '宿舍的右边').",
-    hanVietHint: "超市 → SIÊU THỊ ✨ | 右边 → HỮU BIÊN (bên phải)" },
+    fragments: ["朋友", "在", "我的", "左边"], answer: ["朋友", "在", "我的", "左边"],
+    explanation: "CN + 在 + N的 + phương vị từ: 'Bạn ở bên trái tôi'. Chú ý N的 + phương vị từ = 'bên trái của N' (trật tự ngược tiếng Việt: 'bên trái tôi' vs '我的左边').",
+    hanVietHint: "朋友 → BẰNG HỮU ✨ | 左边 → TẢ BIÊN (bên trái)" },
   { id: "sb-010", grammarId: "B4-NP3", type: "sentence-builder", lesson: 4,
     fragments: ["请问", "图书馆", "在", "哪儿"], answer: ["请问", "图书馆", "在", "哪儿"],
     explanation: "请问 đầu câu + câu hỏi bình thường. 图书馆在哪儿？ = thư viện ở đâu? Không đảo trật tự từ.",
@@ -543,13 +543,13 @@ const grammarQuestions = [
 
   // ── Error Correction ──
   { id: "ec-001", grammarId: "B1-NP2", type: "error-correction", lesson: 1,
-    tokens: ["她", "是", "很", "漂亮", "。"], errorIndex: 1,
-    correction: ["她", "很", "漂亮", "。"],
-    explanation: "是 KHÔNG dùng trước tính từ! Tiếng Trung nói '她很漂亮', KHÔNG phải '她是很漂亮'.",
-    hanVietHint: null },
+    tokens: ["她", "是", "很", "高兴", "。"], errorIndex: 1,
+    correction: ["她", "很", "高兴", "。"],
+    explanation: "是 KHÔNG dùng trước tính từ! Tiếng Trung nói '她很高兴', KHÔNG phải '她是很高兴'.",
+    hanVietHint: "高兴 → CAO HỨNG" },
   { id: "ec-002", grammarId: "B2-NP1", type: "error-correction", lesson: 2,
-    tokens: ["美国人们", "来了", "。"], errorIndex: 0,
-    correction: ["美国人", "来了", "。"],
+    tokens: ["美国人们", "来", "。"], errorIndex: 0,
+    correction: ["美国人", "来", "。"],
     explanation: "们 KHÔNG dùng sau từ chỉ quốc tịch. Chỉ dùng 们 với đại từ (我们) hoặc DT chỉ người cụ thể (老师们).",
     hanVietHint: null },
   { id: "ec-003", grammarId: "B2-NP3", type: "error-correction", lesson: 2,
@@ -613,22 +613,21 @@ const grammarQuestions = [
     explanation: null },
   { id: "pm-005", grammarId: null, type: "pattern-match", lesson: 4,
     pairs: [
-      { left: "CN + 在 + 地点",       right: "Thư viện ở phía trước." },
-      { left: "地点 + 是 + CN",        right: "Phía trước là thư viện." },
+      { left: "CN + 在 + DT",          right: "Thư viện ở bên trái." },
+      { left: "DT + 是 + CN",          right: "Bên trái là thư viện." },
       { left: "CN + 在哪儿？",         right: "Ký túc xá ở đâu?" },
-      { left: "请问 + [câu hỏi]",      right: "Xin hỏi, siêu thị ở đâu?" }
+      { left: "请问 + [câu hỏi]",      right: "Xin hỏi, thư viện ở đâu?" }
     ],
     explanation: "在 hỏi/trả lời 'ở đâu'. 是 hỏi/trả lời 'là gì'. Hai cấu trúc KHÔNG hoán đổi cho nhau." },
   { id: "pm-006", grammarId: null, type: "pattern-match", lesson: 4,
     pairs: [
       { left: "左边",    right: "bên trái" },
       { left: "右边",    right: "bên phải" },
-      { left: "前边",    right: "phía trước" },
-      { left: "后边",    right: "phía sau" },
-      { left: "旁边",    right: "bên cạnh" },
-      { left: "对面",    right: "đối diện" }
+      { left: "上边",    right: "phía trên" },
+      { left: "下边",    right: "phía dưới" },
+      { left: "北边",    right: "phía bắc" }
     ],
-    explanation: "Phương vị từ: gốc chỉ hướng + 边. 对面 (đối diện) là ngoại lệ dùng 面 thay vì 边." },
+    explanation: "Phương vị từ: gốc chỉ hướng + 边." },
   { id: "pm-007", grammarId: null, type: "pattern-match", lesson: 4,
     pairs: [
       { left: "我知道他是学生。",       right: "知道 — biết thông tin/sự kiện" },
@@ -680,15 +679,15 @@ const grammarQuestions = [
     hanVietHint: "请问 → THỈNH VẤN ✨ | 图书馆 → ĐỒ THƯ QUÁN | 哪儿 = 哪里",
     explanation: "请问 đầu câu → câu hỏi bình thường. 在哪儿？= 在哪里？ (ở đâu?)." },
   { id: "tr-009", grammarId: "B4-NP1", type: "translation", lesson: 4,
-    direction: "vi-to-zh", sourceText: "Phía trước là ký túc xá.", targetText: "前边是宿舍。",
-    acceptedVariants: ["前面是宿舍", "前边是宿舍"],
-    hanVietHint: "宿舍 → TÚC XÁ ✨ (ký túc xá) | 前边 → TIỀN BIÊN",
-    explanation: "Địa điểm làm chủ ngữ → dùng 是: 前边 (địa điểm) + 是 + 宿舍 (tên nơi)." },
+    direction: "vi-to-zh", sourceText: "Bên trái là ký túc xá.", targetText: "左边是宿舍。",
+    acceptedVariants: ["左边是宿舍"],
+    hanVietHint: "宿舍 → TÚC XÁ ✨ (ký túc xá) | 左边 → TẢ BIÊN",
+    explanation: "Địa điểm làm chủ ngữ → dùng 是: 左边 (địa điểm) + 是 + 宿舍 (tên nơi)." },
   { id: "tr-010", grammarId: "B4-NP2", type: "translation", lesson: 4,
-    direction: "vi-to-zh", sourceText: "Siêu thị ở bên phải thư viện.", targetText: "超市在图书馆的右边。",
-    acceptedVariants: ["超市在图书馆右边。", "超市在图书馆的右边"],
-    hanVietHint: "超市 → SIÊU THỊ ✨ | 右边 → HỮU BIÊN (bên phải)",
-    explanation: "N + 的 + 方位词: 图书馆的右边 = 'bên phải của thư viện'. Trật tự N + 的 trước 方位词." },
+    direction: "vi-to-zh", sourceText: "Trường học ở bên phải thư viện.", targetText: "学校在图书馆的右边。",
+    acceptedVariants: ["学校在图书馆右边。", "学校在图书馆的右边"],
+    hanVietHint: "右边 → HỮU BIÊN (bên phải)",
+    explanation: "N + 的 + phương vị từ: 图书馆的右边 = 'bên phải của thư viện'. Trật tự N + 的 trước phương vị từ." },
   { id: "tr-011", grammarId: "CB-NP6", type: "translation", lesson: 4,
     direction: "vi-to-zh", sourceText: "Người tôi thích là cô ấy.", targetText: "我喜欢的人是她。",
     acceptedVariants: ["我喜欢的人是她"],
