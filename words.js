@@ -14,6 +14,7 @@ const words = [
   { char:"是",     pinyin:"shì",           pos:"v.",    viet:"là, thì...",                                         lesson:1 },
   { char:"老师",   pinyin:"lǎoshī",        pos:"n.",    viet:"giáo viên, thầy/cô giáo",                           lesson:1, hv:"LÃO SƯ — thầy/cô (dùng trong võ thuật, văn học)" },
   { char:"吗",     pinyin:"ma",            pos:"part.", viet:"...không? ...à? (trợ từ nghi vấn)",                  lesson:1 },
+  { char:"了",     pinyin:"le",            pos:"part.", viet:"rồi, đã (trợ từ chỉ hoàn thành/biến đổi)",            lesson:1 },
   { char:"不",     pinyin:"bù",            pos:"adv.",  viet:"không (trợ từ phủ định)",                            lesson:1 },
   { char:"我",     pinyin:"wǒ",            pos:"pron.", viet:"tôi, tớ, mình... (ngôi thứ nhất số ít)",            lesson:1 },
   { char:"学生",   pinyin:"xuésheng",      pos:"n.",    viet:"học sinh",                                           lesson:1, hv:"HỌC SINH — giống hệt tiếng Việt!" },
@@ -30,7 +31,6 @@ const words = [
   { char:"李军",   pinyin:"Lǐ Jūn",        pos:"n.",    viet:"Lý Quân (tên người)",                                lesson:1 },
   { char:"还没",   pinyin:"hái méi",       pos:"adv.",  viet:"chưa",                                                lesson:1 },
   { char:"工作",   pinyin:"gōngzuò",       pos:"v./n.", viet:"đi làm, công việc",                                   lesson:1 },
-  { char:"了",     pinyin:"le",            pos:"part.", viet:"rồi, đã (trợ từ chỉ hoàn thành/biến đổi)",            lesson:1 },
 
   // ── Lesson 2 ──
   { char:"同学",   pinyin:"tóngxué",       pos:"n.",    viet:"bạn cùng học",                                       lesson:2, hv:"ĐỒNG HỌC — bạn cùng lớp" },
@@ -107,6 +107,20 @@ const words = [
   { char:"不用谢", pinyin:"búyòng xiè",   pos:"",      viet:"không cần cảm ơn, không có gì",                       lesson:4 },
   { char:"不用",   pinyin:"búyòng",       pos:"adv.",  viet:"không cần",                                           lesson:4 },
   { char:"对",     pinyin:"duì",          pos:"adj.",  viet:"đúng",                                                lesson:4 },
+
+  // ── Lesson 5 ──
+  { char:"有",     pinyin:"yǒu",          pos:"v.",    viet:"có",                                                  lesson:5, hv:"HỮU — có (giống tiếng Việt!)" },
+  { char:"有用",   pinyin:"yǒuyòng",      pos:"adj.",  viet:"có ích, hữu dụng",                                    lesson:5, hv:"HỮU DỤNG — giống hệt tiếng Việt!" },
+  { char:"有名",   pinyin:"yǒumíng",      pos:"adj.",  viet:"nổi tiếng",                                           lesson:5, hv:"HỮU DANH — có danh tiếng" },
+  { char:"空儿",   pinyin:"kòngr",        pos:"n.",    viet:"thời gian rảnh, lúc rảnh",                            lesson:5, hv:"KHÔNG — trống, rảnh (như 'không khí', 'không gian')" },
+  { char:"时候",   pinyin:"shíhou",       pos:"n.",    viet:"lúc, khi, thời gian",                                 lesson:5, hv:"T HỜI HẦU — lúc/khi" },
+  { char:"欢迎",   pinyin:"huānyíng",     pos:"v.",    viet:"hoan nghênh, chào đón",                               lesson:5, hv:"HOAN NGHÊNH — giống hệt tiếng Việt!" },
+  { char:"去",     pinyin:"qù",           pos:"v.",    viet:"đi",                                                  lesson:5, hv:"KHỨ — đi (trong 'quá khứ')" },
+  { char:"玩儿",   pinyin:"wánr",         pos:"v.",    viet:"chơi",                                                lesson:5, hv:"NGOẠN — chơi (như 'ngoạn mục', 'du ngoạn')" },
+  { char:"卫生间", pinyin:"wèishēngjiān", pos:"n.",    viet:"nhà vệ sinh",                                         lesson:5, hv:"VỆ SINH GIAN — giống tiếng Việt!" },
+  { char:"教室",   pinyin:"jiàoshì",      pos:"n.",    viet:"phòng học, lớp học",                                  lesson:5, hv:"GIÁO THẤT — phòng học" },
+  { char:"旁边",   pinyin:"pángbiān",     pos:"n.",    viet:"bên cạnh",                                            lesson:5, hv:"BÀNG BIÊN — bên cạnh" },
+  { char:"西边",   pinyin:"xībiān",       pos:"n.",    viet:"phía tây",                                            lesson:5, hv:"TÂY BIÊN — phía tây" },
 
   // ── Add new words below ──
 ];
