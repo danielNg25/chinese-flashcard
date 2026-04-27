@@ -1820,10 +1820,16 @@ function flipMatchTile(idx) {
 
 /* ── Keyboard Shortcuts ── */
 document.addEventListener('keydown', (e) => {
+  if (e.repeat) return;  // ignore auto-repeat so one press never both checks AND rates
   if (currentMode === 'flashcard') {
     if (e.key === 'Enter' && !fcFlipped) {
       e.preventDefault();
       checkAnswer();
+      return;
+    }
+    if (e.key === 'Enter' && fcFlipped) {
+      e.preventDefault();
+      rateCard(3);
       return;
     }
     if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
@@ -1837,12 +1843,22 @@ document.addEventListener('keydown', (e) => {
       checkWriting();
       return;
     }
+    if (e.key === 'Enter' && wrChecked) {
+      e.preventDefault();
+      rateWritingCard(3);
+      return;
+    }
     if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
     if (wrChecked && e.key >= '1' && e.key <= '4') {
       e.preventDefault();
       rateWritingCard(parseInt(e.key) - 1);
     }
   } else if (currentMode === 'choose') {
+    if (e.key === 'Enter' && chChecked) {
+      e.preventDefault();
+      rateChooseCard(3);
+      return;
+    }
     if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
     if (!chChecked && e.key >= '1' && e.key <= '4') {
       e.preventDefault();
@@ -1857,12 +1873,22 @@ document.addEventListener('keydown', (e) => {
       checkPinyin();
       return;
     }
+    if (e.key === 'Enter' && pyChecked) {
+      e.preventDefault();
+      ratePinyinCard(3);
+      return;
+    }
     if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
     if (pyChecked && e.key >= '1' && e.key <= '4') {
       e.preventDefault();
       ratePinyinCard(parseInt(e.key) - 1);
     }
   } else if (currentMode === 'listen') {
+    if (e.key === 'Enter' && lnChecked && !lnRated) {
+      e.preventDefault();
+      rateListenCard(3);
+      return;
+    }
     if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
     if (e.key === ' ' || e.code === 'Space') {
       e.preventDefault();
