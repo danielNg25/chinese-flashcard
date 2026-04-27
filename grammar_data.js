@@ -370,6 +370,21 @@ const grammarPatterns = [
     ],
   },
   {
+    id: "B4-NP6", lesson: 4,
+    title: "A 的 B — đảo trật tự đảo nghĩa",
+    structure: "N + 的 + phương vị từ (vị trí)<br>phương vị từ + 的 + N (sự vật)",
+    explanation: "Quy tắc chung <b>A 的 B</b>: B là thành phần chính, A bổ nghĩa cho B. Đảo trật tự thì đảo nghĩa hoàn toàn:<br><br>(1) <b>N + 的 + phương vị từ</b> → phương vị từ là chính, nói về <b>vị trí</b> ('phía nào của N').<br>(2) <b>phương vị từ + 的 + N</b> → N là chính, chỉ <b>sự vật</b> nằm ở phía đó ('cái N ở phía đó').",
+    examples: [
+      { zh: "楼的右边是学校。", vi: "Phía bên phải của tòa nhà là trường học. (vị trí)" },
+      { zh: "右边的楼是图书馆。", vi: "Tòa nhà bên phải là thư viện. (sự vật)" },
+      { zh: "上边的宿舍是我的。", vi: "Ký túc xá phía trên là của tôi. (sự vật)" },
+    ],
+    notes: [
+      "A 的 B → B là chính, A bổ nghĩa cho B",
+      "楼的右边 = vị trí (nói về phía bên phải) ↔ 右边的楼 = sự vật (nói về tòa nhà)",
+    ],
+  },
+  {
     id: "CB-NP4", lesson: 4,
     title: "Lượng từ 个",
     structure: "Số / Đại từ chỉ định + 个 + DT",
@@ -402,15 +417,17 @@ const grammarPatterns = [
   {
     id: "CB-NP6", lesson: 4,
     title: "Cụm ĐT làm định ngữ — Mệnh đề quan hệ 🔴",
-    structure: "[CN + ĐT] + 的 + DT",
-    explanation: "Cụm động từ làm định ngữ cho danh từ (tương đương mệnh đề quan hệ tiếng Anh). Tiếng Trung đặt mệnh đề TRƯỚC danh từ — ngược trật tự tiếng Việt ('người <i>mà tôi thích</i>' đặt sau).",
+    structure: "[Cụm ĐT] + 的 + DT",
+    explanation: "Cụm động từ (có thể có CN, 在, TN) làm định ngữ cho DT — tương đương mệnh đề quan hệ ('người mà...', 'cuốn sách mà...'). Tiếng Trung đặt mệnh đề TRƯỚC DT, ngược trật tự tiếng Việt:<br><br>(1) <b>[在 + V] + 的 + DT</b> = DT (đang) làm gì: 在看书的学生 = học sinh đang đọc sách.<br>(2) <b>[CN + 在 + V] + 的 + DT</b> = DT (mà) CN đang làm: 大卫在听的音乐 = nhạc David đang nghe.<br>(3) <b>[CN + V] + 的 + DT</b> = DT (mà) CN làm: 你看的书 = cuốn sách bạn đọc.",
     examples: [
-      { zh: "我喜欢的人是她。", vi: "Người tôi thích là cô ấy." },
-      { zh: "我认识的老师", vi: "Giáo viên tôi quen" },
-      { zh: "你看的书是我的。", vi: "Cuốn sách bạn đọc là của tôi." },
+      { zh: "在看书的学生是大卫。", vi: "Học sinh (đang) đọc sách là David." },
+      { zh: "大卫在听的音乐是中国音乐。", vi: "Nhạc (mà) David đang nghe là nhạc Trung Quốc." },
+      { zh: "你看的书是我的。", vi: "Cuốn sách (mà) bạn đọc là của tôi." },
     ],
     notes: [
-      "Trật tự ngược tiếng Việt/Anh: [mệnh đề] + 的 + DT",
+      "Trật tự ngược tiếng Việt: [mệnh đề] + 的 + DT (Việt đặt mệnh đề SAU: 'sách mà bạn đọc')",
+      "Chèn 在 trước ĐT để diễn tả ý 'đang...': 在听音乐的老师 = giáo viên đang nghe nhạc",
+      "Có thể thêm định ngữ trước DT chính: 在听音乐的中国老师 = giáo viên Trung Quốc đang nghe nhạc",
       "Ngữ pháp nâng cao 🔴 — cần luyện đọc hiểu nhiều",
     ],
   },

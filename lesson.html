@@ -452,8 +452,14 @@ function renderQuizIntro() {
         <button class="q-start-btn" onclick="startQuiz()">Start Quiz</button>
       </div>
     </div>`;
+  populateLessonSelects();  // fill in Lesson 1..N options for the freshly-rendered select
   const lSel = document.getElementById('quizLessonSelect');
-  if (lSel) lSel.value = quizLessonFilter;
+  if (lSel) {
+    // Default to the currently-selected lesson; user can still pick "All Lessons" or another lesson.
+    const desired = String(currentLesson);
+    lSel.value = [...lSel.options].some(o => o.value === desired) ? desired : '';
+    quizLessonFilter = lSel.value;
+  }
   const cSel = document.getElementById('quizCountSelect');
   if (cSel) cSel.value = String(quizCount);
 }

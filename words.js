@@ -28,6 +28,9 @@ const words = [
   { char:"大卫",   pinyin:"Dàwèi",         pos:"n.",    viet:"David (tên người)",                                  lesson:1 },
   { char:"王",     pinyin:"Wáng",          pos:"n.",    viet:"Vương (họ)",                                          lesson:1 },
   { char:"李军",   pinyin:"Lǐ Jūn",        pos:"n.",    viet:"Lý Quân (tên người)",                                lesson:1 },
+  { char:"还没",   pinyin:"hái méi",       pos:"adv.",  viet:"chưa",                                                lesson:1 },
+  { char:"工作",   pinyin:"gōngzuò",       pos:"v./n.", viet:"đi làm, công việc",                                   lesson:1 },
+  { char:"了",     pinyin:"le",            pos:"part.", viet:"rồi, đã (trợ từ chỉ hoàn thành/biến đổi)",            lesson:1 },
 
   // ── Lesson 2 ──
   { char:"同学",   pinyin:"tóngxué",       pos:"n.",    viet:"bạn cùng học",                                       lesson:2, hv:"ĐỒNG HỌC — bạn cùng lớp" },
