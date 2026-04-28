@@ -121,6 +121,23 @@ const words = [
   { char:"教室",   pinyin:"jiàoshì",      pos:"n.",    viet:"phòng học, lớp học",                                  lesson:5, hv:"GIÁO THẤT — phòng học" },
   { char:"旁边",   pinyin:"pángbiān",     pos:"n.",    viet:"bên cạnh",                                            lesson:5, hv:"BÀNG BIÊN — bên cạnh" },
   { char:"西边",   pinyin:"xībiān",       pos:"n.",    viet:"phía tây",                                            lesson:5, hv:"TÂY BIÊN — phía tây" },
+  { char:"小",     pinyin:"xiǎo",         pos:"adj.",  viet:"nhỏ, bé",                                             lesson:5, hv:"TIỂU — nhỏ (như 'tiểu học', 'tiểu thuyết')" },
+  { char:"中",     pinyin:"zhōng",        pos:"adj.",  viet:"vừa, trung bình",                                     lesson:5, hv:"TRUNG — giữa (như 'trung học', 'trung tâm')" },
+  { char:"大",     pinyin:"dà",           pos:"adj.",  viet:"to, lớn",                                             lesson:5, hv:"ĐẠI — lớn (như 'đại học', 'đại sứ')" },
+  { char:"没有",   pinyin:"méiyǒu",       pos:"v.",    viet:"không có",                                            lesson:5, hv:"MỘT HỮU — phủ định của 有 (có)" },
+  { char:"北京",   pinyin:"Běijīng",      pos:"n.",    viet:"Bắc Kinh",                                            lesson:5, hv:"BẮC KINH — giống hệt tiếng Việt!" },
+
+  // ── Lesson 6 ──
+  { char:"零",     pinyin:"líng",         pos:"num.",  viet:"số không, 0",                                         lesson:6, hv:"LINH — số 0" },
+  { char:"二",     pinyin:"èr",           pos:"num.",  viet:"hai, 2",                                              lesson:6, hv:"NHỊ — hai (như 'nhị thập', 'thứ nhị')" },
+  { char:"三",     pinyin:"sān",          pos:"num.",  viet:"ba, 3",                                               lesson:6, hv:"TAM — ba (như 'tam giác', 'tam quốc')" },
+  { char:"四",     pinyin:"sì",           pos:"num.",  viet:"bốn, 4",                                              lesson:6, hv:"TỨ — bốn (như 'tứ giác', 'tứ phương')" },
+  { char:"五",     pinyin:"wǔ",           pos:"num.",  viet:"năm, 5",                                              lesson:6, hv:"NGŨ — năm (như 'ngũ vị', 'ngũ hành')" },
+  { char:"六",     pinyin:"liù",          pos:"num.",  viet:"sáu, 6",                                              lesson:6, hv:"LỤC — sáu (như 'lục địa', 'lục giác')" },
+  { char:"七",     pinyin:"qī",           pos:"num.",  viet:"bảy, 7",                                              lesson:6, hv:"THẤT — bảy (như 'thất bại', 'thất tịch')" },
+  { char:"八",     pinyin:"bā",           pos:"num.",  viet:"tám, 8",                                              lesson:6, hv:"BÁT — tám (như 'bát giác')" },
+  { char:"九",     pinyin:"jiǔ",          pos:"num.",  viet:"chín, 9",                                             lesson:6, hv:"CỬU — chín (như 'cửu vạn')" },
+  { char:"十",     pinyin:"shí",          pos:"num.",  viet:"mười, 10",                                            lesson:6, hv:"THẬP — mười (như 'thập kỷ', 'thập niên')" },
 
   // ── Add new words below ──
 ];

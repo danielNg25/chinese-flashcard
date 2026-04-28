@@ -431,6 +431,86 @@ const grammarPatterns = [
       "Ngữ pháp nâng cao 🔴 — cần luyện đọc hiểu nhiều",
     ],
   },
+  {
+    id: "B5-NP1", lesson: 5,
+    title: "小 / 中 / 大 + DT — Tính từ kích cỡ làm định ngữ",
+    structure: "小 / 中 / 大 + DT",
+    explanation: "Tính từ chỉ kích cỡ (小/中/大) đặt TRỰC TIẾP trước danh từ — KHÔNG cần 的. Khác với khi tính từ làm vị ngữ ('教室很大' — phòng học rất lớn) thì cần 很.",
+    examples: [
+      { zh: "这是大教室。", vi: "Đây là phòng học lớn." },
+      { zh: "我们的宿舍是小宿舍。", vi: "Ký túc xá của chúng tôi là ký túc xá nhỏ." },
+      { zh: "大图书馆在哪儿？", vi: "Thư viện lớn ở đâu?" },
+    ],
+    notes: [
+      "Định ngữ kích cỡ trực tiếp: 大教室 ✓ — không cần 的",
+      "Vị ngữ kích cỡ: 教室很大 ✓ — phải có 很 (xem B1-NP5)",
+      "Một số kết hợp lexicalized: 大学 (đại học), 小学 (tiểu học) — không phải 'trường lớn/nhỏ' theo nghĩa đen",
+    ],
+  },
+  {
+    id: "B5-NP2", lesson: 5,
+    title: "有 / 没有 — Sở hữu / Tồn tại",
+    structure: "CN + 有 + DT<br>CN + 没有 + DT",
+    explanation: "有 = 'có' (sở hữu hoặc tồn tại). Phủ định ĐẶC BIỆT: dùng <b>没有</b>, KHÔNG dùng 不有 ✗. 有 là động từ duy nhất trong tiếng Trung phủ định bằng 没.",
+    examples: [
+      { zh: "我有书。", vi: "Tôi có sách." },
+      { zh: "他没有工作。", vi: "Anh ấy không có việc làm." },
+      { zh: "学校有图书馆。", vi: "Trường học có thư viện. (tồn tại)" },
+    ],
+    notes: [
+      "Phủ định: 没有 (không phải 不有 ✗) — 有 là ngoại lệ duy nhất",
+      "有 vừa nghĩa 'sở hữu' (我有...) vừa 'tồn tại' (... 有 ...)",
+      "Văn nói có thể rút gọn 没有 → 没",
+    ],
+  },
+  {
+    id: "B5-NP3", lesson: 5,
+    title: "...的时候 — Khi / Lúc làm gì",
+    structure: "[Cụm ĐT] + 的时候",
+    explanation: "Đặt [cụm động từ] trước <b>的时候</b> = 'khi/lúc làm gì'. Toàn bộ cụm này là trạng ngữ chỉ thời gian, có thể đứng đầu câu hoặc giữa CN và VN. Ngược trật tự tiếng Việt: 'khi tôi học' → '<b>我学</b>的时候' (mệnh đề ở TRƯỚC '的时候', không phải sau 'khi').",
+    examples: [
+      { zh: "我看书的时候，他来了。", vi: "Khi tôi đọc sách, anh ấy đến." },
+      { zh: "你来的时候，我在教室。", vi: "Khi bạn đến, tôi đang ở lớp học." },
+      { zh: "我听音乐的时候很高兴。", vi: "Khi tôi nghe nhạc tôi rất vui." },
+    ],
+    notes: [
+      "的时候 LUÔN đặt ở CUỐI cụm động từ — không tách: '的' bên trong, '时候' ngay sau",
+      "Trạng ngữ thời gian thường ở đầu câu, theo sau là dấu phẩy",
+      "Mệnh đề con [cụm ĐT] có thể có CN (我学的时候) hoặc không (看书的时候)",
+    ],
+  },
+  {
+    id: "B5-NP4", lesson: 5,
+    title: "什么时候 — Khi nào? / Lúc nào?",
+    structure: "CN + 什么时候 + VN？",
+    explanation: "什么时候 = 'lúc nào / khi nào' — đại từ nghi vấn hỏi về thời gian. Đặt sau CN và trước VN. Vì đã là câu hỏi (có 什么) nên KHÔNG thêm 吗.",
+    examples: [
+      { zh: "你什么时候有空儿？", vi: "Bạn lúc nào rảnh?" },
+      { zh: "你什么时候去？", vi: "Bạn khi nào đi?" },
+      { zh: "什么时候你来教室？", vi: "Khi nào bạn đến lớp học? (đặt ở đầu câu)" },
+    ],
+    notes: [
+      "什么时候 là đại từ nghi vấn → KHÔNG thêm 吗 ở cuối câu",
+      "Vị trí phổ biến: CN + 什么时候 + VN; cũng có thể đặt 什么时候 ở đầu câu",
+      "Trả lời thường dùng [VP] + 的时候 (xem B5-NP3) hoặc thời gian cụ thể",
+    ],
+  },
+  {
+    id: "B5-NP5", lesson: 5,
+    title: "来 / 去 — Đến / Đi",
+    structure: "CN + 来 / 去 + địa điểm",
+    explanation: "来 và 去 là cặp động từ chỉ hướng:<br>• <b>来</b> = 'đến' — chuyển động <b>về phía người nói</b>.<br>• <b>去</b> = 'đi' — chuyển động <b>rời khỏi người nói</b>.<br>Đặt địa điểm TRỰC TIẾP sau 来/去 — không cần thêm giới từ.",
+    examples: [
+      { zh: "我去图书馆。", vi: "Tôi đi thư viện." },
+      { zh: "大卫来中国。", vi: "David đến Trung Quốc." },
+      { zh: "你去哪儿？", vi: "Bạn đi đâu?" },
+    ],
+    notes: [
+      "Sau 来/去 đặt địa điểm trực tiếp: 去图书馆 ✓, không nói 去在图书馆 ✗",
+      "来 ↔ 去 chọn theo vị trí người nói: ở nhà bảo người khác '来' (đến đây); rời nhà bảo '去' (đi đó)",
+      "Hỏi điểm đến: 来/去 + 哪儿？",
+    ],
+  },
 ];
 
 const grammarQuestions = [
