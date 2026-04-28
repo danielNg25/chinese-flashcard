@@ -138,6 +138,11 @@ const words = [
   { char:"八",     pinyin:"bā",           pos:"num.",  viet:"tám, 8",                                              lesson:6, hv:"BÁT — tám (như 'bát giác')" },
   { char:"九",     pinyin:"jiǔ",          pos:"num.",  viet:"chín, 9",                                             lesson:6, hv:"CỬU — chín (như 'cửu vạn')" },
   { char:"十",     pinyin:"shí",          pos:"num.",  viet:"mười, 10",                                            lesson:6, hv:"THẬP — mười (như 'thập kỷ', 'thập niên')" },
+  { char:"点",     pinyin:"diǎn",         pos:"n.",    viet:"giờ (đơn vị thời gian)",                              lesson:6, hv:"ĐIỂM — giờ (điểm trên đồng hồ)" },
+  { char:"分",     pinyin:"fēn",          pos:"n.",    viet:"phút",                                                lesson:6, hv:"PHÂN — phút (chia nhỏ giờ)" },
+  { char:"半",     pinyin:"bàn",          pos:"n.",    viet:"rưỡi (30 phút), một nửa",                             lesson:6, hv:"BÁN — nửa (như 'bán cầu', 'bán đảo')" },
+  { char:"刻",     pinyin:"kè",           pos:"n.",    viet:"khắc (15 phút)",                                      lesson:6, hv:"KHẮC — giống hệt tiếng Việt!" },
+  { char:"差",     pinyin:"chà",          pos:"v.",    viet:"thiếu, kém",                                          lesson:6, hv:"SAI — thiếu, chênh lệch (như 'sai số')" },
 
   // ── Add new words below ──
 ];
