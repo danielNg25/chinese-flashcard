@@ -62,6 +62,7 @@ tbody td { padding: 8px 10px; vertical-align: middle; }
 .rating-col.show { display: table-cell; }
 th.rating-col.show { display: table-cell; }
 .viet { color: var(--color-text-secondary); font-size: 13px; }
+.hv { color: #7c5c00; font-size: 12px; background: #fdf3dc; padding: 2px 8px; border-radius: 4px; display: inline-block; }
 .audio-btn { background: none; border: none; cursor: pointer; font-size: 16px; padding: 2px 4px; opacity: 0.5; transition: opacity 0.15s; vertical-align: middle; }
 .audio-btn:hover { opacity: 1; }
 
@@ -358,6 +359,7 @@ th.rating-col.show { display: table-cell; }
           <th>Pinyin</th>
           <th>Type</th>
           <th>Vietnamese meaning</th>
+          <th>Hán Việt</th>
           <th>Lesson</th>
           <th class="rating-col">Rating</th>
         </tr>
@@ -698,6 +700,7 @@ function render() {
     const pinyinCell = hsCell(w, 'pinyin') || `<span class="pinyin">${w.pinyin}</span>`;
     const vietCell = hsCell(w, 'viet') || `<span class="viet">${w.viet}</span>`;
     const checkBtn = hsMode && hsHidden[w.n] ? `<button class="hs-check-btn" onclick="checkRowHs(${w.n})">Check</button>` : '';
+    const hvCell = w.hv ? `<span class="hv">${w.hv}</span>` : '<span style="color:var(--color-text-tertiary);font-size:12px">—</span>';
     return `
     <tr>
       <td style="color:var(--color-text-tertiary);font-size:12px">${i+1}</td>
@@ -705,6 +708,7 @@ function render() {
       <td>${pinyinCell}</td>
       <td>${w.pos ? `<span class="badge ${posClass(w.pos)}">${w.pos}</span>` : '<span style="color:var(--color-text-tertiary);font-size:12px">—</span>'}</td>
       <td>${vietCell}</td>
+      <td>${hvCell}</td>
       <td><span class="lesson-tag">L${w.lesson}</span>${checkBtn}</td>
       <td class="${rcls}">${weightLabel(w)}</td>
     </tr>`;
@@ -723,6 +727,7 @@ function render() {
       </div>
       <div class="mobile-card-right">
         ${vietHtml}
+        ${w.hv ? `<div class="hv" style="margin-top:4px">${w.hv}</div>` : ''}
         <div class="mobile-card-meta">
           ${w.pos ? `<span class="badge ${posClass(w.pos)}">${w.pos}</span>` : ''}
           <span class="lesson-tag">L${w.lesson}</span>

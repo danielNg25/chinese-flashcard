@@ -591,6 +591,38 @@ const grammarPatterns = [
       "Mẹo nhớ: 午 (ngọ) = giữa trưa → 上午 'trên ngọ' (trước trưa), 下午 'dưới ngọ' (sau trưa)",
     ],
   },
+  {
+    id: "B6-NP6", lesson: 6,
+    title: "Vị trí từ chỉ thời gian + 几点 — Mấy giờ?",
+    structure: "Time + CN + V<br>CN + Time + V<br>CN + 几点 + V?",
+    explanation: "Trạng ngữ thời gian (giờ, buổi, từ chỉ thời điểm) có hai vị trí hợp lệ:<br>(1) <b>Time + CN + V</b>: thời gian đặt đầu câu — nhấn mạnh thời điểm.<br>(2) <b>CN + Time + V</b>: thời gian giữa CN và VN — phổ biến hơn trong khẩu ngữ.<br>KHÔNG bao giờ đặt thời gian SAU động từ (giống tiếng Anh '*go to school 8 o'clock').<br><br>Hỏi giờ: dùng <b>几点</b> ở vị trí của thời gian: <i>你几点来？</i> = 'Bạn mấy giờ đến?'. Vì 几 là đại từ nghi vấn nên KHÔNG thêm 吗.",
+    examples: [
+      { zh: "我八点去图书馆。", vi: "Tôi 8 giờ đi thư viện. (CN + Time + V)" },
+      { zh: "八点我去图书馆。", vi: "8 giờ tôi đi thư viện. (Time + CN + V — nhấn mạnh)" },
+      { zh: "你几点上课？", vi: "Bạn mấy giờ vào lớp?" },
+    ],
+    notes: [
+      "Cả 2 vị trí 'Time + CN + V' và 'CN + Time + V' đều đúng — KHÔNG đặt sau động từ",
+      "几点 thay thế trực tiếp vị trí của giờ — giữ trật tự câu, không đảo",
+      "几点 là đại từ nghi vấn → KHÔNG thêm 吗 ở cuối",
+    ],
+  },
+  {
+    id: "B6-NP7", lesson: 6,
+    title: "早饭 / 午饭 / 晚饭 — Bữa ăn",
+    structure: "吃 + 早饭 / 午饭 / 晚饭",
+    explanation: "Tên bữa ăn ghép từ buổi + 饭 (cơm):<br>• <b>早饭</b> (zǎofàn) — bữa sáng (lit. 'cơm sáng')<br>• <b>午饭</b> (wǔfàn) — bữa trưa (lit. 'cơm trưa')<br>• <b>晚饭</b> (wǎnfàn) — bữa tối (lit. 'cơm tối')<br>Động từ chuyên dùng: <b>吃 + [bữa]</b> = ăn bữa đó. 吃饭 (chung chung) = 'ăn cơm/dùng bữa'.",
+    examples: [
+      { zh: "我早上七点吃早饭。", vi: "Tôi ăn sáng lúc 7 giờ sáng." },
+      { zh: "他中午十二点吃午饭。", vi: "Anh ấy ăn trưa lúc 12 giờ trưa." },
+      { zh: "我们晚上六点半吃晚饭。", vi: "Chúng tôi ăn tối lúc 6 giờ rưỡi tối." },
+    ],
+    notes: [
+      "Cấu trúc cố định: buổi (早/午/晚) + 饭 → tên bữa ăn",
+      "吃 + bữa ăn là cụm verb-object: '吃早饭' không tách giữa 吃 và 早饭",
+      "Khi nói chung 'ăn cơm/dùng bữa', dùng 吃饭 (không cần xác định bữa nào)",
+    ],
+  },
 ];
 
 const grammarQuestions = [

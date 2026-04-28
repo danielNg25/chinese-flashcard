@@ -43,6 +43,7 @@ tbody td { padding: 8px 10px; vertical-align: middle; }
 .char { font-size: 22px; font-weight: 500; }
 .pinyin { color: var(--color-text-secondary); font-style: italic; }
 .viet { color: var(--color-text-secondary); font-size: 13px; }
+.hv { color: #7c5c00; font-size: 12px; background: #fdf3dc; padding: 2px 8px; border-radius: 4px; display: inline-block; }
 .badge { display: inline-block; font-size: 11px; padding: 2px 7px; border-radius: 99px; font-weight: 500; }
 .n    { background: #E6F1FB; color: #0C447C; }
 .v    { background: #EAF3DE; color: #27500A; }
@@ -309,6 +310,7 @@ function render() {
       <td><span class="pinyin">${w.pinyin}</span></td>
       <td>${w.pos ? `<span class="badge ${posClass(w.pos)}">${w.pos}</span>` : ''}</td>
       <td><span class="viet">${w.viet}</span></td>
+      <td>${w.hv ? `<span class="hv">${w.hv}</span>` : '<span style="color:var(--color-text-tertiary); font-size:12px;">—</span>'}</td>
     </tr>`).join('');
 
   const grammarRows = lessonPatterns.map((p, i) => `
@@ -343,7 +345,7 @@ function render() {
 
   document.getElementById('vocab-view').innerHTML = lessonWords.length ? `
     <table>
-      <thead><tr><th>#</th><th>Character</th><th>Pinyin</th><th>Type</th><th>Vietnamese meaning</th></tr></thead>
+      <thead><tr><th>#</th><th>Character</th><th>Pinyin</th><th>Type</th><th>Vietnamese meaning</th><th>Hán Việt</th></tr></thead>
       <tbody>${wordRows}</tbody>
     </table>` : '<div class="empty-msg">No vocabulary for this lesson yet.</div>';
 
