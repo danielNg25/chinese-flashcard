@@ -137,6 +137,7 @@ const words = [
   { char:"八",     pinyin:"bā",           pos:"num.",  viet:"tám, 8",                                              lesson:6, hv:"BÁT — tám (như 'bát giác')" },
   { char:"九",     pinyin:"jiǔ",          pos:"num.",  viet:"chín, 9",                                             lesson:6, hv:"CỬU — chín (như 'cửu vạn')" },
   { char:"十",     pinyin:"shí",          pos:"num.",  viet:"mười, 10",                                            lesson:6, hv:"THẬP — mười (như 'thập kỷ', 'thập niên')" },
+  { char:"两",     pinyin:"liǎng",        pos:"num.",  viet:"hai (dùng trước lượng từ)",                           lesson:6, hv:"LƯỠNG — hai (như 'lưỡng tính', 'lưỡng cực')" },
   { char:"零",     pinyin:"líng",         pos:"num.",  viet:"số không, 0",                                         lesson:6, hv:"LINH — số 0" },
   { char:"百",     pinyin:"bǎi",          pos:"num.",  viet:"trăm, 100",                                           lesson:6, hv:"BÁCH — trăm (như 'bách khoa', 'bách phân')" },
   { char:"点",     pinyin:"diǎn",         pos:"n.",    viet:"giờ (đơn vị thời gian)",                              lesson:6, hv:"ĐIỂM — giờ (điểm trên đồng hồ)" },
@@ -144,6 +145,19 @@ const words = [
   { char:"半",     pinyin:"bàn",          pos:"n.",    viet:"rưỡi (30 phút), một nửa",                             lesson:6, hv:"BÁN — nửa (như 'bán cầu', 'bán đảo')" },
   { char:"刻",     pinyin:"kè",           pos:"n.",    viet:"khắc (15 phút)",                                      lesson:6, hv:"KHẮC — giống hệt tiếng Việt!" },
   { char:"差",     pinyin:"chà",          pos:"v.",    viet:"thiếu, kém",                                          lesson:6, hv:"SAI — thiếu, chênh lệch (như 'sai số')" },
+  { char:"早",     pinyin:"zǎo",          pos:"adj./n.", viet:"sớm; buổi sáng (như 早上)",                          lesson:6, hv:"TẢO — sớm (như 'tảo hôn')" },
+  { char:"几",     pinyin:"jǐ",           pos:"pron.", viet:"mấy, bao nhiêu (như 几点)",                            lesson:6, hv:"KỶ — mấy/bao nhiêu (số lượng nhỏ)" },
+  { char:"上课",   pinyin:"shàngkè",      pos:"v.",    viet:"vào lớp, đi học",                                     lesson:6, hv:"THƯỢNG KHÓA — lên lớp" },
+  { char:"下课",   pinyin:"xiàkè",        pos:"v.",    viet:"tan học, hết tiết",                                   lesson:6, hv:"HẠ KHÓA — xuống lớp" },
+  { char:"部分",   pinyin:"bùfèn",        pos:"n.",    viet:"phần (như 大部分 = phần lớn)",                          lesson:6, hv:"BỘ PHẬN — giống hệt tiếng Việt!" },
+  { char:"讲座",   pinyin:"jiǎngzuò",     pos:"n.",    viet:"bài giảng, buổi diễn giảng",                          lesson:6, hv:"GIẢNG TỌA — bài giảng (chỗ giảng)" },
+  { char:"太",     pinyin:"tài",          pos:"adv.",  viet:"quá (dùng trong 太……了)",                              lesson:6, hv:"THÁI — quá (như 'thái quá')" },
+  { char:"开始",   pinyin:"kāishǐ",       pos:"v.",    viet:"bắt đầu",                                             lesson:6, hv:"KHAI THỦY — mở đầu" },
+  { char:"现在",   pinyin:"xiànzài",      pos:"n./adv.", viet:"bây giờ, hiện tại",                                 lesson:6, hv:"HIỆN TẠI — giống hệt tiếng Việt!" },
+  { char:"一会儿", pinyin:"yíhuìr",       pos:"q.",    viet:"một lát, một chốc",                                   lesson:6, hv:"NHẤT HỘI — một lát" },
+  { char:"见",     pinyin:"jiàn",         pos:"v.",    viet:"gặp, thấy",                                           lesson:6, hv:"KIẾN — thấy/gặp (như 'kiến thức', 'tái kiến')" },
+  { char:"晚",     pinyin:"wǎn",          pos:"adj./n.", viet:"muộn, tối; buổi tối (như 晚上)",                     lesson:6, hv:"VÃN — muộn (như 'vãn cảnh')" },
+  { char:"午",     pinyin:"wǔ",           pos:"n.",    viet:"giữa trưa, giờ ngọ (trong 上午/中午/下午)",              lesson:6, hv:"NGỌ — giữa trưa (như 'giờ ngọ', 'chính ngọ')" },
 
   // ── Add new words below ──
 ];

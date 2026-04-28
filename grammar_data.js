@@ -511,6 +511,86 @@ const grammarPatterns = [
       "Hỏi điểm đến: 来/去 + 哪儿？",
     ],
   },
+  {
+    id: "B6-NP1", lesson: 6,
+    title: "Cách đọc giờ phút",
+    structure: "N + 点 (+ M + 分)",
+    explanation: "Cách đọc giờ phút trong tiếng Trung:<br>(1) <b>Giờ tròn</b>: Số giờ + 点 → 三点 (3 giờ).<br>(2) <b>Giờ + phút</b>: Số giờ + 点 + Số phút + 分 → 三点二十分 (3 giờ 20 phút).<br>(3) <b>Phút < 10</b>: chèn 零 trước số phút → 三点零五分 (3 giờ 05 phút).<br>(4) <b>30 phút</b>: dùng 半 → 三点半 (3 giờ rưỡi).<br>(5) <b>15 / 45 phút</b>: dùng 刻 → 三点一刻 (3 giờ 15), 三点三刻 (3 giờ 45).<br>(6) <b>Kém</b>: 差 + phút + 分 + giờ + 点 → 差五分三点 (3 giờ kém 5).",
+    examples: [
+      { zh: "我三点去图书馆。", vi: "Tôi đi thư viện lúc 3 giờ." },
+      { zh: "他七点半来教室。", vi: "Anh ấy đến lớp học lúc 7 giờ rưỡi." },
+      { zh: "我差五分八点来。", vi: "Tôi đến lúc 8 giờ kém 5 phút." },
+    ],
+    notes: [
+      "Phút có 1 chữ số (1–9): bắt buộc thêm 零 trước số phút (三点零五分, không nói 三点五分 ✗)",
+      "刻 = 15 phút: 一刻 = 15, 三刻 = 45 (KHÔNG có 二刻 dùng 半 thay)",
+      "Hỏi giờ: dùng 什么时候 (xem B5-NP4) — cấu trúc hỏi giờ chuyên biệt sẽ học ở bài sau",
+    ],
+  },
+  {
+    id: "B6-NP2", lesson: 6,
+    title: "两 vs 二 — Khi nào dùng 'hai' nào",
+    structure: "两 + lượng từ<br>二 (số đếm thuần / số nhiều chữ số)",
+    explanation: "Cả 二 và 两 đều nghĩa là 'hai' nhưng dùng trong ngữ cảnh khác nhau:<br>• <b>二</b>: số đếm trừu tượng (1, 2, 3...), số thứ tự, các chữ số trong số nhiều chữ số (12, 22, 200...).<br>• <b>两</b>: dùng TRƯỚC lượng từ khi nói '<b>hai cái gì đó</b>'.<br>Quy tắc: trước lượng từ → 两; còn lại → 二.",
+    examples: [
+      { zh: "两本书", vi: "hai cuốn sách (本 là lượng từ → dùng 两)" },
+      { zh: "两个学生", vi: "hai học sinh (个 là lượng từ → dùng 两)" },
+      { zh: "两点", vi: "2 giờ (点 hoạt động như lượng từ → 两点, KHÔNG 二点)" },
+    ],
+    notes: [
+      "Số đếm thuần / số thứ tự / số nhiều chữ số: dùng 二 — 十二 (12), 二十 (20), 二百 (200)",
+      "Trước lượng từ (本, 个, 点...): dùng 两 — sai khi viết 二本书 ✗ → 两本书 ✓",
+      "Trước 百 (trăm): cả 二百 và 两百 đều dùng được; văn nói thường nghiêng về 两百",
+    ],
+  },
+  {
+    id: "B6-NP3", lesson: 6,
+    title: "太...了 / 不太... — Quá... / Không... lắm",
+    structure: "太 + TT + 了 (quá ...)<br>不太 + TT (không ... lắm)",
+    explanation: "Hai cấu trúc dùng 太 để biểu thị mức độ:<br>(1) <b>太 + TT + 了</b>: nhấn mạnh 'quá...' — thường mang sắc thái phàn nàn hoặc khen mạnh. 了 là BẮT BUỘC.<br>(2) <b>不太 + TT</b>: phủ định nhẹ 'không... lắm'. KHÔNG có 了 đi kèm.",
+    examples: [
+      { zh: "太好了！", vi: "Quá tốt! / Tuyệt!" },
+      { zh: "老师太高兴了。", vi: "Giáo viên quá vui." },
+      { zh: "这本书不太好。", vi: "Cuốn sách này không tốt lắm." },
+    ],
+    notes: [
+      "太 + TT phải có 了 ở cuối: 太好 ✗ → 太好了 ✓",
+      "不太 + TT KHÔNG cần 了: 不太好了 ✗ → 不太好 ✓",
+      "Khẩu ngữ: '太好了！' thường dùng thay 'tuyệt vời!' hoặc đáp lời tích cực",
+    ],
+  },
+  {
+    id: "B6-NP4", lesson: 6,
+    title: "差 — Kém / Tệ (đánh giá khả năng)",
+    structure: "CN + 很 + 差 / 不太 + 差",
+    explanation: "差 với nghĩa 'kém, tệ' là tính từ — dùng giống các tính từ khác, cần phó từ (thường là 很) đứng trước khi làm vị ngữ. Diễn tả trình độ/khả năng kém hoặc chất lượng tồi.<br><br>Lưu ý: 差 còn có nghĩa khác là 'thiếu/kém' trong cách nói giờ (xem B6-NP1): 差五分八点 = '8 giờ kém 5'.",
+    examples: [
+      { zh: "我的汉语很差。", vi: "Tiếng Hán của tôi rất kém." },
+      { zh: "他的工作不太差。", vi: "Công việc của anh ấy không tệ lắm." },
+      { zh: "我的日语很差。", vi: "Tiếng Nhật của tôi rất kém." },
+    ],
+    notes: [
+      "差 là tính từ: làm vị ngữ phải có phó từ (很 / 不太 / 太...了): 我差 ✗ → 我很差 ✓",
+      "差 mạnh hơn 不好: 不好 = 'không tốt'; 差 = 'kém, tệ' (chất lượng/khả năng yếu)",
+      "Hai nghĩa của 差: (a) tính từ 'kém' (我的汉语差) — bài này; (b) động từ 'thiếu' khi nói giờ (差五分) — xem B6-NP1",
+    ],
+  },
+  {
+    id: "B6-NP5", lesson: 6,
+    title: "早上 / 上午 / 中午 / 下午 / 晚上 — Các buổi trong ngày",
+    structure: "[Buổi] + (giờ cụ thể) + V",
+    explanation: "Tiếng Trung chia ngày thành 5 buổi, dùng làm trạng ngữ thời gian:<br>• <b>早上</b> (zǎoshang) — sáng sớm (~5h–8h)<br>• <b>上午</b> (shàngwǔ) — buổi sáng (8h–12h, nghĩa đen: 'trên 午/ngọ')<br>• <b>中午</b> (zhōngwǔ) — giữa trưa (~11h–13h, 'chính ngọ')<br>• <b>下午</b> (xiàwǔ) — buổi chiều (12h–18h, 'dưới ngọ')<br>• <b>晚上</b> (wǎnshang) — buổi tối (18h–24h)<br>Đặt buổi TRƯỚC giờ cụ thể: 上午八点 = '8 giờ sáng', 晚上九点 = '9 giờ tối'.",
+    examples: [
+      { zh: "我早上六点上课。", vi: "Tôi vào lớp lúc 6 giờ sáng." },
+      { zh: "他下午三点来教室。", vi: "Anh ấy đến lớp học lúc 3 giờ chiều." },
+      { zh: "我们晚上八点见。", vi: "Chúng ta gặp nhau lúc 8 giờ tối." },
+    ],
+    notes: [
+      "Trật tự: [Buổi] + [Giờ] — KHÔNG đảo ngược: 早上八点 ✓, 八点早上 ✗",
+      "早上 và 上午 hơi chồng nhau (~7–8h): 早上 nhấn 'sáng sớm/khi mới dậy'; 上午 chỉ 'cả buổi sáng đến trưa'",
+      "Mẹo nhớ: 午 (ngọ) = giữa trưa → 上午 'trên ngọ' (trước trưa), 下午 'dưới ngọ' (sau trưa)",
+    ],
+  },
 ];
 
 const grammarQuestions = [
