@@ -127,7 +127,6 @@ const words = [
   { char:"北京",   pinyin:"Běijīng",      pos:"n.",    viet:"Bắc Kinh",                                            lesson:5, hv:"BẮC KINH — giống hệt tiếng Việt!" },
 
   // ── Lesson 6 ──
-  { char:"零",     pinyin:"líng",         pos:"num.",  viet:"số không, 0",                                         lesson:6, hv:"LINH — số 0" },
   { char:"一",     pinyin:"yī",           pos:"num.",  viet:"một, 1",                                              lesson:6, hv:"NHẤT — một (như 'nhất quán', 'thứ nhất')" },
   { char:"二",     pinyin:"èr",           pos:"num.",  viet:"hai, 2",                                              lesson:6, hv:"NHỊ — hai (như 'nhị thập', 'thứ nhị')" },
   { char:"三",     pinyin:"sān",          pos:"num.",  viet:"ba, 3",                                               lesson:6, hv:"TAM — ba (như 'tam giác', 'tam quốc')" },
@@ -138,6 +137,8 @@ const words = [
   { char:"八",     pinyin:"bā",           pos:"num.",  viet:"tám, 8",                                              lesson:6, hv:"BÁT — tám (như 'bát giác')" },
   { char:"九",     pinyin:"jiǔ",          pos:"num.",  viet:"chín, 9",                                             lesson:6, hv:"CỬU — chín (như 'cửu vạn')" },
   { char:"十",     pinyin:"shí",          pos:"num.",  viet:"mười, 10",                                            lesson:6, hv:"THẬP — mười (như 'thập kỷ', 'thập niên')" },
+  { char:"零",     pinyin:"líng",         pos:"num.",  viet:"số không, 0",                                         lesson:6, hv:"LINH — số 0" },
+  { char:"百",     pinyin:"bǎi",          pos:"num.",  viet:"trăm, 100",                                           lesson:6, hv:"BÁCH — trăm (như 'bách khoa', 'bách phân')" },
   { char:"点",     pinyin:"diǎn",         pos:"n.",    viet:"giờ (đơn vị thời gian)",                              lesson:6, hv:"ĐIỂM — giờ (điểm trên đồng hồ)" },
   { char:"分",     pinyin:"fēn",          pos:"n.",    viet:"phút",                                                lesson:6, hv:"PHÂN — phút (chia nhỏ giờ)" },
   { char:"半",     pinyin:"bàn",          pos:"n.",    viet:"rưỡi (30 phút), một nửa",                             lesson:6, hv:"BÁN — nửa (như 'bán cầu', 'bán đảo')" },
