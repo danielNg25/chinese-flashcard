@@ -76,7 +76,6 @@ const words = [
   { char:"说",     pinyin:"shuō",         pos:"v.",    viet:"nói",                                                 lesson:3 },
   { char:"会",     pinyin:"huì",          pos:"v.",    viet:"biết (qua rèn luyện, học hỏi)",                       lesson:3 },
   { char:"本",     pinyin:"běn",          pos:"mw.",   viet:"cuốn, quyển",                                         lesson:3 },
-  { char:"一",     pinyin:"yī",           pos:"num.",  viet:"một, 1",                                              lesson:3 },
   { char:"喜欢",   pinyin:"xǐhuan",       pos:"v.",    viet:"thích",                                               lesson:3 },
   { char:"看",     pinyin:"kàn",          pos:"v.",    viet:"xem, nhìn, đọc",                                      lesson:3 },
   { char:"听",     pinyin:"tīng",         pos:"v.",    viet:"nghe",                                                lesson:3 },
@@ -129,6 +128,7 @@ const words = [
 
   // ── Lesson 6 ──
   { char:"零",     pinyin:"líng",         pos:"num.",  viet:"số không, 0",                                         lesson:6, hv:"LINH — số 0" },
+  { char:"一",     pinyin:"yī",           pos:"num.",  viet:"một, 1",                                              lesson:6, hv:"NHẤT — một (như 'nhất quán', 'thứ nhất')" },
   { char:"二",     pinyin:"èr",           pos:"num.",  viet:"hai, 2",                                              lesson:6, hv:"NHỊ — hai (như 'nhị thập', 'thứ nhị')" },
   { char:"三",     pinyin:"sān",          pos:"num.",  viet:"ba, 3",                                               lesson:6, hv:"TAM — ba (như 'tam giác', 'tam quốc')" },
   { char:"四",     pinyin:"sì",           pos:"num.",  viet:"bốn, 4",                                              lesson:6, hv:"TỨ — bốn (như 'tứ giác', 'tứ phương')" },
