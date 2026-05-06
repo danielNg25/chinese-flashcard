@@ -53,6 +53,22 @@ tbody td { padding: 8px 10px; vertical-align: middle; }
 .part { background: #FAECE7; color: #712B13; }
 .other{ background: #F1EFE8; color: #444441; }
 
+/* Hide & Seek */
+.hs-toolbar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 1rem; }
+.hs-btn { padding: 6px 14px; border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); background: var(--color-background-primary); color: var(--color-text-primary); font-size: 13px; font-family: inherit; cursor: pointer; transition: all 0.15s; }
+.hs-btn:hover { background: var(--color-background-secondary); }
+.hs-btn.primary { background: #0C447C; color: #fff; border-color: #0C447C; }
+.hs-btn.primary:hover { background: #093562; }
+.hs-mode-select { padding: 6px 10px; border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); font-size: 13px; background: var(--color-background-primary); color: var(--color-text-primary); font-family: inherit; }
+.hs-score { font-size: 13px; padding: 6px 12px; background: var(--color-background-secondary); border-radius: var(--border-radius-md); color: var(--color-text-secondary); }
+.hs-score span { font-weight: 600; color: var(--color-text-primary); }
+.hs-input { width: 100%; padding: 4px 6px; border: 1.5px solid var(--color-border-secondary); border-radius: 4px; font-size: 14px; font-family: inherit; text-align: center; background: var(--color-background-primary); color: var(--color-text-primary); outline: none; }
+.hs-input:focus { border-color: #0C447C; }
+.hs-input.correct { border-color: #27500A; background: #EAF3DE; }
+.hs-input.incorrect { border-color: #72243E; background: #FBEAF0; }
+.hs-check-btn { padding: 3px 10px; border: none; border-radius: 4px; font-size: 11px; cursor: pointer; font-family: inherit; background: var(--color-background-secondary); color: var(--color-text-secondary); }
+.hs-check-btn:hover { background: #E6F1FB; color: #0C447C; }
+
 /* Grammar table */
 .gr-table { width: 100%; border-collapse: collapse; font-size: 14px; margin-bottom: 1rem; }
 .gr-table thead th { text-align: left; font-weight: 500; font-size: 12px; color: var(--color-text-secondary); padding: 6px 10px; border-bottom: 0.5px solid var(--color-border-tertiary); text-transform: uppercase; letter-spacing: 0.04em; }
@@ -201,6 +217,8 @@ tbody td { padding: 8px 10px; vertical-align: middle; }
   .lesson-selector { width: 100%; }
   .lesson-btn { flex: 1; padding: 10px 8px; font-size: 13px; }
   .char { font-size: 18px; }
+  .hs-input { font-size: 15px; padding: 6px 6px; }
+  .hs-check-btn { padding: 6px 10px; font-size: 12px; }
   .detail-panel { grid-template-columns: 1fr; gap: 14px; }
   .q-card { padding: 16px; }
   .q-card .card-char { font-size: 36px; }
@@ -248,6 +266,103 @@ tbody td { padding: 8px 10px; vertical-align: middle; }
 let currentLesson = 1;
 let currentTab = 'vocabulary';
 
+/* ── Hide & Seek (vocab tab) ── */
+let lessonHsMode = false;
+let lessonHsHidden = {}; // word.n -> { char, pinyin, viet }
+let lessonHsField = 'random';
+
+const LESSON_HS_MODES = [
+  { char: true,  pinyin: true,  viet: false }, // hide char + pinyin
+  { char: false, pinyin: true,  viet: false }, // hide pinyin only
+  { char: false, pinyin: false, viet: true  }, // hide meaning only
+  { char: false, pinyin: true,  viet: true  }, // hide pinyin + meaning
+];
+
+function lessonHsConfigFor(mode) {
+  if (mode === 'char')   return { char: true,  pinyin: false, viet: false };
+  if (mode === 'pinyin') return { char: false, pinyin: true,  viet: false };
+  if (mode === 'viet')   return { char: false, pinyin: false, viet: true  };
+  return null; // random
+}
+
+function startLessonHideSeek() {
+  const sel = document.getElementById('hsModeSelect');
+  if (sel) lessonHsField = sel.value;
+  lessonHsMode = true;
+  lessonHsHidden = {};
+  const fixed = lessonHsConfigFor(lessonHsField);
+  words.filter(w => w.lesson === currentLesson).forEach(w => {
+    lessonHsHidden[w.n] = fixed || LESSON_HS_MODES[Math.floor(Math.random() * LESSON_HS_MODES.length)];
+  });
+  render();
+}
+
+function stopLessonHideSeek() {
+  lessonHsMode = false;
+  lessonHsHidden = {};
+  render();
+}
+
+function changeLessonHsMode() {
+  // If currently active, restart with the new field selection.
+  if (lessonHsMode) startLessonHideSeek();
+}
+
+function lessonHsCell(w, field) {
+  const h = lessonHsHidden[w.n];
+  if (!lessonHsMode || !h || !h[field]) return null;
+  const labels = { char: '汉字', pinyin: 'pinyin', viet: 'meaning' };
+  return `<input type="text" class="hs-input" id="lhs-${field}-${w.n}" placeholder="${labels[field]}" autocomplete="off" onkeydown="if(event.key==='Enter'){event.preventDefault();checkLessonRowHs(${w.n});}">`;
+}
+
+function checkLessonRowHs(n) {
+  const w = words.find(x => x.n === n);
+  if (!w) return;
+  const h = lessonHsHidden[n];
+  if (!h) return;
+  ['char', 'pinyin', 'viet'].forEach(field => {
+    if (!h[field]) return;
+    const inp = document.getElementById('lhs-' + field + '-' + n);
+    if (!inp) return;
+    const val = inp.value.trim();
+    let ok = false;
+    if (field === 'char') ok = val === w.char;
+    else if (field === 'pinyin') ok = checkPinyinMatch(val, w);
+    else if (field === 'viet') ok = checkViet(val, w);
+    inp.classList.remove('correct', 'incorrect');
+    inp.classList.add(ok ? 'correct' : 'incorrect');
+  });
+}
+
+function checkAllLessonHs() {
+  let correct = 0, total = 0;
+  Object.keys(lessonHsHidden).forEach(nStr => {
+    const n = parseInt(nStr);
+    const w = words.find(x => x.n === n);
+    if (!w) return;
+    const h = lessonHsHidden[n];
+    if (!h) return;
+    checkLessonRowHs(n);
+    ['char', 'pinyin', 'viet'].forEach(field => {
+      if (!h[field]) return;
+      total++;
+      const inp = document.getElementById('lhs-' + field + '-' + n);
+      if (!inp) return;
+      const val = inp.value.trim();
+      let ok = false;
+      if (field === 'char') ok = val === w.char;
+      else if (field === 'pinyin') ok = checkPinyinMatch(val, w);
+      else if (field === 'viet') ok = checkViet(val, w);
+      if (ok) correct++;
+    });
+  });
+  const score = document.getElementById('hsScore');
+  if (score) {
+    score.innerHTML = `<span>${correct}</span> / ${total} correct`;
+    score.style.display = '';
+  }
+}
+
 const ABBR_TOOLTIPS = {
   'CN': 'Chủ ngữ (Subject)',
   'VN': 'Vị ngữ (Predicate)',
@@ -271,6 +386,11 @@ document.addEventListener('click', e => {
 
 function selectLesson(n) {
   currentLesson = n;
+  // Switching lessons cancels any in-progress Hide & Seek for the previous lesson.
+  if (lessonHsMode) {
+    lessonHsMode = false;
+    lessonHsHidden = {};
+  }
   document.querySelectorAll('.lesson-btn').forEach(b => {
     b.classList.toggle('active', Number(b.dataset.lesson) === n);
   });
@@ -303,15 +423,41 @@ function render() {
   const lessonWords = words.filter(w => w.lesson === currentLesson);
   const lessonPatterns = grammarPatterns.filter(p => p.lesson === currentLesson);
 
-  const wordRows = lessonWords.map((w, i) => `
+  const modeOptions = ['random', 'char', 'pinyin', 'viet'].map(v => {
+    const label = { random: 'Random mix', char: 'Characters only', pinyin: 'Pinyin only', viet: 'Meanings only' }[v];
+    return `<option value="${v}"${lessonHsField === v ? ' selected' : ''}>${label}</option>`;
+  }).join('');
+
+  const hsToolbar = lessonWords.length ? (lessonHsMode ? `
+    <div class="hs-toolbar">
+      <select id="hsModeSelect" class="hs-mode-select" onchange="changeLessonHsMode()">${modeOptions}</select>
+      <button class="hs-btn primary" onclick="checkAllLessonHs()">Check All</button>
+      <button class="hs-btn" onclick="stopLessonHideSeek()">Stop</button>
+      <div class="hs-score" id="hsScore" style="display:none"></div>
+    </div>` : `
+    <div class="hs-toolbar">
+      <button class="hs-btn primary" onclick="startLessonHideSeek()">Hide &amp; Seek</button>
+      <select id="hsModeSelect" class="hs-mode-select">${modeOptions}</select>
+    </div>`) : '';
+
+  const wordRows = lessonWords.map((w, i) => {
+    const charCell = lessonHsCell(w, 'char') || `<span class="char">${w.char}</span>`;
+    const pinyinCell = lessonHsCell(w, 'pinyin') || `<span class="pinyin">${w.pinyin}</span>`;
+    const vietCell = lessonHsCell(w, 'viet') || `<span class="viet">${w.viet}</span>`;
+    const checkCell = lessonHsMode
+      ? `<td>${lessonHsHidden[w.n] ? `<button class="hs-check-btn" onclick="checkLessonRowHs(${w.n})">Check</button>` : ''}</td>`
+      : '';
+    return `
     <tr>
       <td style="color:var(--color-text-tertiary); font-size:13px;">${i + 1}</td>
-      <td><span class="char">${w.char}</span></td>
-      <td><span class="pinyin">${w.pinyin}</span></td>
+      <td>${charCell}</td>
+      <td>${pinyinCell}</td>
       <td>${w.pos ? `<span class="badge ${posClass(w.pos)}">${w.pos}</span>` : ''}</td>
-      <td><span class="viet">${w.viet}</span></td>
+      <td>${vietCell}</td>
       <td>${w.hv ? `<span class="hv">${w.hv}</span>` : '<span style="color:var(--color-text-tertiary); font-size:12px;">—</span>'}</td>
-    </tr>`).join('');
+      ${checkCell}
+    </tr>`;
+  }).join('');
 
   const grammarRows = lessonPatterns.map((p, i) => `
     <tr class="pattern-row open" id="lrow-${p.id}" onclick="toggleDetail('${p.id}')">
@@ -344,8 +490,9 @@ function render() {
     </tr>`).join('');
 
   document.getElementById('vocab-view').innerHTML = lessonWords.length ? `
+    ${hsToolbar}
     <table>
-      <thead><tr><th>#</th><th>Character</th><th>Pinyin</th><th>Type</th><th>Vietnamese meaning</th><th>Hán Việt</th></tr></thead>
+      <thead><tr><th>#</th><th>Character</th><th>Pinyin</th><th>Type</th><th>Vietnamese meaning</th><th>Hán Việt</th>${lessonHsMode ? '<th></th>' : ''}</tr></thead>
       <tbody>${wordRows}</tbody>
     </table>` : '<div class="empty-msg">No vocabulary for this lesson yet.</div>';
 
