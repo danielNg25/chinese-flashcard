@@ -161,6 +161,9 @@ const words = [
   { char:"吃",     pinyin:"chī",          pos:"v.",    viet:"ăn",                                                  lesson:6, hv:"KHIẾT — ăn (HV ít dùng)" },
   { char:"饭",     pinyin:"fàn",          pos:"n.",    viet:"cơm, bữa ăn",                                         lesson:6, hv:"PHẠN — cơm (như 'phạn điếm')" },
   { char:"吃饭",   pinyin:"chī fàn",      pos:"v.",    viet:"ăn cơm, dùng bữa",                                    lesson:6, hv:"KHIẾT PHẠN — ăn cơm" },
+  { char:"睡觉",   pinyin:"shuìjiào",     pos:"v.",    viet:"đi ngủ, ngủ (động từ tách rời: 睡 + 觉)",               lesson:6, hv:"THỤY GIÁC — ngủ (觉 = giấc; tách 早/午/晚 vào giữa)" },
+  { char:"再",     pinyin:"zài",          pos:"adv.",  viet:"lại, một lần nữa, tiếp (như 再见, 再说)",                lesson:6, hv:"TÁI — lại (như 'tái phát', 'tái diễn')" },
+  { char:"再见",   pinyin:"zàijiàn",      pos:"v./int.", viet:"tạm biệt (lit. 'gặp lại')",                          lesson:6, hv:"TÁI KIẾN — gặp lại (lời chia tay)" },
 
   // ── Add new words below ──
 ];
