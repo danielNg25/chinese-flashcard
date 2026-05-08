@@ -270,6 +270,7 @@ let currentTab = 'vocabulary';
 let lessonHsMode = false;
 let lessonHsHidden = {}; // word.n -> { char, pinyin, viet }
 let lessonHsField = 'random';
+let lessonHsOrder = {}; // word.n -> shuffle position (lower = earlier in table)
 
 const LESSON_HS_MODES = [
   { char: true,  pinyin: true,  viet: false }, // hide char + pinyin
@@ -291,7 +292,16 @@ function startLessonHideSeek() {
   lessonHsMode = true;
   lessonHsHidden = {};
   const fixed = lessonHsConfigFor(lessonHsField);
-  words.filter(w => w.lesson === currentLesson).forEach(w => {
+  const lessonWords = words.filter(w => w.lesson === currentLesson);
+  // Shuffle so position memory doesn't help — Fisher-Yates on the n list
+  const shuffledNs = lessonWords.map(w => w.n);
+  for (let i = shuffledNs.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffledNs[i], shuffledNs[j]] = [shuffledNs[j], shuffledNs[i]];
+  }
+  lessonHsOrder = {};
+  shuffledNs.forEach((n, idx) => { lessonHsOrder[n] = idx; });
+  lessonWords.forEach(w => {
     lessonHsHidden[w.n] = fixed || LESSON_HS_MODES[Math.floor(Math.random() * LESSON_HS_MODES.length)];
   });
   render();
@@ -300,6 +310,7 @@ function startLessonHideSeek() {
 function stopLessonHideSeek() {
   lessonHsMode = false;
   lessonHsHidden = {};
+  lessonHsOrder = {};
   render();
 }
 
@@ -390,6 +401,7 @@ function selectLesson(n) {
   if (lessonHsMode) {
     lessonHsMode = false;
     lessonHsHidden = {};
+    lessonHsOrder = {};
   }
   document.querySelectorAll('.lesson-btn').forEach(b => {
     b.classList.toggle('active', Number(b.dataset.lesson) === n);
@@ -420,7 +432,11 @@ function posClass(pos) {
 }
 
 function render() {
-  const lessonWords = words.filter(w => w.lesson === currentLesson);
+  const baseLessonWords = words.filter(w => w.lesson === currentLesson);
+  // While Hide & Seek is active, render rows in shuffled order so position memory doesn't help.
+  const lessonWords = lessonHsMode
+    ? [...baseLessonWords].sort((a, b) => (lessonHsOrder[a.n] ?? 1e9) - (lessonHsOrder[b.n] ?? 1e9))
+    : baseLessonWords;
   const lessonPatterns = grammarPatterns.filter(p => p.lesson === currentLesson);
 
   const modeOptions = ['random', 'char', 'pinyin', 'viet'].map(v => {
