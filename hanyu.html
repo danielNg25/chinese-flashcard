@@ -385,6 +385,7 @@ th.rating-col.show { display: table-cell; }
         <option value="char">Characters only</option>
         <option value="pinyin">Pinyin only</option>
         <option value="viet">Meanings only</option>
+        <option value="pinyin-viet">Pinyin + Meanings</option>
       </select>
       <button class="fc-reset-btn" id="hsCheckAllBtn" onclick="checkAllHs()" style="display:none">Check All</button>
       <button class="fc-reset-btn" id="hsStopBtn" onclick="stopHideSeek()" style="display:none">Stop</button>
@@ -621,6 +622,7 @@ function hsConfigFor(mode) {
   if (mode === 'char') return { char: true, pinyin: false, viet: false };
   if (mode === 'pinyin') return { char: false, pinyin: true, viet: false };
   if (mode === 'viet') return { char: false, pinyin: false, viet: true };
+  if (mode === 'pinyin-viet') return { char: false, pinyin: true, viet: true };
   return null; // random
 }
 

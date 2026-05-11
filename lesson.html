@@ -53,6 +53,34 @@ tbody td { padding: 8px 10px; vertical-align: middle; }
 .part { background: #FAECE7; color: #712B13; }
 .other{ background: #F1EFE8; color: #444441; }
 
+/* Audio button + clickable character (parity with hanyu.html) */
+.audio-btn { background: none; border: none; cursor: pointer; font-size: 16px; padding: 2px 4px; opacity: 0.5; transition: opacity 0.15s; vertical-align: middle; }
+.audio-btn:hover { opacity: 1; }
+.char-clickable { cursor: pointer; border-bottom: 1.5px dashed #bbb; transition: color 0.15s; }
+.char-clickable:hover { color: #0C447C; border-bottom-color: #0C447C; }
+
+/* Related Characters Popup (parity with hanyu.html) */
+.related-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.35); z-index: 1000; align-items: center; justify-content: center; }
+.related-overlay.open { display: flex; }
+.related-popup { background: var(--color-background-primary); border-radius: 12px; padding: 24px; max-width: 480px; width: 90%; max-height: 80vh; overflow-y: auto; box-shadow: 0 8px 32px rgba(0,0,0,0.18); position: relative; }
+.related-popup-title { font-size: 13px; color: var(--color-text-secondary); margin-bottom: 12px; }
+.related-popup-char { font-size: 52px; font-weight: 600; text-align: center; margin-bottom: 4px; }
+.related-popup-hv { text-align: center; margin-bottom: 16px; }
+.related-close { position: absolute; top: 14px; right: 16px; background: none; border: none; font-size: 20px; cursor: pointer; color: var(--color-text-secondary); line-height: 1; }
+.related-close:hover { color: var(--color-text-primary); }
+.related-list { display: flex; flex-direction: column; gap: 8px; }
+.related-item { display: flex; align-items: center; gap: 12px; padding: 8px 10px; border-radius: 8px; background: var(--color-background-secondary); }
+.related-item-char { font-size: 22px; font-weight: 500; min-width: 56px; }
+.related-item-right { flex: 1; }
+.related-item-pinyin { font-size: 12px; color: var(--color-text-secondary); font-style: italic; }
+.related-item-viet { font-size: 13px; color: var(--color-text-primary); }
+.related-item-hv { font-size: 11px; color: #7c5c00; background: #fdf3dc; padding: 1px 6px; border-radius: 4px; display: inline-block; margin-top: 2px; }
+.related-item-radical { font-size: 11px; color: #1a3a6b; background: #f0f4ff; padding: 4px 8px; border-radius: 4px; display: block; margin-top: 4px; line-height: 1.55; }
+.related-item-lesson { font-size: 11px; color: var(--color-text-tertiary); background: var(--color-background-primary); padding: 1px 5px; border-radius: 4px; margin-left: auto; white-space: nowrap; }
+.related-divider { font-size: 11px; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: 0.06em; margin: 10px 0 4px; }
+.related-popup-radical { background: #f0f4ff; color: #1a3a6b; font-size: 12px; padding: 8px 12px; border-radius: 6px; line-height: 1.7; margin: 0 0 14px; text-align: left; }
+.related-popup-radical .radical-line { margin: 0; }
+
 /* Hide & Seek */
 .hs-toolbar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 1rem; }
 .hs-btn { padding: 6px 14px; border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); background: var(--color-background-primary); color: var(--color-text-primary); font-size: 13px; font-family: inherit; cursor: pointer; transition: all 0.15s; }
@@ -273,6 +301,18 @@ tbody td { padding: 8px 10px; vertical-align: middle; }
   <div id="quiz-view" style="display:none;"></div>
 </div>
 
+<!-- Related Characters Popup (parity with hanyu.html) -->
+<div class="related-overlay" id="relatedOverlay" onclick="if(event.target===this)closeRelated()">
+  <div class="related-popup" id="relatedPopup">
+    <button class="related-close" onclick="closeRelated()">&#x2715;</button>
+    <div class="related-popup-title" id="relatedTitle"></div>
+    <div class="related-popup-char" id="relatedChar"></div>
+    <div class="related-popup-hv" id="relatedHv"></div>
+    <div id="relatedRadical"></div>
+    <div class="related-list" id="relatedList"></div>
+  </div>
+</div>
+
 <script src="words.js"></script>
 <script src="grammar_data.js"></script>
 <script>
@@ -293,9 +333,10 @@ const LESSON_HS_MODES = [
 ];
 
 function lessonHsConfigFor(mode) {
-  if (mode === 'char')   return { char: true,  pinyin: false, viet: false };
-  if (mode === 'pinyin') return { char: false, pinyin: true,  viet: false };
-  if (mode === 'viet')   return { char: false, pinyin: false, viet: true  };
+  if (mode === 'char')        return { char: true,  pinyin: false, viet: false };
+  if (mode === 'pinyin')      return { char: false, pinyin: true,  viet: false };
+  if (mode === 'viet')        return { char: false, pinyin: false, viet: true  };
+  if (mode === 'pinyin-viet') return { char: false, pinyin: true,  viet: true  };
   return null; // random
 }
 
@@ -498,8 +539,8 @@ function render() {
     : baseLessonWords;
   const lessonPatterns = grammarPatterns.filter(p => p.lesson === currentLesson);
 
-  const modeOptions = ['random', 'char', 'pinyin', 'viet'].map(v => {
-    const label = { random: 'Random mix', char: 'Characters only', pinyin: 'Pinyin only', viet: 'Meanings only' }[v];
+  const modeOptions = ['random', 'char', 'pinyin', 'viet', 'pinyin-viet'].map(v => {
+    const label = { random: 'Random mix', char: 'Characters only', pinyin: 'Pinyin only', viet: 'Meanings only', 'pinyin-viet': 'Pinyin + Meanings' }[v];
     return `<option value="${v}"${lessonHsField === v ? ' selected' : ''}>${label}</option>`;
   }).join('');
 
@@ -517,7 +558,7 @@ function render() {
 
   const colspan = lessonHsMode ? 7 : 6;
   const wordRows = lessonWords.map((w, i) => {
-    const charCell = lessonHsCell(w, 'char') || `<span class="char">${w.char}</span>`;
+    const charCell = lessonHsCell(w, 'char') || `<span class="char char-clickable" onclick="showRelated('${w.char.replace(/'/g,"\\'")}')" title="Xem chữ liên quan">${w.char}</span>${audioBtn(w.char)}`;
     const pinyinCell = lessonHsCell(w, 'pinyin') || `<span class="pinyin">${w.pinyin}</span>`;
     const vietCell = lessonHsCell(w, 'viet') || `<span class="viet">${w.viet}</span>`;
     const checkCell = lessonHsMode
@@ -638,6 +679,10 @@ function checkViet(userAnswer, word) {
     return nu === np || np.includes(nu) || nu.includes(np);
   });
 }
+function audioBtn(char) {
+  return `<button class="audio-btn" onclick="event.stopPropagation();speakZh('${char.replace(/'/g, "\\'")}')" title="Listen">&#128264;</button>`;
+}
+
 function speakZh(text) {
   const u = new SpeechSynthesisUtterance(text);
   u.lang = 'zh-CN';
@@ -1540,6 +1585,70 @@ function renderLessonButtons() {
     `<button class="lesson-btn" data-lesson="${n}" onclick="selectLesson(${n})">Lesson ${n}</button>`
   ).join('');
 }
+
+/* ── Related Characters Popup (mirror of hanyu.html) ── */
+function showRelated(clickedChar) {
+  const chars = [...new Set(clickedChar.replace(/\s/g,'').split(''))];
+  const sections = chars.map(c => ({
+    c,
+    matches: words.filter(w => w.char !== clickedChar && w.char.replace(/\s/g,'').includes(c)),
+  }));
+  const totalOthers = [...new Set(sections.flatMap(s => s.matches.map(w => w.char)))].length;
+  document.getElementById('relatedTitle').textContent =
+    `Các từ chứa chữ trong "${clickedChar}" — ${totalOthers} từ liên quan`;
+  document.getElementById('relatedChar').textContent = clickedChar;
+
+  const clicked = words.find(w => w.char === clickedChar);
+  const hvEl = document.getElementById('relatedHv');
+  hvEl.innerHTML = clicked && clicked.hv ? `<span class="hv">✨ ${clicked.hv}</span>` : '';
+  const radEl = document.getElementById('relatedRadical');
+  radEl.innerHTML = clicked && clicked.radical
+    ? `<div class="related-popup-radical">${radicalLines(clicked).map(l => `<div class="radical-line">${l}</div>`).join('')}</div>`
+    : '';
+
+  const listEl = document.getElementById('relatedList');
+  listEl.innerHTML = '';
+  const shown = new Set();
+  sections.forEach(({ c, matches }) => {
+    if (matches.length === 0) return;
+    const div = document.createElement('div');
+    div.className = 'related-divider';
+    div.textContent = `Chứa chữ "${c}"`;
+    listEl.appendChild(div);
+    matches.forEach(w => {
+      if (shown.has(w.char)) return;
+      shown.add(w.char);
+      const highlighted = w.char.replace(/\s/g,'').split('').map(ch =>
+        ch === c ? `<span style="color:#0C447C;font-weight:700">${ch}</span>` : ch
+      ).join('');
+      const radHtml = w.radical
+        ? `<div class="related-item-radical">${radicalLines(w).map(l => `<div class="radical-line">${l}</div>`).join('')}</div>`
+        : '';
+      const item = document.createElement('div');
+      item.className = 'related-item';
+      item.innerHTML = `
+        <div class="related-item-char">${highlighted}${audioBtn(w.char)}</div>
+        <div class="related-item-right">
+          <div class="related-item-pinyin">${w.pinyin}</div>
+          <div class="related-item-viet">${w.viet}</div>
+          ${w.hv ? `<div class="related-item-hv">${w.hv}</div>` : ''}
+          ${radHtml}
+        </div>
+        <div class="related-item-lesson">L${w.lesson}</div>`;
+      listEl.appendChild(item);
+    });
+  });
+  if (shown.size === 0) {
+    listEl.innerHTML = '<div style="color:var(--color-text-tertiary);font-size:13px;text-align:center;padding:16px">Không có từ liên quan trong bảng từ vựng.</div>';
+  }
+  document.getElementById('relatedOverlay').classList.add('open');
+}
+
+function closeRelated() {
+  document.getElementById('relatedOverlay').classList.remove('open');
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeRelated(); });
 
 /* ── Init ── */
 renderLessonButtons();
