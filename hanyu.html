@@ -759,7 +759,7 @@ function hsCell(w, field, value) {
   const h = hsHidden[w.n];
   if (!hsMode || !h || !h[field]) return null;
   const labels = { char: 'Character', pinyin: 'Pinyin', viet: 'Meaning' };
-  return `<input type="text" class="hs-input" id="hs-${field}-${w.n}" placeholder="${labels[field]}" autocomplete="off">`;
+  return `<input type="text" class="hs-input" id="hs-${field}-${w.n}" placeholder="${labels[field]}" autocomplete="off" onkeydown="if(event.key==='Enter'){event.preventDefault();checkRowHs(${w.n});}">`;
 }
 
 /* ── Radical breakdown (per-row collapsible analysis) ── */
@@ -840,9 +840,9 @@ function render() {
   }).join('');
   document.getElementById('mobileCards').innerHTML = filtered.map(w => {
     const h = hsMode && hsHidden[w.n];
-    const charHtml = h && h.char ? `<input type="text" class="hs-input" id="hs-m-char-${w.n}" placeholder="Character" autocomplete="off">` : `<span class="char char-clickable" onclick="showRelated('${w.char.replace(/'/g,"\\'")}')" title="Xem chữ liên quan">${w.char}</span>${audioBtn(w.char)}`;
-    const pinyinHtml = h && h.pinyin ? `<input type="text" class="hs-input" id="hs-m-pinyin-${w.n}" placeholder="Pinyin" autocomplete="off" style="margin-top:4px">` : `<span class="pinyin">${w.pinyin}</span>`;
-    const vietHtml = h && h.viet ? `<input type="text" class="hs-input" id="hs-m-viet-${w.n}" placeholder="Meaning" autocomplete="off">` : `<span class="viet">${w.viet}</span>`;
+    const charHtml = h && h.char ? `<input type="text" class="hs-input" id="hs-m-char-${w.n}" placeholder="Character" autocomplete="off" onkeydown="if(event.key==='Enter'){event.preventDefault();checkRowHsMobile(${w.n});}">` : `<span class="char char-clickable" onclick="showRelated('${w.char.replace(/'/g,"\\'")}')" title="Xem chữ liên quan">${w.char}</span>${audioBtn(w.char)}`;
+    const pinyinHtml = h && h.pinyin ? `<input type="text" class="hs-input" id="hs-m-pinyin-${w.n}" placeholder="Pinyin" autocomplete="off" style="margin-top:4px" onkeydown="if(event.key==='Enter'){event.preventDefault();checkRowHsMobile(${w.n});}">` : `<span class="pinyin">${w.pinyin}</span>`;
+    const vietHtml = h && h.viet ? `<input type="text" class="hs-input" id="hs-m-viet-${w.n}" placeholder="Meaning" autocomplete="off" onkeydown="if(event.key==='Enter'){event.preventDefault();checkRowHsMobile(${w.n});}">` : `<span class="viet">${w.viet}</span>`;
     const checkBtn = h ? `<button class="hs-check-btn" onclick="checkRowHsMobile(${w.n})" style="margin-top:6px">Check</button><button class="hs-reveal-btn" onclick="revealRowHs(${w.n})" style="margin-top:6px" title="Reveal answer">Reveal</button>` : '';
     const radToggleM = radicalToggleHtml(w, 'm-');
     const radPanelM = w.radical
