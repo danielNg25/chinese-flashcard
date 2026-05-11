@@ -66,8 +66,11 @@ tbody td { padding: 8px 10px; vertical-align: middle; }
 .hs-input:focus { border-color: #0C447C; }
 .hs-input.correct { border-color: #27500A; background: #EAF3DE; }
 .hs-input.incorrect { border-color: #72243E; background: #FBEAF0; }
+.hs-input.revealed { border-color: #b88b00; background: #fdf3dc; color: #7c5c00; }
 .hs-check-btn { padding: 3px 10px; border: none; border-radius: 4px; font-size: 11px; cursor: pointer; font-family: inherit; background: var(--color-background-secondary); color: var(--color-text-secondary); }
 .hs-check-btn:hover { background: #E6F1FB; color: #0C447C; }
+.hs-reveal-btn { padding: 3px 10px; border: none; border-radius: 4px; font-size: 11px; cursor: pointer; font-family: inherit; background: #fdf3dc; color: #7c5c00; margin-left: 4px; }
+.hs-reveal-btn:hover { background: #fae8b8; }
 
 /* Grammar table */
 .gr-table { width: 100%; border-collapse: collapse; font-size: 14px; margin-bottom: 1rem; }
@@ -326,6 +329,24 @@ function lessonHsCell(w, field) {
   return `<input type="text" class="hs-input" id="lhs-${field}-${w.n}" placeholder="${labels[field]}" autocomplete="off" onkeydown="if(event.key==='Enter'){event.preventDefault();checkLessonRowHs(${w.n});}">`;
 }
 
+function revealLessonRowHs(n) {
+  // Fill the correct answer into each hidden input and mark it "revealed"
+  // (warm yellow, distinct from green correct / red incorrect).
+  const w = words.find(x => x.n === n);
+  if (!w) return;
+  const h = lessonHsHidden[n];
+  if (!h) return;
+  const fieldValue = { char: w.char, pinyin: w.pinyin, viet: w.viet };
+  ['char', 'pinyin', 'viet'].forEach(field => {
+    if (!h[field]) return;
+    const inp = document.getElementById('lhs-' + field + '-' + n);
+    if (!inp) return;
+    inp.value = fieldValue[field];
+    inp.classList.remove('correct', 'incorrect');
+    inp.classList.add('revealed');
+  });
+}
+
 function checkLessonRowHs(n) {
   const w = words.find(x => x.n === n);
   if (!w) return;
@@ -461,7 +482,7 @@ function render() {
     const pinyinCell = lessonHsCell(w, 'pinyin') || `<span class="pinyin">${w.pinyin}</span>`;
     const vietCell = lessonHsCell(w, 'viet') || `<span class="viet">${w.viet}</span>`;
     const checkCell = lessonHsMode
-      ? `<td>${lessonHsHidden[w.n] ? `<button class="hs-check-btn" onclick="checkLessonRowHs(${w.n})">Check</button>` : ''}</td>`
+      ? `<td>${lessonHsHidden[w.n] ? `<button class="hs-check-btn" onclick="checkLessonRowHs(${w.n})">Check</button><button class="hs-reveal-btn" onclick="revealLessonRowHs(${w.n})" title="Reveal answer">Reveal</button>` : ''}</td>`
       : '';
     return `
     <tr>

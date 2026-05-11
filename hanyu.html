@@ -108,8 +108,11 @@ th.rating-col.show { display: table-cell; }
 .hs-input:focus { border-color: #0C447C; }
 .hs-input.correct { border-color: #27500A; background: #EAF3DE; }
 .hs-input.incorrect { border-color: #72243E; background: #FBEAF0; }
+.hs-input.revealed { border-color: #b88b00; background: #fdf3dc; color: #7c5c00; }
 .hs-check-btn { padding: 2px 8px; border: none; border-radius: 4px; font-size: 11px; cursor: pointer; font-family: inherit; background: var(--color-background-secondary); color: var(--color-text-secondary); }
 .hs-check-btn:hover { background: #E6F1FB; color: #0C447C; }
+.hs-reveal-btn { padding: 2px 8px; border: none; border-radius: 4px; font-size: 11px; cursor: pointer; font-family: inherit; background: #fdf3dc; color: #7c5c00; margin-left: 4px; }
+.hs-reveal-btn:hover { background: #fae8b8; }
 .hs-result { font-size: 12px; margin-top: 2px; }
 .hs-result.correct { color: #27500A; }
 .hs-result.incorrect { color: #72243E; }
@@ -670,6 +673,26 @@ function stopHideSeek() {
   render();
 }
 
+function revealRowHs(n) {
+  // Fill the correct answer into each hidden input for this row and mark
+  // it with a distinct "revealed" style (warm yellow, distinct from green/red).
+  const w = words.find(x => x.n === n);
+  if (!w) return;
+  const h = hsHidden[n];
+  if (!h) return;
+  const fieldValue = { char: w.char, pinyin: w.pinyin, viet: w.viet };
+  ['char', 'pinyin', 'viet'].forEach(field => {
+    if (!h[field]) return;
+    ['hs-' + field + '-' + n, 'hs-m-' + field + '-' + n].forEach(id => {
+      const inp = document.getElementById(id);
+      if (!inp) return;
+      inp.value = fieldValue[field];
+      inp.classList.remove('correct', 'incorrect');
+      inp.classList.add('revealed');
+    });
+  });
+}
+
 function checkRowHs(n) {
   const w = words.find(x => x.n === n);
   if (!w) return;
@@ -797,7 +820,7 @@ function render() {
     const charCell = hsCell(w, 'char') || `<span class="char char-clickable" onclick="showRelated('${w.char.replace(/'/g,"\\'")}')" title="Xem chữ liên quan">${w.char}</span>${audioBtn(w.char)}`;
     const pinyinCell = hsCell(w, 'pinyin') || `<span class="pinyin">${w.pinyin}</span>`;
     const vietCell = hsCell(w, 'viet') || `<span class="viet">${w.viet}</span>`;
-    const checkBtn = hsMode && hsHidden[w.n] ? `<button class="hs-check-btn" onclick="checkRowHs(${w.n})">Check</button>` : '';
+    const checkBtn = hsMode && hsHidden[w.n] ? `<button class="hs-check-btn" onclick="checkRowHs(${w.n})">Check</button><button class="hs-reveal-btn" onclick="revealRowHs(${w.n})" title="Reveal answer">Reveal</button>` : '';
     const hvCell = w.hv ? `<span class="hv">${w.hv}</span>` : '<span style="color:var(--color-text-tertiary);font-size:12px">—</span>';
     const radToggle = radicalToggleHtml(w);
     const radRow = w.radical
@@ -820,7 +843,7 @@ function render() {
     const charHtml = h && h.char ? `<input type="text" class="hs-input" id="hs-m-char-${w.n}" placeholder="Character" autocomplete="off">` : `<span class="char char-clickable" onclick="showRelated('${w.char.replace(/'/g,"\\'")}')" title="Xem chữ liên quan">${w.char}</span>${audioBtn(w.char)}`;
     const pinyinHtml = h && h.pinyin ? `<input type="text" class="hs-input" id="hs-m-pinyin-${w.n}" placeholder="Pinyin" autocomplete="off" style="margin-top:4px">` : `<span class="pinyin">${w.pinyin}</span>`;
     const vietHtml = h && h.viet ? `<input type="text" class="hs-input" id="hs-m-viet-${w.n}" placeholder="Meaning" autocomplete="off">` : `<span class="viet">${w.viet}</span>`;
-    const checkBtn = h ? `<button class="hs-check-btn" onclick="checkRowHsMobile(${w.n})" style="margin-top:6px">Check</button>` : '';
+    const checkBtn = h ? `<button class="hs-check-btn" onclick="checkRowHsMobile(${w.n})" style="margin-top:6px">Check</button><button class="hs-reveal-btn" onclick="revealRowHs(${w.n})" style="margin-top:6px" title="Reveal answer">Reveal</button>` : '';
     const radToggleM = radicalToggleHtml(w, 'm-');
     const radPanelM = w.radical
       ? `<div class="radical-panel radical-panel-mobile${openRadicals.has(w.n) ? ' open' : ''}" id="radical-panel-m-${w.n}" style="margin-top:6px">${radicalPanelInner(w)}</div>`
