@@ -72,6 +72,16 @@ tbody td { padding: 8px 10px; vertical-align: middle; }
 .hs-reveal-btn { padding: 3px 10px; border: none; border-radius: 4px; font-size: 11px; cursor: pointer; font-family: inherit; background: #fdf3dc; color: #7c5c00; margin-left: 4px; }
 .hs-reveal-btn:hover { background: #fae8b8; }
 
+/* Radical breakdown — collapsible per row (shared with hanyu.html, same data: w.radical) */
+.radical-toggle { background: none; border: 1px solid var(--color-border-tertiary); cursor: pointer; font-size: 11px; color: #4d6db8; padding: 1px 7px; border-radius: 4px; margin-left: 4px; vertical-align: middle; transition: background 0.12s, color 0.12s; font-family: inherit; line-height: 1.5; }
+.radical-toggle:hover { background: #f0f4ff; color: #1a3a6b; }
+.radical-toggle .arrow { font-size: 10px; margin-left: 2px; }
+.radical-row { display: none; }
+.radical-row.open { display: table-row; }
+.radical-row > td { padding: 0 10px 8px; border-bottom: 0.5px solid var(--color-border-tertiary); background: var(--color-background-primary); }
+.radical-panel { background: #f0f4ff; color: #1a3a6b; font-size: 12px; padding: 8px 12px; border-radius: 6px; line-height: 1.7; }
+.radical-line { margin: 0; }
+
 /* Grammar table */
 .gr-table { width: 100%; border-collapse: collapse; font-size: 14px; margin-bottom: 1rem; }
 .gr-table thead th { text-align: left; font-weight: 500; font-size: 12px; color: var(--color-text-secondary); padding: 6px 10px; border-bottom: 0.5px solid var(--color-border-tertiary); text-transform: uppercase; letter-spacing: 0.04em; }
@@ -452,6 +462,34 @@ function posClass(pos) {
   return 'other';
 }
 
+/* ── Radical breakdown (reads w.radical from words.js — shared with hanyu.html) ── */
+const openRadicals = new Set(); // word.n values currently expanded
+
+function radicalLines(w) {
+  if (!w.radical) return [];
+  return w.radical.split('|').map(s => s.trim()).filter(Boolean);
+}
+
+function radicalToggleHtml(w) {
+  if (!w.radical) return '';
+  const arrowId = `radical-arrow-${w.n}`;
+  const arrow = openRadicals.has(w.n) ? '▴' : '▾';
+  return `<button class="radical-toggle" onclick="toggleRadical(${w.n})" title="Phân tích chữ"><span class="arrow" id="${arrowId}">${arrow}</span> 分析</button>`;
+}
+
+function radicalPanelInner(w) {
+  return radicalLines(w).map(l => `<div class="radical-line">${l}</div>`).join('');
+}
+
+function toggleRadical(n) {
+  const isOpen = openRadicals.has(n);
+  if (isOpen) openRadicals.delete(n); else openRadicals.add(n);
+  const row = document.getElementById(`radical-row-${n}`);
+  if (row) row.classList.toggle('open', !isOpen);
+  const arrow = document.getElementById(`radical-arrow-${n}`);
+  if (arrow) arrow.textContent = isOpen ? '▾' : '▴';
+}
+
 function render() {
   const baseLessonWords = words.filter(w => w.lesson === currentLesson);
   // While Hide & Seek is active, render rows in shuffled order so position memory doesn't help.
@@ -477,6 +515,7 @@ function render() {
       <select id="hsModeSelect" class="hs-mode-select">${modeOptions}</select>
     </div>`) : '';
 
+  const colspan = lessonHsMode ? 7 : 6;
   const wordRows = lessonWords.map((w, i) => {
     const charCell = lessonHsCell(w, 'char') || `<span class="char">${w.char}</span>`;
     const pinyinCell = lessonHsCell(w, 'pinyin') || `<span class="pinyin">${w.pinyin}</span>`;
@@ -484,16 +523,20 @@ function render() {
     const checkCell = lessonHsMode
       ? `<td>${lessonHsHidden[w.n] ? `<button class="hs-check-btn" onclick="checkLessonRowHs(${w.n})">Check</button><button class="hs-reveal-btn" onclick="revealLessonRowHs(${w.n})" title="Reveal answer">Reveal</button>` : ''}</td>`
       : '';
+    const radToggle = radicalToggleHtml(w);
+    const radRow = w.radical
+      ? `<tr class="radical-row${openRadicals.has(w.n) ? ' open' : ''}" id="radical-row-${w.n}"><td colspan="${colspan}"><div class="radical-panel">${radicalPanelInner(w)}</div></td></tr>`
+      : '';
     return `
     <tr>
       <td style="color:var(--color-text-tertiary); font-size:13px;">${i + 1}</td>
-      <td>${charCell}</td>
+      <td>${charCell}${radToggle}</td>
       <td>${pinyinCell}</td>
       <td>${w.pos ? `<span class="badge ${posClass(w.pos)}">${w.pos}</span>` : ''}</td>
       <td>${vietCell}</td>
       <td>${w.hv ? `<span class="hv">${w.hv}</span>` : '<span style="color:var(--color-text-tertiary); font-size:12px;">—</span>'}</td>
       ${checkCell}
-    </tr>`;
+    </tr>${radRow}`;
   }).join('');
 
   const grammarRows = lessonPatterns.map((p, i) => `
