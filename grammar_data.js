@@ -689,6 +689,25 @@ const grammarPatterns = [
     ],
   },
   {
+    id: "B7-NP12", lesson: 7,
+    title: "和 / 跟 + người + V — Cùng làm gì với ai",
+    structure: "CN + 和 / 跟 + [người] + V (+ TN)<br>Tùy chọn: + 一起 (yīqǐ) trước V để nhấn 'cùng nhau'",
+    explanation: "Cấu trúc <b>'CN + 和/跟 + [người] + V'</b> = 'làm gì cùng/với ai'. Đây là mở rộng từ B7-NP1 (跟/和 + 说 — nói với ai) sang TẤT CẢ các động từ chỉ hoạt động chung.<br><br><b>Vị trí cố định:</b> cụm <b>和/跟 + người</b> đặt SAU chủ ngữ và TRƯỚC động từ — KHÔNG đặt sau động từ.<br><br><b>Chọn 和 hay 跟:</b><br>• <b>跟</b> — khẩu ngữ, thân mật hơn (gēn — CĂN)<br>• <b>和</b> — trung tính, hợp cả văn nói và viết (hé — HÒA)<br>Hai từ có thể thay nhau trong mẫu này.<br><br><b>Tùy chọn 一起</b> (yīqǐ = 'cùng nhau'): thêm trước động từ để NHẤN MẠNH cùng làm:<br>• 我和朋友去图书馆 = Tôi đi thư viện với bạn.<br>• 我和朋友<b>一起</b>去图书馆 = Tôi đi thư viện <i>cùng</i> bạn. (nhấn mạnh hơn)<br><br><b>So sánh với B7-NP1:</b> B7-NP1 chuyên cho động từ 说 (nói chuyện, có nội dung sau). B7-NP12 cho mọi hoạt động chung (去, 吃, 看, 学习, 玩 …).",
+    examples: [
+      { zh: "我和朋友去图书馆。", vi: "Tôi đi thư viện với bạn." },
+      { zh: "他跟我吃饭。", vi: "Anh ấy ăn cơm với tôi." },
+      { zh: "她和老师学习汉语。", vi: "Cô ấy học tiếng Hán với cô giáo." },
+      { zh: "我跟他一起看电影。", vi: "Tôi xem phim cùng anh ấy. (有 一起 nhấn mạnh)" },
+    ],
+    notes: [
+      "Trật tự cố định: CN + 和/跟 + người + V — KHÔNG đặt sau động từ ('我去和朋友图书馆' ✗ / '我去图书馆和朋友' ✗)",
+      "和 ≈ 跟 trong mẫu này: 跟 khẩu ngữ hơn, 和 trung tính. Cả hai thay nhau được",
+      "Thiếu 和/跟 sẽ đổi nghĩa: '我朋友去图书馆' = 'BẠN CỦA TÔI đi thư viện' (không phải 'tôi và bạn cùng đi')",
+      "B7-NP12 (V chung) ≠ B7-NP1 (chuyên cho 说): khi V = 说, dùng B7-NP1 để có thêm 'nội dung nói' sau",
+      "一起 (yīqǐ — 'cùng nhau') là từ NHẤN MẠNH tùy chọn, KHÔNG bắt buộc — đặt giữa người và động từ",
+    ],
+  },
+  {
     id: "B7-NP2", lesson: 7,
     title: "昨/今/明 + 早/晚 — Rút gọn cụm thời gian",
     structure: "昨/今/明 + 早/晚 (bỏ 天 và 上)",
@@ -1079,6 +1098,14 @@ const grammarQuestions = [
     prompt: "他下午五点___。(tan làm)", options: ["下班", "上班", "下课", "上课"], answer: "下班",
     explanation: "下班 = 'tan làm / xuống ca'. Cặp đối lập với 上班 (đi làm).",
     hanVietHint: "下班 → HẠ BAN (tan làm) — song song với 下课 (tan học)" },
+  { id: "fb-055", grammarId: "B7-NP12", type: "fill-blank", lesson: 7,
+    prompt: "我___朋友去图书馆。(cùng với)", options: ["和", "在", "也", "了"], answer: "和",
+    explanation: "和 + người + V = 'cùng [người] làm gì'. '我 + 和 + 朋友 + 去 + 图书馆' = 'Tôi đi thư viện với bạn'. Có thể thay 和 bằng 跟 (khẩu ngữ hơn).",
+    hanVietHint: "和 → HÒA ('với/và') | 跟 → CĂN — cả hai dùng được" },
+  { id: "fb-056", grammarId: "B7-NP12", type: "fill-blank", lesson: 7,
+    prompt: "她___我学习汉语。", options: ["跟", "在", "可是", "吧"], answer: "跟",
+    explanation: "跟 (hoặc 和) + người + V: 'Cô ấy học tiếng Hán với tôi' → 她 + 跟 + 我 + 学习 + 汉语.",
+    hanVietHint: "跟 → CĂN (giới từ 'với') | 学习 → HỌC TẬP" },
 
   // ── Sentence Builder ──
   { id: "sb-001", grammarId: "B1-NP2", type: "sentence-builder", lesson: 1,
@@ -1185,6 +1212,10 @@ const grammarQuestions = [
     fragments: ["上班", "八点", "我", "每天"], answer: ["我", "每天", "八点", "上班"],
     explanation: "CN + Time + V: 我 + 每天 + 八点 + 上班 = 'Tôi mỗi ngày 8 giờ đi làm'. Giờ đứng trước động từ tách rời.",
     hanVietHint: "上班 → THƯỢNG BAN | 每天 → MỖI THIÊN (mỗi ngày)" },
+  { id: "sb-027", grammarId: "B7-NP12", type: "sentence-builder", lesson: 7,
+    fragments: ["和", "我", "看电影", "朋友"], answer: ["我", "和", "朋友", "看电影"],
+    explanation: "CN + 和 + người + V: '我 + 和 + 朋友 + 看电影' = 'Tôi xem phim với bạn'. Cụm 和+người đặt giữa CN và động từ.",
+    hanVietHint: "和 → HÒA (với/và) | 看电影 → KHÁN ĐIỆN ẢNH (xem phim)" },
 
   // ── Error Correction ──
   { id: "ec-001", grammarId: "B1-NP2", type: "error-correction", lesson: 1,
@@ -1262,6 +1293,11 @@ const grammarQuestions = [
     correction: ["这", "是", "很好", "的", "电影", "。"],
     explanation: "Có phó từ 很 trước Adj 1 âm tiết 好 → cụm 很好 BẮT BUỘC có 的 trước danh từ. Đúng: 很好的电影 = 'phim rất hay'. Lưu ý: chỉ 好电影 (không có 很) thì không cần 的.",
     hanVietHint: "很 → rất | 好 → HẢO | 的 → bắt buộc khi có Adv trước Adj 1 âm tiết" },
+  { id: "ec-016", grammarId: "B7-NP12", type: "error-correction", lesson: 7,
+    tokens: ["我", "去", "图书馆", "和", "朋友", "。"], errorIndex: 3,
+    correction: ["我", "和", "朋友", "去", "图书馆", "。"],
+    explanation: "Sai trật tự — '和 + người' phải đặt TRƯỚC động từ, không đặt sau. Đúng: 我 + 和 + 朋友 + 去 + 图书馆 = 'Tôi đi thư viện với bạn'.",
+    hanVietHint: "和 → HÒA (với) — cụm '和+người' đứng trước V, không đứng sau" },
 
   // ── Pattern Matching ──
   { id: "pm-001", grammarId: null, type: "pattern-match", lesson: 1,
