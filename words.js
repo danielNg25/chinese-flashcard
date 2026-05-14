@@ -212,6 +212,48 @@ const words = [
   { char:"骑",     pinyin:"qí",           pos:"v.",    viet:"cưỡi, đi (xe đạp, ngựa...)",                            lesson:7, hv:"KỴ — cưỡi (như 'kỵ binh')", radical:"马(MÃ — ngựa, bộ thủ) + 奇(KỲ — chỉ thanh) → động từ về cưỡi ngựa / đi xe 2 bánh = cưỡi" },
   { char:"开",     pinyin:"kāi",          pos:"v.",    viet:"lái (xe có động cơ); mở, khởi động",                  lesson:7, hv:"KHAI — mở, khởi động (như 'khai mạc')", radical:"一 + 廾(hai tay đẩy mở) → tay đẩy cánh cửa = mở/bắt đầu/lái" },
 
+  // ── Lesson 8 ──
+  // Communication
+  { char:"电话",   pinyin:"diànhuà",      pos:"n.",    viet:"điện thoại",                                          lesson:8, hv:"ĐIỆN THOẠI — giống hệt tiếng Việt!", radical:"电(ĐIỆN) = tia chớp = điện | 话(THOẠI) = 讠(NGÔN — lời) + 舌(THIỆT — lưỡi) → lời từ lưỡi = cuộc nói/lời nói" },
+  { char:"手机",   pinyin:"shǒujī",       pos:"n.",    viet:"điện thoại di động",                                  lesson:8, hv:"THỦ CƠ — máy cầm tay", radical:"手(THỦ — tay) | 机(CƠ — máy) = 木(MỘC — gỗ) + 几(KỶ — chỉ thanh) → 'máy cầm tay' = điện thoại di động" },
+  { char:"护照",   pinyin:"hùzhào",       pos:"n.",    viet:"hộ chiếu",                                            lesson:8, hv:"HỘ CHIẾU — giống hệt tiếng Việt!", radical:"护(HỘ — bảo vệ) = 扌(THỦ — tay, bộ thủ) + 户(HỘ — chỉ thanh) → tay che chở | 照(CHIẾU — chiếu/giấy chứng) = 召(TRIỆU — chỉ thanh) + 灬(HỎA — lửa) → 'ánh sáng chiếu giấy' → 'giấy bảo vệ' = hộ chiếu" },
+  { char:"作业",   pinyin:"zuòyè",        pos:"n.",    viet:"bài tập, bài tập về nhà",                              lesson:8, hv:"TÁC NGHIỆP — bài tập (tác = làm, nghiệp = công việc)", radical:"作(TÁC) = 亻(NHÂN — người) + 乍(SẠ — chỉ thanh) → người làm việc gì = làm/tác | 业(NGHIỆP) — tượng hình giá nhạc cụ cổ → công việc/sự nghiệp → 'công việc phải làm' = bài tập" },
+  { char:"号",     pinyin:"hào",          pos:"n.",    viet:"số (thứ tự, địa chỉ, ngày)",                          lesson:8, hv:"HIỆU — số/ký hiệu (như 'tín hiệu')", radical:"口(KHẨU — miệng) + 丂 → tiếng kêu/ký hiệu = số/hiệu" },
+  { char:"号码",   pinyin:"hàomǎ",        pos:"n.",    viet:"số, mã số (số điện thoại, mã hàng)",                  lesson:8, hv:"HIỆU MÃ — mã số", radical:"号(HIỆU — số) | 码(MÃ) = 石(THẠCH — đá) + 马(MÃ — chỉ thanh) → đá khắc số = mã/số" },
+  { char:"多少",   pinyin:"duōshao",      pos:"pron.", viet:"bao nhiêu (hỏi số lượng — số lớn)",                   lesson:8, hv:"ĐA THIỂU — nhiều ít", radical:"多(ĐA — nhiều) + 少(THIỂU — ít) → 'nhiều-ít' = hỏi số lượng" },
+
+  // Time
+  { char:"周末",   pinyin:"zhōumò",       pos:"n.",    viet:"cuối tuần",                                            lesson:8, hv:"CHU MẠT — cuối tuần (chu = chu kỳ, mạt = ngọn/cuối)", radical:"周(CHU — tuần/chu kỳ) | 末(MẠT — ngọn) = 木(MỘC — cây) + 一 (vạch trên ngọn) → 'cuối chu kỳ' = cuối tuần" },
+  { char:"分钟",   pinyin:"fēnzhōng",     pos:"n.",    viet:"phút (đơn vị thời gian đếm số phút)",                 lesson:8, hv:"PHÂN CHUNG — phút (đơn vị)", radical:"分(PHÂN — chia/phút) | 钟(CHUNG) = 钅(KIM — kim loại) + 中(TRUNG — chỉ thanh) → đồng hồ → 'phần chia trên đồng hồ' = phút" },
+
+  // Conjunction / adverb
+  { char:"不过",   pinyin:"búguò",        pos:"conj.", viet:"nhưng, tuy nhiên (nhẹ hơn 可是)",                      lesson:8, hv:"BẤT QUÁ — không quá (nhưng cũng không quá nghiêm trọng)", radical:"不(BẤT — không) | 过(QUÁ) = 辶(SƯỚC — di chuyển) + 寸(THỐN — chỉ thanh) → 'không vượt quá' = nhưng (nhẹ)" },
+  { char:"就",     pinyin:"jiù",          pos:"adv.",  viet:"thì, liền, ngay (nhấn ngay sau đó/chính là)",          lesson:8, hv:"TỰU — liền/thì (như 'tựu trung')", radical:"京(KINH — kinh đô) + 尤(VƯU — chỉ thanh) → 'đến ngay kinh đô' = liền/ngay" },
+  { char:"都",     pinyin:"dōu",          pos:"adv.",  viet:"đều, tất cả, cả",                                      lesson:8, hv:"ĐÔ — đều (khi đọc dū thì là thủ đô)", radical:"者(GIẢ — kẻ/ngươi) + 阝(PHỤ — đất/thành) → 'tất cả mọi người ở đó' = đều" },
+  { char:"等",     pinyin:"děng",         pos:"v.",    viet:"chờ, đợi; vân vân; cấp bậc",                           lesson:8, hv:"ĐẲNG — đợi/đẳng cấp (như 'đẳng cấp', 'bình đẳng')", radical:"竹(TRÚC — tre, bộ thủ) + 寺(TỰ — chỉ thanh) → nén tre đo thời gian = chờ/đợi" },
+
+  // Interrogative
+  { char:"怎么",   pinyin:"zěnme",        pos:"pron.", viet:"làm thế nào, làm sao",                                lesson:8, hv:"HV ít dùng — đại từ nghi vấn", radical:"怎 = 乍(SẠ — thoáng) + 心(TÂM — tim) → 'đột nhiên thắc mắc trong lòng' | 么 = trợ từ phiên âm → đại từ 'thế nào'" },
+
+  // Movement / transport
+  { char:"走",     pinyin:"zǒu",          pos:"v.",    viet:"dịch chuyển, rời khỏi (đi nói chung, không nhất thiết là đi bộ)", lesson:8, hv:"TẨU — đi/chạy (như 'tẩu thoát')", radical:"土(THỔ — đất) + 龰(người dang chân) → người bước trên đất = đi/dịch chuyển" },
+  { char:"走路",   pinyin:"zǒulù",        pos:"v.",    viet:"đi bộ (hình thức đi lại bằng chân — động từ tách rời)", lesson:8, hv:"TẨU LỘ — đi đường (đi bộ)", radical:"走(TẨU — đi) + 路(LỘ — đường) → 'đi trên đường' = đi bộ (cách di chuyển bằng chân)" },
+  { char:"路",     pinyin:"lù",           pos:"n.",    viet:"đường, con đường, tuyến đường",                       lesson:8, hv:"LỘ — đường (như 'lộ trình', 'đại lộ')", radical:"足(TÚC — chân, bộ thủ) + 各(CÁC — chỉ thanh) → 'chân đi qua' = đường" },
+  { char:"公共汽车", pinyin:"gōnggòng qìchē", pos:"n.", viet:"xe bus",                                              lesson:8, hv:"CÔNG CỘNG KHÍ XA — xe chạy hơi (ô tô) công cộng", radical:"公(CÔNG — chung) + 共(CỘNG — cùng) → công cộng | 汽车 → ô tô → 'ô tô công cộng' = xe bus" },
+  { char:"到",     pinyin:"dào",          pos:"v.",    viet:"đến, tới",                                             lesson:8, hv:"ĐÁO — đến (như 'đáo hạn', 'đáo nhậm')", radical:"至(CHÍ — đến) + 刂(ĐAO — chỉ thanh) → 'đến nơi' = đến/tới" },
+
+  // Adjective / quantifier
+  { char:"快",     pinyin:"kuài",         pos:"adj.",  viet:"nhanh, mau",                                           lesson:8, hv:"KHOÁI — nhanh (như 'khoái lạc', 'khoái mã')", radical:"忄(TÂM — tim, bộ thủ) + 夬(QUYẾT — chỉ thanh) → 'lòng phấn khởi, nhanh' = nhanh" },
+
+  // Direction
+  { char:"东",     pinyin:"dōng",         pos:"n.",    viet:"đông (hướng), phía đông",                              lesson:8, hv:"ĐÔNG — phía đông (như 'phương đông', 'đông á')", radical:"giản thể của 東 — gốc: 日(NHẬT — mặt trời) qua 木(MỘC — cây) → mặt trời mọc qua cây = hướng đông" },
+  { char:"东南",   pinyin:"dōngnán",      pos:"n.",    viet:"đông nam (hướng)",                                     lesson:8, hv:"ĐÔNG NAM — đông nam", radical:"东(ĐÔNG) + 南(NAM) → 'đông + nam' = hướng đông nam" },
+
+  // Place
+  { char:"房间",   pinyin:"fángjiān",     pos:"n.",    viet:"phòng, căn phòng",                                     lesson:8, hv:"PHÒNG GIAN — gian phòng", radical:"房(PHÒNG) = 户(HỘ — cửa) + 方(PHƯƠNG — chỉ thanh) → khu vực có cửa = phòng | 间(GIAN) = 门(MÔN — cửa) + 日(NHẬT) → khoảng giữa các cửa = gian" },
+  { char:"室",     pinyin:"shì",          pos:"n.",    viet:"phòng (trong cụm: 教室, 卧室, 办公室)",                  lesson:8, hv:"THẤT — phòng (như 'lễ thất', 'phòng thất')", radical:"宀(MIÊN — mái nhà) + 至(CHÍ — đến) → 'nơi đến dưới mái' = phòng" },
+  { char:"校园",   pinyin:"xiàoyuán",     pos:"n.",    viet:"khuôn viên trường, sân trường",                       lesson:8, hv:"HIỆU VIÊN — sân trường", radical:"校(HIỆU — trường) | 园(VIÊN) = 囗(viền — rào quanh) + 元(NGUYÊN — chỉ thanh) → vườn có rào → 'vườn của trường' = khuôn viên trường" },
+
   // ── Add new words below ──
 ];
 
