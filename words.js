@@ -127,7 +127,7 @@ const words = [
   { char:"北京",   pinyin:"Běijīng",      pos:"n.",    viet:"Bắc Kinh",                                            lesson:5, hv:"BẮC KINH — giống hệt tiếng Việt!", radical:"北 = hai người quay lưng = bắc | 京(KINH) = 亠 + 口 + 小 → tòa nhà cao trong kinh đô" },
 
   // ── Lesson 6 ──
-  { char:"一",     pinyin:"yī",           pos:"num.",  viet:"một, 1",                                              lesson:6, hv:"NHẤT — một (như 'nhất quán', 'thứ nhất')", radical:"một nét ngang đơn = một" },
+  { char:"一",     pinyin:"yī (yāo khi đọc số)", pos:"num.",  viet:"một, 1 (đọc 'yāo' khi đọc rời từng chữ số trong số điện thoại / mã số — xem B8-NP8)", lesson:6, hv:"NHẤT — một (như 'nhất quán', 'thứ nhất')", radical:"một nét ngang đơn = một" },
   { char:"二",     pinyin:"èr",           pos:"num.",  viet:"hai, 2",                                              lesson:6, hv:"NHỊ — hai (như 'nhị thập', 'thứ nhị')", radical:"hai nét ngang = hai" },
   { char:"三",     pinyin:"sān",          pos:"num.",  viet:"ba, 3",                                               lesson:6, hv:"TAM — ba (như 'tam giác', 'tam quốc')", radical:"ba nét ngang = ba" },
   { char:"四",     pinyin:"sì",           pos:"num.",  viet:"bốn, 4",                                              lesson:6, hv:"TỨ — bốn (như 'tứ giác', 'tứ phương')", radical:"囗(biên) + 儿(hai chân) → bốn chân trong hộp = bốn" },
@@ -225,6 +225,7 @@ const words = [
   // Time
   { char:"周末",   pinyin:"zhōumò",       pos:"n.",    viet:"cuối tuần",                                            lesson:8, hv:"CHU MẠT — cuối tuần (chu = chu kỳ, mạt = ngọn/cuối)", radical:"周(CHU — tuần/chu kỳ) | 末(MẠT — ngọn) = 木(MỘC — cây) + 一 (vạch trên ngọn) → 'cuối chu kỳ' = cuối tuần" },
   { char:"分钟",   pinyin:"fēnzhōng",     pos:"n.",    viet:"phút (đơn vị thời gian đếm số phút)",                 lesson:8, hv:"PHÂN CHUNG — phút (đơn vị)", radical:"分(PHÂN — chia/phút) | 钟(CHUNG) = 钅(KIM — kim loại) + 中(TRUNG — chỉ thanh) → đồng hồ → 'phần chia trên đồng hồ' = phút" },
+  { char:"小时",   pinyin:"xiǎoshí",      pos:"n.",    viet:"tiếng, giờ (thời lượng — 1/24 ngày)",                  lesson:8, hv:"TIỂU THỜI — giờ (đơn vị nhỏ của thời gian)", radical:"小(TIỂU — nhỏ) + 时(THỜI — thời gian) → 'phần thời gian nhỏ' (= 1/24 ngày) = tiếng/giờ. Song song với 分钟 (phút thời lượng)" },
 
   // Conjunction / adverb
   { char:"不过",   pinyin:"búguò",        pos:"conj.", viet:"nhưng, tuy nhiên (nhẹ hơn 可是)",                      lesson:8, hv:"BẤT QUÁ — không quá (nhưng cũng không quá nghiêm trọng)", radical:"不(BẤT — không) | 过(QUÁ) = 辶(SƯỚC — di chuyển) + 寸(THỐN — chỉ thanh) → 'không vượt quá' = nhưng (nhẹ)" },
@@ -244,6 +245,7 @@ const words = [
 
   // Adjective / quantifier
   { char:"快",     pinyin:"kuài",         pos:"adj.",  viet:"nhanh, mau",                                           lesson:8, hv:"KHOÁI — nhanh (như 'khoái lạc', 'khoái mã')", radical:"忄(TÂM — tim, bộ thủ) + 夬(QUYẾT — chỉ thanh) → 'lòng phấn khởi, nhanh' = nhanh" },
+  { char:"慢",     pinyin:"màn",          pos:"adj.",  viet:"chậm (đối lập với 快)",                                lesson:8, hv:"MẠN — chậm (như 'mạn tính', 'tản mạn')", radical:"忄(TÂM — tim, bộ thủ) + 曼(MẠN — chỉ thanh) → 'lòng kéo dài, không vội' = chậm" },
 
   // Direction
   { char:"东",     pinyin:"dōng",         pos:"n.",    viet:"đông (hướng), phía đông",                              lesson:8, hv:"ĐÔNG — phía đông (như 'phương đông', 'đông á')", radical:"giản thể của 東 — gốc: 日(NHẬT — mặt trời) qua 木(MỘC — cây) → mặt trời mọc qua cây = hướng đông" },
@@ -253,6 +255,9 @@ const words = [
   { char:"房间",   pinyin:"fángjiān",     pos:"n.",    viet:"phòng, căn phòng",                                     lesson:8, hv:"PHÒNG GIAN — gian phòng", radical:"房(PHÒNG) = 户(HỘ — cửa) + 方(PHƯƠNG — chỉ thanh) → khu vực có cửa = phòng | 间(GIAN) = 门(MÔN — cửa) + 日(NHẬT) → khoảng giữa các cửa = gian" },
   { char:"室",     pinyin:"shì",          pos:"n.",    viet:"phòng (trong cụm: 教室, 卧室, 办公室)",                  lesson:8, hv:"THẤT — phòng (như 'lễ thất', 'phòng thất')", radical:"宀(MIÊN — mái nhà) + 至(CHÍ — đến) → 'nơi đến dưới mái' = phòng" },
   { char:"校园",   pinyin:"xiàoyuán",     pos:"n.",    viet:"khuôn viên trường, sân trường",                       lesson:8, hv:"HIỆU VIÊN — sân trường", radical:"校(HIỆU — trường) | 园(VIÊN) = 囗(viền — rào quanh) + 元(NGUYÊN — chỉ thanh) → vườn có rào → 'vườn của trường' = khuôn viên trường" },
+  { char:"写",     pinyin:"xiě",          pos:"v.",    viet:"viết",                                                lesson:8, hv:"TẢ — viết (như 'tả thực', 'sao tả')", radical:"chữ giản thể của 寫 — 冖(MIÊN — mái) + 与 (chỉ thanh đơn giản hóa) → 'dưới mái cầm bút' = viết" },
+  { char:"读",     pinyin:"dú",           pos:"v.",    viet:"đọc",                                                 lesson:8, hv:"ĐỘC — đọc (như 'độc giả', 'độc thư')", radical:"讠(NGÔN — lời, bộ thủ) + 卖(MÃI — chỉ thanh, đơn giản hóa từ 賣) → 'lời thoát ra' = đọc thành tiếng" },
+  { char:"坐",     pinyin:"zuò",          pos:"v.",    viet:"ngồi; đi xe làm HÀNH KHÁCH (không tự cầm lái — khác 开 lái xe, 骑 cưỡi xe 2 bánh)", lesson:8, hv:"TỌA — ngồi (như 'tọa lạc', 'tọa thiền')", radical:"人 + 人 + 土(THỔ — đất) → 'hai người ngồi trên đất' = ngồi. Mở rộng: đi xe (= 'ngồi trên xe' với tư cách hành khách): 坐公共汽车 đi xe buýt, 坐火车 đi tàu, 坐出租车 đi taxi" },
 
   // ── Add new words below ──
 ];
