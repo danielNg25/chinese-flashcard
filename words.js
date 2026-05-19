@@ -259,6 +259,36 @@ const words = [
   { char:"读",     pinyin:"dú",           pos:"v.",    viet:"đọc",                                                 lesson:8, hv:"ĐỘC — đọc (như 'độc giả', 'độc thư')", radical:"讠(NGÔN — lời, bộ thủ) + 卖(MÃI — chỉ thanh, đơn giản hóa từ 賣) → 'lời thoát ra' = đọc thành tiếng" },
   { char:"坐",     pinyin:"zuò",          pos:"v.",    viet:"ngồi; đi xe làm HÀNH KHÁCH (không tự cầm lái — khác 开 lái xe, 骑 cưỡi xe 2 bánh)", lesson:8, hv:"TỌA — ngồi (như 'tọa lạc', 'tọa thiền')", radical:"人 + 人 + 土(THỔ — đất) → 'hai người ngồi trên đất' = ngồi. Mở rộng: đi xe (= 'ngồi trên xe' với tư cách hành khách): 坐公共汽车 đi xe buýt, 坐火车 đi tàu, 坐出租车 đi taxi" },
 
+  // ── Lesson 9 ──
+  // Người / cách xưng hô
+  { char:"师傅",   pinyin:"shīfu",        pos:"n.",    viet:"thầy, anh (xưng hô lịch sự với người làm dịch vụ / bán hàng)", lesson:9, hv:"SƯ PHỤ — thầy (gọi người có nghề/dịch vụ)", radical:"师(SƯ — thầy) | 傅(PHỤ — người dạy/phụ trợ) → người làm nghề có tay nghề" },
+  { char:"小姐",   pinyin:"xiǎojiě",      pos:"n.",    viet:"cô, cô gái (xưng hô lịch sự)",                         lesson:9, hv:"TIỂU TỶ — cô gái (tiểu = nhỏ, tỷ = chị)", radical:"小(TIỂU — nhỏ) + 姐(TỶ) = 女(NỮ) + 且(THẢ — chỉ thanh) → cô gái = miss/cô" },
+  { char:"售货",   pinyin:"shòuhuò",      pos:"v.",    viet:"bán hàng (động từ; ghép với 员 → 售货员 nhân viên bán hàng)", lesson:9, hv:"THỤ HÓA — bán hàng (thụ = bán, hóa = hàng)", radical:"售(THỤ — bán) = 隹(CHUỲ — chim) + 口(KHẨU — miệng) → 'miệng giao chim' = bán | 货(HÓA — hàng hóa) = 化 + 贝(BỐI — tiền/vỏ sò) → 'đổi tiền lấy hàng' = hàng" },
+  { char:"员",     pinyin:"yuán",         pos:"suff.", viet:"viên, nhân viên (hậu tố: 售货员, 服务员, 演员...)",      lesson:9, hv:"VIÊN — viên (như 'nhân viên', 'thành viên')", radical:"口(KHẨU — miệng) + 贝(BỐI — vỏ sò/tiền) → người tham gia trong nhóm = thành viên/viên" },
+
+  // Mua bán / hành động
+  { char:"买",     pinyin:"mǎi",          pos:"v.",    viet:"mua",                                                  lesson:9, hv:"MÃI — mua (như 'mãi võ' = bán/biểu diễn võ kiếm tiền)", radical:"chữ giản thể của 買 — gốc tượng hình 贝(BỐI — vỏ sò = tiền) → đổi tiền lấy đồ = mua" },
+  { char:"给",     pinyin:"gěi",          pos:"v./prep.", viet:"cho, đưa, tính tiền cho",                            lesson:9, hv:"CẤP — cấp/cho (như 'cung cấp', 'cấp dưỡng')", radical:"纟(MỊCH — sợi, bộ thủ) + 合(HỢP — chỉ thanh) → trao/cho" },
+  { char:"要",     pinyin:"yào",          pos:"v./aux.", viet:"muốn, cần, lấy (động từ); sẽ (trợ động từ chỉ tương lai)", lesson:9, hv:"YÊU — muốn (như 'yêu cầu')", radical:"西(TÂY — phía tây) + 女(NỮ — phụ nữ) → tượng hình lưng eo phụ nữ → mở rộng: 'cần / muốn'" },
+
+  // Đồ vật / hàng hóa
+  { char:"啤酒",   pinyin:"píjiǔ",        pos:"n.",    viet:"bia",                                                  lesson:9, hv:"BÌ TỬU — bia (bì = phiên âm 'pi' từ 'beer', tửu = rượu)", radical:"啤(BÌ) = 口 + 卑(BI — chỉ thanh) → phiên âm 'pi' của 'beer' | 酒(TỬU — rượu) = 氵(THỦY — nước) + 酉(DẬU — bình rượu)" },
+  { char:"水",     pinyin:"shuǐ",         pos:"n.",    viet:"nước",                                                 lesson:9, hv:"THỦY — nước (như 'thủy điện', 'thủy quân')", radical:"tượng hình dòng nước chảy với các giọt — chữ pictograph cổ" },
+
+  // Lượng từ
+  { char:"瓶",     pinyin:"píng",         pos:"q.",    viet:"chai (lượng từ cho chất lỏng đựng trong chai)",        lesson:9, hv:"BÌNH — chai/bình (như 'bình hoa', 'bình thủy')", radical:"并(BÍNH — chỉ thanh) + 瓦(NGÕA — ngói/đất nung) → bình bằng đất nung = chai/bình" },
+
+  // Tiền / thanh toán
+  { char:"钱",     pinyin:"qián",         pos:"n.",    viet:"tiền",                                                 lesson:9, hv:"TIỀN — tiền (như 'kim tiền')", radical:"钅(KIM — kim loại, bộ thủ) + 戋(TIỀN — chỉ thanh) → 'kim loại làm tiền' = tiền" },
+  { char:"元",     pinyin:"yuán",         pos:"q.",    viet:"đồng (đơn vị tiền Trung Quốc — chính thức / văn viết, tương đương 块)", lesson:9, hv:"NGUYÊN — gốc/nguyên đầu (như 'nguyên tử')", radical:"二 + 儿(NHI — hai chân) → 'người đứng đầu' = nguyên / đơn vị cơ bản" },
+  { char:"块",     pinyin:"kuài",         pos:"q.",    viet:"khối; đồng (đơn vị tiền — KHẨU NGỮ, bằng 元)",          lesson:9, hv:"KHỐI — khối/cục (như 'khối lượng')", radical:"土(THỔ — đất) + 鬼(QUỶ — chỉ thanh) → cục đất → 'một cục' tiền (khẩu ngữ thay 元)" },
+  { char:"角",     pinyin:"jiǎo",         pos:"q.",    viet:"hào (= 0.1 đồng — chính thức / văn viết, tương đương 毛)", lesson:9, hv:"GIÁC — góc/sừng (đơn vị nhỏ)", radical:"tượng hình cái sừng → mở rộng: 'một phần nhỏ' = 1/10 đồng" },
+  { char:"毛",     pinyin:"máo",          pos:"q.",    viet:"hào, xu (= 0.1 đồng — KHẨU NGỮ, bằng 角)",              lesson:9, hv:"MAO — lông (đơn vị tiền nhỏ, khẩu ngữ)", radical:"tượng hình sợi lông → mở rộng nghĩa 'đơn vị nhỏ' (1/10 đồng — khẩu ngữ thay 角)" },
+  { char:"一共",   pinyin:"yīgòng",       pos:"adv.",  viet:"tổng cộng, tất cả, hết thảy",                          lesson:9, hv:"NHẤT CỘNG — tổng cộng", radical:"一(NHẤT — một) + 共(CỘNG — cùng/tổng) = 廾 + 八 → 'cùng cộng lại' = tổng cộng" },
+
+  // Khác
+  { char:"这些",   pinyin:"zhèxiē",       pos:"pron.", viet:"những cái này, các (số nhiều của 这)",                 lesson:9, hv:"GIÁ TA — những cái này", radical:"这(GIÁ — này) | 些(TA — chút/một số) = 此(THỬ — này) + 二(NHỊ — hai) → 'một ít, số nhiều'" },
+
   // ── Add new words below ──
 ];
 
