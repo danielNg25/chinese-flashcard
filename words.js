@@ -270,6 +270,7 @@ const words = [
   { char:"买",     pinyin:"mǎi",          pos:"v.",    viet:"mua",                                                  lesson:9, hv:"MÃI — mua (như 'mãi võ' = bán/biểu diễn võ kiếm tiền)", radical:"chữ giản thể của 買 — gốc tượng hình 贝(BỐI — vỏ sò = tiền) → đổi tiền lấy đồ = mua" },
   { char:"给",     pinyin:"gěi",          pos:"v./prep.", viet:"cho, đưa, tính tiền cho",                            lesson:9, hv:"CẤP — cấp/cho (như 'cung cấp', 'cấp dưỡng')", radical:"纟(MỊCH — sợi, bộ thủ) + 合(HỢP — chỉ thanh) → trao/cho" },
   { char:"要",     pinyin:"yào",          pos:"v./aux.", viet:"muốn, cần, lấy (động từ); sẽ (trợ động từ chỉ tương lai)", lesson:9, hv:"YÊU — muốn (như 'yêu cầu')", radical:"西(TÂY — phía tây) + 女(NỮ — phụ nữ) → tượng hình lưng eo phụ nữ → mở rộng: 'cần / muốn'" },
+  { char:"想",     pinyin:"xiǎng",        pos:"v./aux.", viet:"muốn, định (trợ động từ — mong muốn); nghĩ; nhớ (miss someone)", lesson:9, hv:"TƯỞNG — nghĩ (như 'tưởng tượng', 'suy tưởng')", radical:"相(TƯƠNG — chỉ thanh) + 心(TÂM — tim, bộ thủ dưới) → 'trong lòng nghĩ ngợi' = nghĩ/muốn/nhớ. Ba nghĩa: muốn (我想去), nghĩ (我想他对), nhớ (我想你)" },
 
   // Đồ vật / hàng hóa
   { char:"啤酒",   pinyin:"píjiǔ",        pos:"n.",    viet:"bia",                                                  lesson:9, hv:"BÌ TỬU — bia (bì = phiên âm 'pi' từ 'beer', tửu = rượu)", radical:"啤(BÌ) = 口 + 卑(BI — chỉ thanh) → phiên âm 'pi' của 'beer' | 酒(TỬU — rượu) = 氵(THỦY — nước) + 酉(DẬU — bình rượu)" },
@@ -277,17 +278,25 @@ const words = [
 
   // Lượng từ
   { char:"瓶",     pinyin:"píng",         pos:"q.",    viet:"chai (lượng từ cho chất lỏng đựng trong chai)",        lesson:9, hv:"BÌNH — chai/bình (như 'bình hoa', 'bình thủy')", radical:"并(BÍNH — chỉ thanh) + 瓦(NGÕA — ngói/đất nung) → bình bằng đất nung = chai/bình" },
+  { char:"瓶子",   pinyin:"píngzi",       pos:"n.",    viet:"cái chai, cái bình (vật — khác 瓶 là lượng từ)",        lesson:9, hv:"BÌNH TỬ — cái chai (子 = hậu tố danh từ)", radical:"瓶(BÌNH — chai) + 子(TỬ — hậu tố danh từ chỉ vật) → cái chai/bình (danh từ chỉ vật cụ thể, khác lượng từ 瓶)" },
+  { char:"杯",     pinyin:"bēi",          pos:"q.",    viet:"cốc, ly (lượng từ cho chất lỏng đựng trong cốc/ly)",    lesson:9, hv:"BÔI — chén/cốc (như 'kim bôi' = chén vàng)", radical:"木(MỘC — gỗ, bộ thủ) + 不(BẤT — chỉ thanh) → cốc bằng gỗ. Như lượng từ: 一杯水 = một cốc nước" },
+  { char:"杯子",   pinyin:"bēizi",        pos:"n.",    viet:"cốc, ly, chén (vật — khác 杯 là lượng từ)",             lesson:9, hv:"BÔI TỬ — cái cốc/ly", radical:"杯(BÔI — cốc) + 子(TỬ — hậu tố danh từ) → cái cốc/ly (danh từ chỉ vật, khác lượng từ 杯)" },
+  { char:"把",     pinyin:"bǎ",           pos:"q.",    viet:"chiếc, cái (lượng từ cho vật có TAY CẦM: chìa khóa, dao, ô, ghế, bàn chải...)", lesson:9, hv:"BẢ — nắm/cầm (như 'bả vai', 'bả chủ')", radical:"扌(THỦ — tay, bộ thủ) + 巴(BA — chỉ thanh) → 'cái dùng tay nắm' = lượng từ cho vật có tay cầm. Ví dụ: 一把钥匙 (một chiếc chìa khóa), 一把椅子 (một chiếc ghế), 一把伞 (một cây dù)" },
+  { char:"位",     pinyin:"wèi",          pos:"q.",    viet:"vị (lượng từ cho người — LỊCH SỰ, thay 个; dùng cho thầy cô, khách, người lớn tuổi)", lesson:9, hv:"VỊ — vị (như 'quý vị', 'chư vị', 'các vị')", radical:"亻(NHÂN — người, bộ thủ) + 立(LẬP — đứng) → 'người đứng / có địa vị' = vị/người (lịch sự). Ví dụ: 这位老师 (vị thầy cô này), 几位 (mấy vị?), 三位客人 (ba vị khách)" },
 
   // Tiền / thanh toán
   { char:"钱",     pinyin:"qián",         pos:"n.",    viet:"tiền",                                                 lesson:9, hv:"TIỀN — tiền (như 'kim tiền')", radical:"钅(KIM — kim loại, bộ thủ) + 戋(TIỀN — chỉ thanh) → 'kim loại làm tiền' = tiền" },
-  { char:"元",     pinyin:"yuán",         pos:"q.",    viet:"đồng (đơn vị tiền Trung Quốc — chính thức / văn viết, tương đương 块)", lesson:9, hv:"NGUYÊN — gốc/nguyên đầu (như 'nguyên tử')", radical:"二 + 儿(NHI — hai chân) → 'người đứng đầu' = nguyên / đơn vị cơ bản" },
-  { char:"块",     pinyin:"kuài",         pos:"q.",    viet:"khối; đồng (đơn vị tiền — KHẨU NGỮ, bằng 元)",          lesson:9, hv:"KHỐI — khối/cục (như 'khối lượng')", radical:"土(THỔ — đất) + 鬼(QUỶ — chỉ thanh) → cục đất → 'một cục' tiền (khẩu ngữ thay 元)" },
-  { char:"角",     pinyin:"jiǎo",         pos:"q.",    viet:"hào (= 0.1 đồng — chính thức / văn viết, tương đương 毛)", lesson:9, hv:"GIÁC — góc/sừng (đơn vị nhỏ)", radical:"tượng hình cái sừng → mở rộng: 'một phần nhỏ' = 1/10 đồng" },
-  { char:"毛",     pinyin:"máo",          pos:"q.",    viet:"hào, xu (= 0.1 đồng — KHẨU NGỮ, bằng 角)",              lesson:9, hv:"MAO — lông (đơn vị tiền nhỏ, khẩu ngữ)", radical:"tượng hình sợi lông → mở rộng nghĩa 'đơn vị nhỏ' (1/10 đồng — khẩu ngữ thay 角)" },
+  { char:"元",     pinyin:"yuán",         pos:"q.",    viet:"YUAN — đơn vị tiền tệ chính thức của Trung Quốc (Nhân dân tệ RMB, ¥). Như 'dollar' trong tiếng Anh", lesson:9, hv:"NGUYÊN — gốc/nguyên đầu. Khi chỉ tiền, 元 là TÊN CHÍNH THỨC của đơn vị tiền", radical:"二 + 儿(NHI — hai chân) → 'người đứng đầu' = nguyên / đơn vị cơ bản. Mở rộng: tên đơn vị tiền chính (Yuán)" },
+  { char:"块",     pinyin:"kuài",         pos:"q.",    viet:"khối/cục; ĐỒNG (từ khẩu ngữ thay 元 — giống 'buck' thay 'dollar' trong tiếng Anh)", lesson:9, hv:"KHỐI — khối/cục (như 'khối lượng')", radical:"土(THỔ — đất) + 鬼(QUỶ — chỉ thanh) → cục đất → 'một cục' tiền (khẩu ngữ). Trong nói chuyện hằng ngày, 块 ngày nay phổ biến hơn 元" },
+  { char:"块钱",   pinyin:"kuài qián",    pos:"q.",    viet:"đồng (cách nói ĐẦY ĐỦ của 块 — thường thấy ở vị trí cuối số tiền). Ví dụ: 五块钱 = 5 đồng", lesson:9, hv:"KHỐI TIỀN — đồng tiền (đầy đủ)", radical:"块(KHỐI — đồng, khẩu ngữ) + 钱(TIỀN — tiền) → 'cục tiền' = dạng đầy đủ của 块. Có thể bỏ 钱 nếu rõ ngữ cảnh: 五块 = 五块钱" },
+  { char:"角",     pinyin:"jiǎo",         pos:"q.",    viet:"JIAO — đơn vị tiền chính thức = 1/10 元 (0.1 đồng). Trên hóa đơn / biển giá", lesson:9, hv:"GIÁC — góc/sừng (đơn vị nhỏ)", radical:"tượng hình cái sừng → mở rộng: 'một phần nhỏ'. Là đơn vị 角 chính thức của RMB (0.1 元)" },
+  { char:"毛",     pinyin:"máo",          pos:"q.",    viet:"hào (từ khẩu ngữ thay 角 — giống 'dime' thay '10 cents'). 1 毛 = 1 角 = 0.1 元", lesson:9, hv:"MAO — lông (đơn vị tiền nhỏ, khẩu ngữ)", radical:"tượng hình sợi lông → mở rộng nghĩa 'đơn vị nhỏ' (1/10 đồng — khẩu ngữ thay 角)" },
+  { char:"毛钱",   pinyin:"máo qián",     pos:"q.",    viet:"hào (cách nói ĐẦY ĐỦ của 毛). Ví dụ: 五毛钱 = 0.5 đồng (5 hào)", lesson:9, hv:"MAO TIỀN — hào tiền (đầy đủ)", radical:"毛(MAO — hào, khẩu ngữ) + 钱(TIỀN — tiền) → dạng đầy đủ của 毛. Ví dụ: 三块五毛钱 = 3.5 đồng" },
   { char:"一共",   pinyin:"yīgòng",       pos:"adv.",  viet:"tổng cộng, tất cả, hết thảy",                          lesson:9, hv:"NHẤT CỘNG — tổng cộng", radical:"一(NHẤT — một) + 共(CỘNG — cùng/tổng) = 廾 + 八 → 'cùng cộng lại' = tổng cộng" },
 
   // Khác
   { char:"这些",   pinyin:"zhèxiē",       pos:"pron.", viet:"những cái này, các (số nhiều của 这)",                 lesson:9, hv:"GIÁ TA — những cái này", radical:"这(GIÁ — này) | 些(TA — chút/một số) = 此(THỬ — này) + 二(NHỊ — hai) → 'một ít, số nhiều'" },
+  { char:"玛丽",   pinyin:"Mǎlì",         pos:"n.",    viet:"Mary (tên người — phiên âm)",                          lesson:9, hv:"MÃ LỆ — phiên âm 'Mary'" },
 
   // ── Add new words below ──
 ];
