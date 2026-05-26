@@ -1,0 +1,152 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>shared.js tests</title>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; padding: 1.5rem; max-width: 900px; margin: 0 auto; }
+  h1 { font-size: 18px; margin-bottom: 1rem; }
+  .pass { color: #27500A; }
+  .fail { color: #72243E; font-weight: 600; }
+  .summary { margin-top: 1rem; padding: 10px 14px; border-radius: 6px; font-weight: 600; }
+  .summary.ok { background: #EAF3DE; color: #27500A; }
+  .summary.bad { background: #FBEAF0; color: #72243E; }
+  ul { list-style: none; padding: 0; font-family: ui-monospace, Menlo, monospace; font-size: 13px; }
+  li { padding: 2px 0; }
+</style>
+<h1>shared.js — pure-helper tests</h1>
+<ul id="results"></ul>
+<div id="summary" class="summary"></div>
+
+<script src="../shared.js"></script>
+<script>
+const results = [];
+function t(name, fn) {
+  try {
+    fn();
+    results.push({ name, ok: true });
+  } catch (e) {
+    results.push({ name, ok: false, err: e.message });
+  }
+}
+function eq(actual, expected, msg) {
+  if (actual !== expected) throw new Error((msg ? msg + ': ' : '') + `expected ${JSON.stringify(expected)}, got ${JSON.stringify(actual)}`);
+}
+function truthy(v, msg) { if (!v) throw new Error((msg || 'expected truthy') + `: got ${JSON.stringify(v)}`); }
+function falsy(v, msg)  { if (v)  throw new Error((msg || 'expected falsy') + `: got ${JSON.stringify(v)}`); }
+
+// ── normalizePinyin ─────────────────────────────────────────────────────────
+t('normalizePinyin strips tone diacritics', () => {
+  eq(normalizePinyin('nǐ hǎo'), 'nihao');
+});
+t('normalizePinyin lowercases', () => {
+  eq(normalizePinyin('NI HAO'), 'nihao');
+});
+t('normalizePinyin maps ü to v', () => {
+  eq(normalizePinyin('lǜ'), 'lv');
+});
+t('normalizePinyin drops all whitespace', () => {
+  eq(normalizePinyin('  ni  hao  '), 'nihao');
+});
+
+// ── normalizeViet ───────────────────────────────────────────────────────────
+t('normalizeViet strips Vietnamese diacritics', () => {
+  eq(normalizeViet('chào bạn'), 'chao ban');
+});
+t('normalizeViet maps đ to d', () => {
+  eq(normalizeViet('đi'), 'di');
+});
+t('normalizeViet strips punctuation', () => {
+  eq(normalizeViet('chào, bạn!'), 'chao ban');
+});
+
+// ── checkPinyinMatch ────────────────────────────────────────────────────────
+t('checkPinyinMatch exact match (with tones)', () => {
+  truthy(checkPinyinMatch('nǐ hǎo', { pinyin: 'nǐ hǎo' }));
+});
+t('checkPinyinMatch toneless match', () => {
+  truthy(checkPinyinMatch('ni hao', { pinyin: 'nǐ hǎo' }));
+});
+t('checkPinyinMatch slash-separated alternatives', () => {
+  truthy(checkPinyinMatch('le', { pinyin: 'le / liǎo' }));
+  truthy(checkPinyinMatch('liao', { pinyin: 'le / liǎo' }));
+});
+t('checkPinyinMatch rejects wrong answer', () => {
+  falsy(checkPinyinMatch('zaijian', { pinyin: 'nǐ hǎo' }));
+});
+t('checkPinyinMatch empty string is wrong', () => {
+  falsy(checkPinyinMatch('', { pinyin: 'nǐ hǎo' }));
+});
+
+// ── checkViet ───────────────────────────────────────────────────────────────
+t('checkViet exact match', () => {
+  truthy(checkViet('chào bạn', { viet: 'chào bạn' }));
+});
+t('checkViet comma-separated synonyms', () => {
+  truthy(checkViet('khỏe', { viet: 'tốt, khỏe, hay, ngon' }));
+  truthy(checkViet('ngon', { viet: 'tốt, khỏe, hay, ngon' }));
+});
+t('checkViet ignores parentheticals in source', () => {
+  truthy(checkViet('thầy', { viet: 'thầy (giáo viên nam)' }));
+});
+t('checkViet partial includes match', () => {
+  // "chào" is included in "chào bạn"; should accept
+  truthy(checkViet('chào', { viet: 'chào bạn' }));
+});
+t('checkViet rejects unrelated word', () => {
+  falsy(checkViet('xin chào', { viet: 'tạm biệt' }));
+});
+
+// ── posClass ────────────────────────────────────────────────────────────────
+t('posClass maps n. to n', () => { eq(posClass('n.'), 'n'); });
+t('posClass maps v. to v', () => { eq(posClass('v.'), 'v'); });
+t('posClass maps pron. to pron', () => { eq(posClass('pron.'), 'pron'); });
+t('posClass maps adv. to adv', () => { eq(posClass('adv.'), 'adv'); });
+t('posClass maps adj. to adj', () => { eq(posClass('adj.'), 'adj'); });
+t('posClass maps part. to part', () => { eq(posClass('part.'), 'part'); });
+t('posClass returns other for empty', () => { eq(posClass(''), 'other'); });
+t('posClass returns other for unknown', () => { eq(posClass('xyz.'), 'other'); });
+// The audit's resolution of the hanyu/lesson drift: lesson's stricter
+// startsWith('n.') is the chosen behavior. num. and mw. must NOT collapse to 'n'.
+t('posClass does NOT map num. to n (drift fix)', () => { eq(posClass('num.'), 'other'); });
+t('posClass does NOT map mw. to anything stupid', () => { eq(posClass('mw.'), 'other'); });
+
+// ── shuffle ─────────────────────────────────────────────────────────────────
+t('shuffle returns a new array (does not mutate input)', () => {
+  const input = [1, 2, 3, 4, 5];
+  const before = input.slice();
+  shuffle(input);
+  eq(JSON.stringify(input), JSON.stringify(before), 'input was mutated');
+});
+t('shuffle preserves length', () => {
+  eq(shuffle([1, 2, 3, 4, 5]).length, 5);
+});
+t('shuffle preserves elements (multiset equality)', () => {
+  const out = shuffle([1, 2, 3, 4, 5]);
+  eq(out.slice().sort().join(','), '1,2,3,4,5');
+});
+t('shuffle handles empty array', () => {
+  eq(JSON.stringify(shuffle([])), '[]');
+});
+t('shuffle handles single-element array', () => {
+  eq(JSON.stringify(shuffle([42])), '[42]');
+});
+
+// ── Render results ─────────────────────────────────────────────────────────
+const ul = document.getElementById('results');
+let passed = 0, failed = 0;
+results.forEach(r => {
+  const li = document.createElement('li');
+  if (r.ok) {
+    li.className = 'pass';
+    li.textContent = '✓ ' + r.name;
+    passed++;
+  } else {
+    li.className = 'fail';
+    li.textContent = '✗ ' + r.name + '  — ' + r.err;
+    failed++;
+  }
+  ul.appendChild(li);
+});
+const sum = document.getElementById('summary');
+sum.textContent = `${passed} passed, ${failed} failed (${results.length} total)`;
+sum.className = 'summary ' + (failed === 0 ? 'ok' : 'bad');
+</script>
