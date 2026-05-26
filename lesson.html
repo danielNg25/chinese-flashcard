@@ -25,10 +25,7 @@ body { font-family: var(--font-sans); }
 .app-nav-btn:hover:not(.active) { background: var(--color-background-secondary); }
 
 /* Lesson selector */
-.lesson-selector { display: flex; gap: 0; border: 1px solid var(--color-border-secondary); border-radius: var(--border-radius-md); overflow: hidden; width: fit-content; margin-bottom: 2rem; }
-.lesson-btn { padding: 8px 24px; font-size: 14px; border: none; cursor: pointer; background: var(--color-background-primary); color: var(--color-text-secondary); transition: all 0.2s; font-family: inherit; }
-.lesson-btn.active { background: var(--color-background-secondary); color: var(--color-text-primary); font-weight: 600; }
-.lesson-btn:hover:not(.active) { background: var(--color-background-secondary); }
+.lesson-select { padding: 7px 12px; font-size: 14px; font-family: inherit; border: 1px solid var(--color-border-secondary); border-radius: var(--border-radius-md); background: var(--color-background-primary); color: var(--color-text-primary); cursor: pointer; margin-bottom: 2rem; min-width: 140px; }
 
 /* Section heading */
 .section-heading { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-text-tertiary); margin-bottom: 0.75rem; margin-top: 2rem; padding-bottom: 6px; border-bottom: 1px solid var(--color-border-tertiary); }
@@ -255,8 +252,7 @@ tbody td { padding: 8px 10px; vertical-align: middle; }
   .app-header { padding: 0.75rem; }
   .app-title { font-size: 16px; }
   .app-nav-btn { padding: 6px 14px; font-size: 13px; }
-  .lesson-selector { width: 100%; }
-  .lesson-btn { flex: 1; padding: 10px 8px; font-size: 13px; }
+  .lesson-select { width: 100%; font-size: 13px; }
   .char { font-size: 18px; }
   .hs-input { font-size: 15px; padding: 6px 6px; }
   .hs-check-btn { padding: 6px 10px; font-size: 12px; }
@@ -287,8 +283,8 @@ tbody td { padding: 8px 10px; vertical-align: middle; }
 </div>
 
 <div class="wrap">
-  <div class="lesson-selector">
-  </div>
+  <select id="lessonSelect" class="lesson-select" onchange="selectLesson(Number(this.value))">
+  </select>
 
   <div class="inner-tabs">
     <button class="inner-tab active" data-tab="vocabulary" onclick="selectTab('vocabulary')">Vocabulary</button>
@@ -475,9 +471,8 @@ function selectLesson(n) {
     lessonHsHidden = {};
     lessonHsOrder = {};
   }
-  document.querySelectorAll('.lesson-btn').forEach(b => {
-    b.classList.toggle('active', Number(b.dataset.lesson) === n);
-  });
+  const sel = document.getElementById('lessonSelect');
+  if (sel) sel.value = n;
   render();
 }
 
@@ -1578,12 +1573,11 @@ function populateLessonSelects() {
 }
 
 function renderLessonButtons() {
-  const container = document.querySelector('.lesson-selector');
-  if (!container) return;
+  const sel = document.getElementById('lessonSelect');
+  if (!sel) return;
   const lessons = availableLessons();
-  container.innerHTML = lessons.map(n =>
-    `<button class="lesson-btn" data-lesson="${n}" onclick="selectLesson(${n})">Lesson ${n}</button>`
-  ).join('');
+  sel.innerHTML = lessons.map(n => `<option value="${n}">Lesson ${n}</option>`).join('');
+  sel.value = currentLesson;
 }
 
 /* ── Related Characters Popup (mirror of hanyu.html) ── */

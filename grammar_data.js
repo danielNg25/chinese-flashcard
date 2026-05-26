@@ -1354,6 +1354,26 @@ const grammarPatterns = [
       "Câu hỏi cách thức: 怎么这样？= Sao lại như vậy? | 为什么这样做？= Tại sao làm vậy?",
     ],
   },
+  {
+    id: "B11-NP1", lesson: 11,
+    title: "雨/雪 — Bốn cách dùng danh từ thời tiết",
+    structure: "(1) V + N: 下雨 / 下雪<br>(2) 形 + N: 大雨 / 小雨<br>(3) V + (很 + 形 + 的 + N): 下很大的雨<br>(4) N + 很 + 形: 雪很大",
+    explanation: "Danh từ thời tiết như 雨 (mưa) và 雪 (tuyết) có thể dùng theo 4 cấu trúc khác nhau:<br><br><b>(1) V + N</b> — động từ 下 (rơi xuống) + danh từ: 下雨 = trời mưa; 下雪 = tuyết rơi. Thêm 了 cuối = tình huống mới vừa xảy ra<br><br><b>(2) 形 + N</b> — tính từ 1 âm tiết đứng TRƯỚC, KHÔNG 的: 大雨 = mưa to; 小雨 = mưa nhỏ; 大雪 = tuyết to<br><br><b>(3) V + (很 + 形 + 的 + N)</b> — khi có phó từ trước tính từ, BẮT BUỘC 的: 下很大的雨了 = trời mưa rất to rồi<br><br><b>(4) N + 很 + 形</b> — danh từ làm CHỦ NGỮ, tính từ làm vị ngữ: 雪很大 = tuyết rất to; 雨不大 = mưa không to. Đây là cấu trúc đánh giá (N là gì/thế nào)",
+    examples: [
+      { zh: "下雨了。", vi: "(1) V+N: Trời mưa rồi." },
+      { zh: "下雪了。", vi: "(1) V+N: Tuyết rơi rồi." },
+      { zh: "大雨 / 小雨", vi: "(2) 形+N: mưa to / mưa nhỏ (không có 的)" },
+      { zh: "下很大的雨了。", vi: "(3) V+(很大的+N): Trời mưa rất to rồi." },
+      { zh: "雪很大。", vi: "(4) N+形: Tuyết rất to. (雪 là chủ ngữ)" },
+      { zh: "今天的雨不大。", vi: "(4) N+形: Mưa hôm nay không to." },
+    ],
+    notes: [
+      "(2) Adj 1 âm tiết + N: KHÔNG 的 → 大雨 ✓ | 大的雨 ✗ (không tự nhiên)",
+      "(3) Có phó từ (很/非常/特别...) trước adj: BẮT BUỘC 的 → 很大的雨 ✓ | 很大雨 ✗",
+      "(4) N + 很 + adj: 很 BẮT BUỘC khi adj làm vị ngữ — 雪大 ✗ | 雪很大 ✓ (trừ câu so sánh/đối lập)",
+      "了 cuối câu = thay đổi tình trạng: 下雨了 = 'bắt đầu mưa rồi' (sentence-final 了)",
+    ],
+  },
 ];
 
 const grammarQuestions = [
@@ -2526,4 +2546,45 @@ const grammarQuestions = [
     acceptedVariants: ["这样的人不好"],
     hanVietHint: "这样的 → như vậy (trước N) | 人 → người | 不好 → không tốt",
     explanation: "这样的 + N + đánh giá: '这样的人不好'. 的 bắt buộc khi 这样 bổ nghĩa cho danh từ 人." },
+
+  { id: "fb-128", grammarId: "B11-NP1", type: "fill-blank", lesson: 11,
+    instruction: "Điền 大雨 hoặc 小雨 vào chỗ trống.",
+    sentence: "今天下＿＿，带伞吧。", answer: "大雨",
+    acceptedVariants: ["大雨", "小雨"],
+    explanation: "形 + 雨: adj 1 âm tiết đứng trước 雨 KHÔNG cần 的. 大雨 = mưa to (cần mang ô); 小雨 = mưa nhỏ. Cả hai đều đúng ngữ pháp tuỳ ngữ cảnh." },
+  { id: "fb-129", grammarId: "B11-NP1", type: "fill-blank", lesson: 11,
+    instruction: "Điền đúng dạng: 大雨 hay 很大的雨?",
+    sentence: "昨天下了＿＿，路上都是水。", answer: "很大的雨",
+    acceptedVariants: ["很大的雨", "大雨"],
+    explanation: "Khi có phó từ 很 trước tính từ, BẮT BUỘC có 的: 很大的雨 ✓ | 很大雨 ✗. 大雨 (không có 很) cũng dùng được nhưng ít nhấn mạnh hơn." },
+
+  { id: "sb-054", grammarId: "B11-NP1", type: "sentence-builder", lesson: 11,
+    instruction: "Sắp xếp thành câu đúng.",
+    words: ["下", "了", "很大的雨", "今天"], answer: "今天下很大的雨了。",
+    acceptedVariants: ["今天下很大的雨了"],
+    explanation: "Trật tự: thời gian (今天) + 下 + rất + adj + 的 + 雨 + 了. 了 cuối câu báo hiệu tình huống mới xảy ra." },
+
+  { id: "tr-056", grammarId: "B11-NP1", type: "translation", lesson: 11,
+    direction: "vi-to-zh", sourceText: "Hôm nay tuyết rơi rồi.", targetText: "今天下雪了。",
+    acceptedVariants: ["今天下雪了", "下雪了"],
+    hanVietHint: "今天 → hôm nay | 下雪 → tuyết rơi | 了 → rồi (thay đổi tình huống)",
+    explanation: "下雪了: 下 + 雪 + 了. Cấu trúc giống 下雨了. 了 cuối câu = 'vừa bắt đầu/đã xảy ra rồi'." },
+
+  { id: "fb-130", grammarId: "B11-NP1", type: "fill-blank", lesson: 11,
+    instruction: "Điền từ còn thiếu (N + adj pattern).",
+    sentence: "今天雪＿＿大，出门要小心。", answer: "很",
+    acceptedVariants: ["很", "非常", "特别"],
+    explanation: "(4) N + adj: khi tính từ làm vị ngữ, BẮT BUỘC có 很 (hoặc phó từ khác) — 雪大 ✗ | 雪很大 ✓. Ngoại lệ: trong câu đối lập/so sánh có thể bỏ 很." },
+
+  { id: "sb-055", grammarId: "B11-NP1", type: "sentence-builder", lesson: 11,
+    instruction: "Sắp xếp thành câu đúng (cấu trúc N + adj).",
+    words: ["很大", "今天", "雪", "，不要出去"], answer: "今天雪很大，不要出去。",
+    acceptedVariants: ["今天雪很大，不要出去", "今天雪很大"],
+    explanation: "N+adj: 雪(N, chủ ngữ) + 很大(adj vị ngữ). Thời gian 今天 đứng đầu câu. Khác 大雪(形+N = danh từ ghép): 雪很大 nhấn mạnh MỨC ĐỘ; 大雪 chỉ loại." },
+
+  { id: "tr-057", grammarId: "B11-NP1", type: "translation", lesson: 11,
+    direction: "vi-to-zh", sourceText: "Mưa không to, nhưng tuyết rất to.", targetText: "雨不大，但是雪很大。",
+    acceptedVariants: ["雨不大，但是雪很大", "雨不大但是雪很大", "雨不大，可是雪很大"],
+    hanVietHint: "雨不大 → mưa không to (N+adj phủ định) | 但是/可是 → nhưng | 雪很大 → tuyết rất to",
+    explanation: "N+adj × 2 câu đối lập: '雨不大' (phủ định: không 很) + '但是' + '雪很大'. Dạng đối lập này là lý do 很 đôi khi bỏ được: 雨不大，雪大 ✓ (đang đối chiếu)." },
 ];
