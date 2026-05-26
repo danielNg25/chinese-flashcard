@@ -270,12 +270,8 @@ function startLessonHideSeek() {
   lessonHsHidden = {};
   const fixed = lessonHsConfigFor(lessonHsField);
   const lessonWords = words.filter(w => w.lesson === currentLesson);
-  // Shuffle so position memory doesn't help — Fisher-Yates on the n list
-  const shuffledNs = lessonWords.map(w => w.n);
-  for (let i = shuffledNs.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffledNs[i], shuffledNs[j]] = [shuffledNs[j], shuffledNs[i]];
-  }
+  // Shuffle so position memory doesn't help
+  const shuffledNs = shuffle(lessonWords.map(w => w.n));
   lessonHsOrder = {};
   shuffledNs.forEach((n, idx) => { lessonHsOrder[n] = idx; });
   lessonWords.forEach(w => {
@@ -512,14 +508,6 @@ let quizSbState = null;      // sentence-builder
 let quizPmState = null;      // pattern-match: { leftSel, rightSel, matched: Set<idx>, wrongAttempts, correctMap }
 let quizTokensDisabled = false;  // error-correction
 
-function shuffleArr(arr) {
-  const a = arr.slice();
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
 
 
 function normalizeZhText(str) {
@@ -567,7 +555,7 @@ function pickVocabDistractors(target, pool) {
   const sameLessonSamePos = pool.filter(w => w.n !== target.n && w.lesson === target.lesson && w.pos === target.pos);
   const otherLessonFromPool = pool.filter(w => w.n !== target.n && w.lesson !== target.lesson);
   const anyOther = words.filter(w => w.n !== target.n);
-  const ordered = [...shuffleArr(sameLessonDiffPos), ...shuffleArr(sameLessonSamePos), ...shuffleArr(otherLessonFromPool), ...shuffleArr(anyOther)];
+  const ordered = [...shuffle(sameLessonDiffPos), ...shuffle(sameLessonSamePos), ...shuffle(otherLessonFromPool), ...shuffle(anyOther)];
   const picked = [];
   const seenViet = new Set([target.viet]);
   for (const w of ordered) {
@@ -586,7 +574,7 @@ function evenSplit(n, k) {
   const remainder = n - base * k;
   const arr = new Array(k).fill(base);
   // Random permutation of [0..k-1], assign +1 to the first `remainder`
-  const idx = shuffleArr([...Array(k).keys()]);
+  const idx = shuffle([...Array(k).keys()]);
   for (let i = 0; i < remainder; i++) arr[idx[i]]++;
   return arr;
 }
@@ -595,10 +583,10 @@ function evenSplit(n, k) {
 // repeat-sampling from shuffled copies when n > pool.length.
 function sampleN(pool, n) {
   if (pool.length === 0 || n === 0) return [];
-  if (n <= pool.length) return shuffleArr(pool).slice(0, n);
+  if (n <= pool.length) return shuffle(pool).slice(0, n);
   const reps = Math.ceil(n / pool.length);
   const expanded = [];
-  for (let r = 0; r < reps; r++) expanded.push(...shuffleArr(pool));
+  for (let r = 0; r < reps; r++) expanded.push(...shuffle(pool));
   return expanded.slice(0, n);
 }
 
@@ -653,7 +641,7 @@ function buildQuizQueue() {
     }
     if (roomIdx.length === 0) break;  // nowhere to put extras
     // Distribute overflow round-robin into types with room.
-    const shuffledRoom = shuffleArr(roomIdx);
+    const shuffledRoom = shuffle(roomIdx);
     let idx = 0;
     while (overflow > 0 && shuffledRoom.length > 0) {
       const i = shuffledRoom[idx % shuffledRoom.length];
@@ -687,7 +675,7 @@ function buildQuizQueue() {
     sampled.forEach(q => grammarItems.push({ kind: 'grammar', question: q }));
   });
 
-  return shuffleArr([...vocabItems, ...grammarItems]);
+  return shuffle([...vocabItems, ...grammarItems]);
 }
 
 function startQuiz() {
@@ -755,7 +743,7 @@ function vocabPoolForDistractors() {
 function renderChooseQ(w) {
   const pool = vocabPoolForDistractors();
   const distractors = pickVocabDistractors(w, pool);
-  const opts = shuffleArr([w, ...distractors]);
+  const opts = shuffle([w, ...distractors]);
   window._qvOpts = opts;
   window._qvCorrectIdx = opts.findIndex(o => o.n === w.n);
 
@@ -797,7 +785,7 @@ function selectChooseOpt(idx) {
 function renderListenQ(w) {
   const pool = vocabPoolForDistractors();
   const distractors = pickVocabDistractors(w, pool);
-  const opts = shuffleArr([w, ...distractors]);
+  const opts = shuffle([w, ...distractors]);
   window._qvOpts = opts;
   window._qvCorrectIdx = opts.findIndex(o => o.n === w.n);
 
@@ -975,7 +963,7 @@ function renderGrammarQ(q) {
 }
 
 function wireSentenceBuilder(q) {
-  const shuffled = shuffleArr(q.fragments);
+  const shuffled = shuffle(q.fragments);
   quizSbState = {
     chips: shuffled.map((text, id) => ({ id, text, inAnswer: false })),
     order: []
@@ -1194,8 +1182,8 @@ function patternMatchHtml(q) {
 function wirePatternMatch(q) {
   const N = q.pairs.length;
   // Build shuffled orderings of left[] and right[] but remember original-pair indices.
-  const leftIdx = shuffleArr([...Array(N).keys()]);
-  const rightIdx = shuffleArr([...Array(N).keys()]);
+  const leftIdx = shuffle([...Array(N).keys()]);
+  const rightIdx = shuffle([...Array(N).keys()]);
   quizPmState = {
     pairs: q.pairs,
     leftOrder: leftIdx,   // position -> original pair index

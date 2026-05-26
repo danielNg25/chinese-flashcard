@@ -534,12 +534,8 @@ function startHideSeek() {
     const matchLes = !les || w.lesson == les;
     return matchQ && matchPos && matchLes;
   });
-  // Shuffle so position memory doesn't help — Fisher-Yates on the n list
-  const shuffledNs = filtered.map(w => w.n);
-  for (let i = shuffledNs.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffledNs[i], shuffledNs[j]] = [shuffledNs[j], shuffledNs[i]];
-  }
+  // Shuffle so position memory doesn't help
+  const shuffledNs = shuffle(filtered.map(w => w.n));
   shuffledNs.forEach((n, idx) => { hsOrder[n] = idx; });
   filtered.forEach(w => {
     hsHidden[w.n] = fixed || HS_MODES[Math.floor(Math.random() * HS_MODES.length)];
@@ -1372,11 +1368,7 @@ function renderChooseCard() {
   chChecked = false;
   const distractors = pickChooseDistractors(w);
   // Build options = [correct, ...distractors], then shuffle
-  const opts = [w, ...distractors];
-  for (let i = opts.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [opts[i], opts[j]] = [opts[j], opts[i]];
-  }
+  const opts = shuffle([w, ...distractors]);
   chOptions = opts;
   chCorrectIdx = opts.findIndex(o => o.n === w.n);
 
@@ -1552,11 +1544,7 @@ function renderListenCard() {
   lnChecked = false;
   lnRated = false;
   const distractors = pickChooseDistractors(w);
-  const opts = [w, ...distractors];
-  for (let i = opts.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [opts[i], opts[j]] = [opts[j], opts[i]];
-  }
+  const opts = shuffle([w, ...distractors]);
   lnOptions = opts;
   lnCorrectIdx = opts.findIndex(o => o.n === w.n);
 
@@ -1709,11 +1697,10 @@ function startMatchSession() {
     tiles.push({ wordN: w.n, side: 'char', state: 'down' });
     tiles.push({ wordN: w.n, side: 'viet', state: 'down' });
   });
-  // Shuffle
-  for (let i = tiles.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [tiles[i], tiles[j]] = [tiles[j], tiles[i]];
-  }
+  // Shuffle tiles
+  const shuffledTiles = shuffle(tiles);
+  tiles.length = 0;
+  tiles.push(...shuffledTiles);
   tiles.forEach((t, i) => t.id = i);
 
   mtTiles = tiles;
