@@ -11,7 +11,7 @@
 function normalizePinyin(str) {
   return str.toLowerCase()
     .normalize('NFD')
-    .replace(/[̀-ͯ]/g, '')
+    .replace(/[\u0300-\u036f]/g, '')
     .replace(/\s+/g, '')
     .replace(/ü/g, 'v')
     .trim();
@@ -20,7 +20,7 @@ function normalizePinyin(str) {
 function normalizeViet(str) {
   return str.toLowerCase()
     .normalize('NFD')
-    .replace(/[̀-ͯ]/g, '')
+    .replace(/[\u0300-\u036f]/g, '')
     .replace(/đ/g, 'd')
     .replace(/[^a-z0-9\s]/g, '')
     .trim();
