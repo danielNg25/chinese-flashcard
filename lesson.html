@@ -1,29 +1,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Lessons — 汉语学习</title>
+<link rel="stylesheet" href="shared.css">
 <style>
-:root {
-  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --color-background-primary: #ffffff;
-  --color-background-secondary: #f5f5f5;
-  --color-text-primary: #1a1a1a;
-  --color-text-secondary: #666666;
-  --color-text-tertiary: #999999;
-  --color-border-secondary: #e0e0e0;
-  --color-border-tertiary: #eeeeee;
-  --border-radius-md: 8px;
-}
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: var(--font-sans); }
-.wrap { padding: 1rem 3rem; max-width: 1400px; margin: 0 auto; }
-
-/* App Header */
-.app-header { display: flex; align-items: center; gap: 16px; padding: 0.75rem 3rem; border-bottom: 1px solid var(--color-border-tertiary); background: var(--color-background-primary); }
-.app-title { font-size: 18px; font-weight: 600; color: var(--color-text-primary); letter-spacing: 0.02em; }
-.app-nav { display: flex; gap: 0; border: 1px solid var(--color-border-secondary); border-radius: var(--border-radius-md); overflow: hidden; }
-.app-nav-btn { padding: 6px 18px; font-size: 14px; text-decoration: none; color: var(--color-text-secondary); background: var(--color-background-primary); transition: all 0.2s; }
-.app-nav-btn.active { background: var(--color-background-secondary); color: var(--color-text-primary); font-weight: 600; }
-.app-nav-btn:hover:not(.active) { background: var(--color-background-secondary); }
-
 /* Lesson selector */
 .lesson-select { padding: 7px 12px; font-size: 14px; font-family: inherit; border: 1px solid var(--color-border-secondary); border-radius: var(--border-radius-md); background: var(--color-background-primary); color: var(--color-text-primary); cursor: pointer; margin-bottom: 2rem; min-width: 140px; }
 
@@ -40,43 +18,6 @@ tbody td { padding: 8px 10px; vertical-align: middle; }
 .char { font-size: 22px; font-weight: 500; }
 .pinyin { color: var(--color-text-secondary); font-style: italic; }
 .viet { color: var(--color-text-secondary); font-size: 13px; }
-.hv { color: #7c5c00; font-size: 12px; background: #fdf3dc; padding: 2px 8px; border-radius: 4px; display: inline-block; }
-.badge { display: inline-block; font-size: 11px; padding: 2px 7px; border-radius: 99px; font-weight: 500; }
-.n    { background: #E6F1FB; color: #0C447C; }
-.v    { background: #EAF3DE; color: #27500A; }
-.pron { background: #EEEDFE; color: #3C3489; }
-.adv  { background: #FAEEDA; color: #633806; }
-.adj  { background: #FBEAF0; color: #72243E; }
-.part { background: #FAECE7; color: #712B13; }
-.other{ background: #F1EFE8; color: #444441; }
-
-/* Audio button + clickable character (parity with hanyu.html) */
-.audio-btn { background: none; border: none; cursor: pointer; font-size: 16px; padding: 2px 4px; opacity: 0.5; transition: opacity 0.15s; vertical-align: middle; }
-.audio-btn:hover { opacity: 1; }
-.char-clickable { cursor: pointer; border-bottom: 1.5px dashed #bbb; transition: color 0.15s; }
-.char-clickable:hover { color: #0C447C; border-bottom-color: #0C447C; }
-
-/* Related Characters Popup (parity with hanyu.html) */
-.related-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.35); z-index: 1000; align-items: center; justify-content: center; }
-.related-overlay.open { display: flex; }
-.related-popup { background: var(--color-background-primary); border-radius: 12px; padding: 24px; max-width: 480px; width: 90%; max-height: 80vh; overflow-y: auto; box-shadow: 0 8px 32px rgba(0,0,0,0.18); position: relative; }
-.related-popup-title { font-size: 13px; color: var(--color-text-secondary); margin-bottom: 12px; }
-.related-popup-char { font-size: 52px; font-weight: 600; text-align: center; margin-bottom: 4px; }
-.related-popup-hv { text-align: center; margin-bottom: 16px; }
-.related-close { position: absolute; top: 14px; right: 16px; background: none; border: none; font-size: 20px; cursor: pointer; color: var(--color-text-secondary); line-height: 1; }
-.related-close:hover { color: var(--color-text-primary); }
-.related-list { display: flex; flex-direction: column; gap: 8px; }
-.related-item { display: flex; align-items: center; gap: 12px; padding: 8px 10px; border-radius: 8px; background: var(--color-background-secondary); }
-.related-item-char { font-size: 22px; font-weight: 500; min-width: 56px; }
-.related-item-right { flex: 1; }
-.related-item-pinyin { font-size: 12px; color: var(--color-text-secondary); font-style: italic; }
-.related-item-viet { font-size: 13px; color: var(--color-text-primary); }
-.related-item-hv { font-size: 11px; color: #7c5c00; background: #fdf3dc; padding: 1px 6px; border-radius: 4px; display: inline-block; margin-top: 2px; }
-.related-item-radical { font-size: 11px; color: #1a3a6b; background: #f0f4ff; padding: 4px 8px; border-radius: 4px; display: block; margin-top: 4px; line-height: 1.55; }
-.related-item-lesson { font-size: 11px; color: var(--color-text-tertiary); background: var(--color-background-primary); padding: 1px 5px; border-radius: 4px; margin-left: auto; white-space: nowrap; }
-.related-divider { font-size: 11px; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: 0.06em; margin: 10px 0 4px; }
-.related-popup-radical { background: #f0f4ff; color: #1a3a6b; font-size: 12px; padding: 8px 12px; border-radius: 6px; line-height: 1.7; margin: 0 0 14px; text-align: left; }
-.related-popup-radical .radical-line { margin: 0; }
 
 /* Hide & Seek */
 .hs-toolbar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 1rem; }
@@ -96,16 +37,6 @@ tbody td { padding: 8px 10px; vertical-align: middle; }
 .hs-check-btn:hover { background: #E6F1FB; color: #0C447C; }
 .hs-reveal-btn { padding: 3px 10px; border: none; border-radius: 4px; font-size: 11px; cursor: pointer; font-family: inherit; background: #fdf3dc; color: #7c5c00; margin-left: 4px; }
 .hs-reveal-btn:hover { background: #fae8b8; }
-
-/* Radical breakdown — collapsible per row (shared with hanyu.html, same data: w.radical) */
-.radical-toggle { background: none; border: 1px solid var(--color-border-tertiary); cursor: pointer; font-size: 11px; color: #4d6db8; padding: 1px 7px; border-radius: 4px; margin-left: 4px; vertical-align: middle; transition: background 0.12s, color 0.12s; font-family: inherit; line-height: 1.5; }
-.radical-toggle:hover { background: #f0f4ff; color: #1a3a6b; }
-.radical-toggle .arrow { font-size: 10px; margin-left: 2px; }
-.radical-row { display: none; }
-.radical-row.open { display: table-row; }
-.radical-row > td { padding: 0 10px 8px; border-bottom: 0.5px solid var(--color-border-tertiary); background: var(--color-background-primary); }
-.radical-panel { background: #f0f4ff; color: #1a3a6b; font-size: 12px; padding: 8px 12px; border-radius: 6px; line-height: 1.7; }
-.radical-line { margin: 0; }
 
 /* Grammar table */
 .gr-table { width: 100%; border-collapse: collapse; font-size: 14px; margin-bottom: 1rem; }
@@ -138,11 +69,6 @@ tbody td { padding: 8px 10px; vertical-align: middle; }
 
 /* Empty */
 .empty-msg { padding: 32px; text-align: center; color: var(--color-text-tertiary); font-size: 14px; }
-
-/* Hoverable/tappable abbreviation tooltips */
-.abbr { display: inline-block; cursor: help; border-bottom: 1px dotted var(--color-text-tertiary); position: relative; outline: none; }
-.abbr::after { content: attr(data-tip); position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 6px 10px; border-radius: 6px; white-space: nowrap; font-size: 12px; font-weight: 400; pointer-events: none; opacity: 0; visibility: hidden; transition: opacity 0.15s, visibility 0.15s; z-index: 9999; }
-.abbr:hover::after, .abbr:focus::after, .abbr.active::after { opacity: 1; visibility: visible; }
 
 /* Quiz mode */
 .q-intro { max-width: 480px; margin: 2rem auto; text-align: center; padding: 24px; }
@@ -309,6 +235,7 @@ tbody td { padding: 8px 10px; vertical-align: middle; }
   </div>
 </div>
 
+<script src="shared.js"></script>
 <script src="words.js"></script>
 <script src="grammar_data.js"></script>
 <script>
@@ -442,27 +369,6 @@ function checkAllLessonHs() {
   }
 }
 
-const ABBR_TOOLTIPS = {
-  'CN': 'Chủ ngữ (Subject)',
-  'VN': 'Vị ngữ (Predicate)',
-  'TN': 'Tân ngữ (Object)',
-  'DT': 'Danh từ (Noun)',
-  'TT': 'Tính từ (Adjective)',
-  'ĐT': 'Động từ (Verb)',
-  'ĐN': 'Định ngữ (Modifier)',
-  'LT': 'Lượng từ (Measure word)',
-};
-function addAbbrTooltips(html) {
-  if (!html) return html;
-  return String(html).replace(/(?<![A-Za-zĐđ])(CN|VN|TN|DT|TT|ĐT|ĐN|LT)(?![A-Za-zĐđ])/g, (m, a) =>
-    `<span class="abbr" data-tip="${ABBR_TOOLTIPS[a]}" tabindex="0">${a}</span>`);
-}
-document.addEventListener('click', e => {
-  const abbr = e.target.closest && e.target.closest('.abbr');
-  document.querySelectorAll('.abbr.active').forEach(el => { if (el !== abbr) el.classList.remove('active'); });
-  if (abbr) { abbr.classList.toggle('active'); e.stopPropagation(); }
-}, true);
-
 function selectLesson(n) {
   currentLesson = n;
   // Switching lessons cancels any in-progress Hide & Seek for the previous lesson.
@@ -485,45 +391,6 @@ function selectTab(tab) {
   document.getElementById('grammar-view').style.display = tab === 'grammar' ? '' : 'none';
   document.getElementById('quiz-view').style.display = tab === 'quiz' ? '' : 'none';
   if (tab === 'quiz' && !quizActive) renderQuizIntro();
-}
-
-function posClass(pos) {
-  if (!pos) return 'other';
-  if (pos.startsWith('n.')) return 'n';
-  if (pos.startsWith('v.')) return 'v';
-  if (pos.startsWith('pron.')) return 'pron';
-  if (pos.startsWith('adv.')) return 'adv';
-  if (pos.startsWith('adj.')) return 'adj';
-  if (pos.startsWith('part.')) return 'part';
-  return 'other';
-}
-
-/* ── Radical breakdown (reads w.radical from words.js — shared with hanyu.html) ── */
-const openRadicals = new Set(); // word.n values currently expanded
-
-function radicalLines(w) {
-  if (!w.radical) return [];
-  return w.radical.split('|').map(s => s.trim()).filter(Boolean);
-}
-
-function radicalToggleHtml(w) {
-  if (!w.radical) return '';
-  const arrowId = `radical-arrow-${w.n}`;
-  const arrow = openRadicals.has(w.n) ? '▴' : '▾';
-  return `<button class="radical-toggle" onclick="toggleRadical(${w.n})" title="Phân tích chữ"><span class="arrow" id="${arrowId}">${arrow}</span> 分析</button>`;
-}
-
-function radicalPanelInner(w) {
-  return radicalLines(w).map(l => `<div class="radical-line">${l}</div>`).join('');
-}
-
-function toggleRadical(n) {
-  const isOpen = openRadicals.has(n);
-  if (isOpen) openRadicals.delete(n); else openRadicals.add(n);
-  const row = document.getElementById(`radical-row-${n}`);
-  if (row) row.classList.toggle('open', !isOpen);
-  const arrow = document.getElementById(`radical-arrow-${n}`);
-  if (arrow) arrow.textContent = isOpen ? '▾' : '▴';
 }
 
 function render() {
@@ -654,45 +521,6 @@ function shuffleArr(arr) {
   return a;
 }
 
-/* Helpers ported from hanyu.html for typing + listen questions */
-function normalizePinyin(str) {
-  return str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, '').replace(/ü/g, 'v').trim();
-}
-function normalizeViet(str) {
-  return str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').replace(/[^a-z0-9\s]/g, '').trim();
-}
-function checkPinyinMatch(userAnswer, word) {
-  const parts = word.pinyin.split('/').map(s => s.trim());
-  const nu = normalizePinyin(userAnswer);
-  return userAnswer.length > 0 && parts.some(p => normalizePinyin(p) === nu);
-}
-function checkViet(userAnswer, word) {
-  const parts = word.viet.split(',').map(s => s.replace(/\(.*?\)/g, '').trim()).filter(Boolean);
-  const nu = normalizeViet(userAnswer);
-  return userAnswer.length > 0 && parts.some(p => {
-    const np = normalizeViet(p);
-    return nu === np || np.includes(nu) || nu.includes(np);
-  });
-}
-function audioBtn(char) {
-  return `<button class="audio-btn" onclick="event.stopPropagation();speakZh('${char.replace(/'/g, "\\'")}')" title="Listen">&#128264;</button>`;
-}
-
-function speakZh(text) {
-  const u = new SpeechSynthesisUtterance(text);
-  u.lang = 'zh-CN';
-  u.rate = 0.85;
-  u.pitch = 1;
-  const voices = speechSynthesis.getVoices();
-  const zhVoice = voices.find(v => v.lang === 'zh-CN' && v.name.includes('Google')) ||
-                  voices.find(v => v.lang === 'zh-CN' && v.name.includes('Ting')) ||
-                  voices.find(v => v.lang.startsWith('zh-CN')) ||
-                  voices.find(v => v.lang.startsWith('zh'));
-  if (zhVoice) u.voice = zhVoice;
-  speechSynthesis.cancel();
-  speechSynthesis.speak(u);
-}
-if (typeof speechSynthesis !== 'undefined') speechSynthesis.getVoices();
 
 function normalizeZhText(str) {
   return (str || '').replace(/[。？！，、\s]+/g, '').trim();
@@ -1545,33 +1373,6 @@ function renderQuizComplete() {
     </div>`;
 }
 
-/* ── Shared: data-driven lesson dropdowns & buttons ── */
-function availableLessons() {
-  const set = new Set();
-  const addFrom = arr => { if (Array.isArray(arr)) for (const x of arr) if (Number.isInteger(x.lesson)) set.add(x.lesson); };
-  if (typeof words !== 'undefined') addFrom(words);
-  if (typeof grammarPatterns !== 'undefined') addFrom(grammarPatterns);
-  if (typeof grammarQuestions !== 'undefined') addFrom(grammarQuestions);
-  return [...set].sort((a, b) => a - b);
-}
-
-function populateLessonSelects() {
-  const lessons = availableLessons();
-  document.querySelectorAll('select').forEach(sel => {
-    const first = sel.options[0];
-    if (!first || first.value !== '' || !/lesson/i.test(first.textContent)) return;
-    const prev = sel.value;
-    while (sel.options.length > 1) sel.remove(1);
-    for (const n of lessons) {
-      const o = document.createElement('option');
-      o.value = String(n);
-      o.textContent = `Lesson ${n}`;
-      sel.appendChild(o);
-    }
-    if (prev && [...sel.options].some(o => o.value === prev)) sel.value = prev;
-  });
-}
-
 function renderLessonButtons() {
   const sel = document.getElementById('lessonSelect');
   if (!sel) return;
@@ -1579,70 +1380,6 @@ function renderLessonButtons() {
   sel.innerHTML = lessons.map(n => `<option value="${n}">Lesson ${n}</option>`).join('');
   sel.value = currentLesson;
 }
-
-/* ── Related Characters Popup (mirror of hanyu.html) ── */
-function showRelated(clickedChar) {
-  const chars = [...new Set(clickedChar.replace(/\s/g,'').split(''))];
-  const sections = chars.map(c => ({
-    c,
-    matches: words.filter(w => w.char !== clickedChar && w.char.replace(/\s/g,'').includes(c)),
-  }));
-  const totalOthers = [...new Set(sections.flatMap(s => s.matches.map(w => w.char)))].length;
-  document.getElementById('relatedTitle').textContent =
-    `Các từ chứa chữ trong "${clickedChar}" — ${totalOthers} từ liên quan`;
-  document.getElementById('relatedChar').textContent = clickedChar;
-
-  const clicked = words.find(w => w.char === clickedChar);
-  const hvEl = document.getElementById('relatedHv');
-  hvEl.innerHTML = clicked && clicked.hv ? `<span class="hv">✨ ${clicked.hv}</span>` : '';
-  const radEl = document.getElementById('relatedRadical');
-  radEl.innerHTML = clicked && clicked.radical
-    ? `<div class="related-popup-radical">${radicalLines(clicked).map(l => `<div class="radical-line">${l}</div>`).join('')}</div>`
-    : '';
-
-  const listEl = document.getElementById('relatedList');
-  listEl.innerHTML = '';
-  const shown = new Set();
-  sections.forEach(({ c, matches }) => {
-    if (matches.length === 0) return;
-    const div = document.createElement('div');
-    div.className = 'related-divider';
-    div.textContent = `Chứa chữ "${c}"`;
-    listEl.appendChild(div);
-    matches.forEach(w => {
-      if (shown.has(w.char)) return;
-      shown.add(w.char);
-      const highlighted = w.char.replace(/\s/g,'').split('').map(ch =>
-        ch === c ? `<span style="color:#0C447C;font-weight:700">${ch}</span>` : ch
-      ).join('');
-      const radHtml = w.radical
-        ? `<div class="related-item-radical">${radicalLines(w).map(l => `<div class="radical-line">${l}</div>`).join('')}</div>`
-        : '';
-      const item = document.createElement('div');
-      item.className = 'related-item';
-      item.innerHTML = `
-        <div class="related-item-char">${highlighted}${audioBtn(w.char)}</div>
-        <div class="related-item-right">
-          <div class="related-item-pinyin">${w.pinyin}</div>
-          <div class="related-item-viet">${w.viet}</div>
-          ${w.hv ? `<div class="related-item-hv">${w.hv}</div>` : ''}
-          ${radHtml}
-        </div>
-        <div class="related-item-lesson">L${w.lesson}</div>`;
-      listEl.appendChild(item);
-    });
-  });
-  if (shown.size === 0) {
-    listEl.innerHTML = '<div style="color:var(--color-text-tertiary);font-size:13px;text-align:center;padding:16px">Không có từ liên quan trong bảng từ vựng.</div>';
-  }
-  document.getElementById('relatedOverlay').classList.add('open');
-}
-
-function closeRelated() {
-  document.getElementById('relatedOverlay').classList.remove('open');
-}
-
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeRelated(); });
 
 /* ── Init ── */
 renderLessonButtons();
