@@ -39,6 +39,9 @@ The shared extraction is documented in [docs/superpowers/plans/2026-05-26-shared
   lesson: 1,
   hv: "...",                   // optional Hán Việt explanation
   radical: "...",              // optional radical/etymology breakdown, "|"-separated for multi-char words
+  examples: [                  // optional; surfaced on hanyu flashcard backs + as a 例 expand-row on lesson.html vocab table
+    { zh: "你好，老师！", vi: "Chào thầy/cô!" }
+  ],
   n: 12,                       // auto-assigned at file end; do not hand-set
 }
 ```
@@ -79,6 +82,7 @@ Loaded by all 3 HTML pages BEFORE their inline scripts. Exposes the following gl
 - `checkViet(userAnswer, word)` — splits `word.viet` on `,`, strips parentheticals, fuzzy includes
 - `posClass(pos)` — maps a POS string to a CSS class name; expects the trailing dot (e.g., `"n."`)
 - `shuffle(arr)` — Fisher-Yates; returns a new array
+- `exampleLines(w)` — returns an array of HTML strings, one per `w.examples[]` entry; empty array if no examples
 
 **DOM helpers:**
 - `speakZh(text)` / `audioBtn(char)` — Web Speech API; voice pref order Google → Ting → any zh-CN → any zh
