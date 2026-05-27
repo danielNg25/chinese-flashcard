@@ -1083,6 +1083,7 @@ function renderWritingCard() {
             <div class="card-pinyin">${w.pinyin}</div>
             <div class="card-meaning">${w.viet}</div>
             ${w.hv ? `<div style="font-size:12px;color:#7c5c00;background:#fdf3dc;border-radius:6px;padding:3px 10px;margin-top:6px">✨ ${w.hv}</div>` : ''}
+            ${exampleLines(w).length ? `<div class="example-panel" style="margin-top:8px;max-width:90%">${exampleLines(w).join('')}</div>` : ''}
             <div id="wrFeedback"></div>
           </div>
         </div>
@@ -1225,6 +1226,7 @@ function renderPinyinCard() {
             <div class="card-pinyin">${w.pinyin}</div>
             <div class="card-meaning">${w.viet}</div>
             ${w.hv ? `<div style="font-size:12px;color:#7c5c00;background:#fdf3dc;border-radius:6px;padding:3px 10px;margin-top:6px">✨ ${w.hv}</div>` : ''}
+            ${exampleLines(w).length ? `<div class="example-panel" style="margin-top:8px;max-width:90%">${exampleLines(w).join('')}</div>` : ''}
             <div id="pyFeedback"></div>
           </div>
         </div>
