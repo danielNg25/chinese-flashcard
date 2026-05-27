@@ -119,6 +119,36 @@ function exampleLines(w) {
   });
 }
 
+// ── Example toggles (per-word, expandable in vocab tables) ──────────────────
+// Mirrors the radical toggle pattern. Used by hanyu.html Browse (desktop +
+// mobile) and lesson.html vocab table.
+
+const openExamples = new Set();
+
+function exampleToggleHtml(w, suffix) {
+  if (!w.examples || !w.examples.length) return '';
+  const sfx = suffix || '';
+  const arrowId = `example-arrow-${sfx}${w.n}`;
+  const arrow = openExamples.has(w.n) ? '▴' : '▾';
+  return `<button class="example-toggle" onclick="toggleExample(${w.n})" title="Ví dụ"><span class="arrow" id="${arrowId}">${arrow}</span> 例</button>`;
+}
+
+function toggleExample(n) {
+  const isOpen = openExamples.has(n);
+  if (isOpen) openExamples.delete(n); else openExamples.add(n);
+  // Desktop table row
+  const row = document.getElementById(`example-row-${n}`);
+  if (row) row.classList.toggle('open', !isOpen);
+  // Mobile card panel (hanyu.html browse only)
+  const mob = document.getElementById(`example-panel-m-${n}`);
+  if (mob) mob.classList.toggle('open', !isOpen);
+  // Update both arrows
+  const arrowD = document.getElementById(`example-arrow-${n}`);
+  if (arrowD) arrowD.textContent = isOpen ? '▾' : '▴';
+  const arrowM = document.getElementById(`example-arrow-m-${n}`);
+  if (arrowM) arrowM.textContent = isOpen ? '▾' : '▴';
+}
+
 function toggleRadical(n) {
   const isOpen = openRadicals.has(n);
   if (isOpen) openRadicals.delete(n); else openRadicals.add(n);

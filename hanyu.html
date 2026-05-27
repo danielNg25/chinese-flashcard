@@ -678,20 +678,24 @@ function render() {
     const checkBtn = hsMode && hsHidden[w.n] ? `<button class="hs-check-btn" onclick="checkRowHs(${w.n})">Check</button><button class="hs-reveal-btn" onclick="revealRowHs(${w.n})" title="Reveal answer">Reveal</button>` : '';
     const hvCell = w.hv ? `<span class="hv">${w.hv}</span>` : '<span style="color:var(--color-text-tertiary);font-size:12px">—</span>';
     const radToggle = radicalToggleHtml(w);
+    const exToggle = exampleToggleHtml(w);
     const radRow = w.radical
       ? `<tr class="radical-row${openRadicals.has(w.n) ? ' open' : ''}" id="radical-row-${w.n}"><td colspan="8"><div class="radical-panel">${radicalPanelInner(w)}</div></td></tr>`
+      : '';
+    const exRow = (w.examples && w.examples.length)
+      ? `<tr class="example-row${openExamples.has(w.n) ? ' open' : ''}" id="example-row-${w.n}"><td colspan="8"><div class="example-panel">${exampleLines(w).join('')}</div></td></tr>`
       : '';
     return `
     <tr>
       <td style="color:var(--color-text-tertiary);font-size:12px">${i+1}</td>
-      <td>${charCell}${radToggle}</td>
+      <td>${charCell}${radToggle}${exToggle}</td>
       <td>${pinyinCell}</td>
       <td>${w.pos ? `<span class="badge ${posClass(w.pos)}">${w.pos}</span>` : '<span style="color:var(--color-text-tertiary);font-size:12px">—</span>'}</td>
       <td>${vietCell}</td>
       <td>${hvCell}</td>
       <td><span class="lesson-tag">L${w.lesson}</span>${checkBtn}</td>
       <td class="${rcls}">${weightLabel(w)}</td>
-    </tr>${radRow}`;
+    </tr>${radRow}${exRow}`;
   }).join('');
   document.getElementById('mobileCards').innerHTML = filtered.map(w => {
     const h = hsMode && hsHidden[w.n];
@@ -700,8 +704,12 @@ function render() {
     const vietHtml = h && h.viet ? `<input type="text" class="hs-input" id="hs-m-viet-${w.n}" placeholder="Meaning" autocomplete="off" onkeydown="if(event.key==='Enter'){event.preventDefault();checkRowHsMobile(${w.n});}">` : `<span class="viet">${w.viet}</span>`;
     const checkBtn = h ? `<button class="hs-check-btn" onclick="checkRowHsMobile(${w.n})" style="margin-top:6px">Check</button><button class="hs-reveal-btn" onclick="revealRowHs(${w.n})" style="margin-top:6px" title="Reveal answer">Reveal</button>` : '';
     const radToggleM = radicalToggleHtml(w, 'm-');
+    const exToggleM = exampleToggleHtml(w, 'm-');
     const radPanelM = w.radical
       ? `<div class="radical-panel radical-panel-mobile${openRadicals.has(w.n) ? ' open' : ''}" id="radical-panel-m-${w.n}" style="margin-top:6px">${radicalPanelInner(w)}</div>`
+      : '';
+    const exPanelM = (w.examples && w.examples.length)
+      ? `<div class="example-panel example-panel-mobile${openExamples.has(w.n) ? ' open' : ''}" id="example-panel-m-${w.n}" style="margin-top:6px">${exampleLines(w).join('')}</div>`
       : '';
     return `
     <div class="mobile-card">
@@ -717,9 +725,11 @@ function render() {
           <span class="lesson-tag">L${w.lesson}</span>
           ${checkBtn}
           ${radToggleM}
+          ${exToggleM}
           ${showRatings ? weightLabel(w) : ''}
         </div>
         ${radPanelM}
+        ${exPanelM}
       </div>
     </div>`;
   }).join('');

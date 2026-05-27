@@ -104,3 +104,6 @@ body { font-family: var(--font-sans); }
 .example-pair { display: flex; flex-direction: column; gap: 1px; }
 .example-zh { font-size: 14px; color: #1d4f2c; font-weight: 500; }
 .example-vi { font-size: 12px; color: #4a6a55; font-style: italic; }
+/* Mobile collapsible panel (used by hanyu.html browse cards) */
+.example-panel-mobile { display: none; }
+.example-panel-mobile.open { display: flex; }

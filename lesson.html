@@ -435,25 +435,6 @@ function renderHsToolbar() {
     </div>`;
 }
 
-/* ── Example sentences (per-word, expandable in lesson vocab table) ─────── */
-const openExamples = new Set();  // word.n values currently expanded
-
-function exampleToggleHtml(w) {
-  if (!w.examples || !w.examples.length) return '';
-  const arrowId = `example-arrow-${w.n}`;
-  const arrow = openExamples.has(w.n) ? '▴' : '▾';
-  return `<button class="example-toggle" onclick="toggleExample(${w.n})" title="Ví dụ"><span class="arrow" id="${arrowId}">${arrow}</span> 例</button>`;
-}
-
-function toggleExample(n) {
-  const isOpen = openExamples.has(n);
-  if (isOpen) openExamples.delete(n); else openExamples.add(n);
-  const row = document.getElementById(`example-row-${n}`);
-  if (row) row.classList.toggle('open', !isOpen);
-  const arrow = document.getElementById(`example-arrow-${n}`);
-  if (arrow) arrow.textContent = isOpen ? '▾' : '▴';
-}
-
 function render() {
   const baseLessonWords = words.filter(w => w.lesson === currentLesson);
   // While Hide & Seek is active, render rows in shuffled order so position memory doesn't help.
