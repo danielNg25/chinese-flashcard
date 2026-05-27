@@ -109,6 +109,16 @@ function radicalPanelInner(w) {
   return radicalLines(w).map(l => `<div class="radical-line">${l}</div>`).join('');
 }
 
+function exampleLines(w) {
+  if (!w.examples || !w.examples.length) return [];
+  return w.examples.map(ex => {
+    const zh = ex.zh || '';
+    const vi = ex.vi || '';
+    const viHtml = vi ? `<div class="example-vi">${vi}</div>` : '';
+    return `<div class="example-pair"><div class="example-zh">${zh}</div>${viHtml}</div>`;
+  });
+}
+
 function toggleRadical(n) {
   const isOpen = openRadicals.has(n);
   if (isOpen) openRadicals.delete(n); else openRadicals.add(n);
