@@ -137,6 +137,40 @@ t('shuffle handles single-element array', () => {
   eq(JSON.stringify(shuffle([42])), '[42]');
 });
 
+// ── exampleLines ────────────────────────────────────────────────────────────
+t('exampleLines returns empty array when no examples field', () => {
+  const out = exampleLines({ char: '好' });
+  eq(JSON.stringify(out), '[]');
+});
+t('exampleLines returns empty array when examples is empty', () => {
+  const out = exampleLines({ char: '好', examples: [] });
+  eq(JSON.stringify(out), '[]');
+});
+t('exampleLines returns one HTML line per example', () => {
+  const out = exampleLines({ char: '你好', examples: [
+    { zh: '你好，老师！', vi: 'Chào thầy/cô!' }
+  ]});
+  eq(out.length, 1);
+  truthy(out[0].includes('你好，老师！'), 'zh present');
+  truthy(out[0].includes('Chào thầy/cô!'), 'vi present');
+  truthy(out[0].includes('example-zh'), 'has zh class');
+  truthy(out[0].includes('example-vi'), 'has vi class');
+});
+t('exampleLines handles multiple examples', () => {
+  const out = exampleLines({ char: '我', examples: [
+    { zh: '我叫王。', vi: 'Tôi tên là Vương.' },
+    { zh: '我是学生。', vi: 'Tôi là học sinh.' }
+  ]});
+  eq(out.length, 2);
+});
+t('exampleLines tolerates missing vi or zh fields gracefully', () => {
+  const out = exampleLines({ char: '?', examples: [
+    { zh: '只有中文' }  // no vi
+  ]});
+  eq(out.length, 1);
+  truthy(out[0].includes('只有中文'), 'zh shown even without vi');
+});
+
 // ── Render results ─────────────────────────────────────────────────────────
 const ul = document.getElementById('results');
 let passed = 0, failed = 0;
