@@ -389,6 +389,25 @@ function selectTab(tab) {
   if (tab === 'quiz' && !quizActive) renderQuizIntro();
 }
 
+/* ── Example sentences (per-word, expandable in lesson vocab table) ─────── */
+const openExamples = new Set();  // word.n values currently expanded
+
+function exampleToggleHtml(w) {
+  if (!w.examples || !w.examples.length) return '';
+  const arrowId = `example-arrow-${w.n}`;
+  const arrow = openExamples.has(w.n) ? '▴' : '▾';
+  return `<button class="example-toggle" onclick="toggleExample(${w.n})" title="Ví dụ"><span class="arrow" id="${arrowId}">${arrow}</span> 例</button>`;
+}
+
+function toggleExample(n) {
+  const isOpen = openExamples.has(n);
+  if (isOpen) openExamples.delete(n); else openExamples.add(n);
+  const row = document.getElementById(`example-row-${n}`);
+  if (row) row.classList.toggle('open', !isOpen);
+  const arrow = document.getElementById(`example-arrow-${n}`);
+  if (arrow) arrow.textContent = isOpen ? '▾' : '▴';
+}
+
 function render() {
   const baseLessonWords = words.filter(w => w.lesson === currentLesson);
   // While Hide & Seek is active, render rows in shuffled order so position memory doesn't help.
@@ -423,19 +442,23 @@ function render() {
       ? `<td>${lessonHsHidden[w.n] ? `<button class="hs-check-btn" onclick="checkLessonRowHs(${w.n})">Check</button><button class="hs-reveal-btn" onclick="revealLessonRowHs(${w.n})" title="Reveal answer">Reveal</button>` : ''}</td>`
       : '';
     const radToggle = radicalToggleHtml(w);
+    const exToggle = exampleToggleHtml(w);
     const radRow = w.radical
       ? `<tr class="radical-row${openRadicals.has(w.n) ? ' open' : ''}" id="radical-row-${w.n}"><td colspan="${colspan}"><div class="radical-panel">${radicalPanelInner(w)}</div></td></tr>`
+      : '';
+    const exRow = (w.examples && w.examples.length)
+      ? `<tr class="example-row${openExamples.has(w.n) ? ' open' : ''}" id="example-row-${w.n}"><td colspan="${colspan}"><div class="example-panel">${exampleLines(w).join('')}</div></td></tr>`
       : '';
     return `
     <tr>
       <td style="color:var(--color-text-tertiary); font-size:13px;">${i + 1}</td>
-      <td>${charCell}${radToggle}</td>
+      <td>${charCell}${radToggle}${exToggle}</td>
       <td>${pinyinCell}</td>
       <td>${w.pos ? `<span class="badge ${posClass(w.pos)}">${w.pos}</span>` : ''}</td>
       <td>${vietCell}</td>
       <td>${w.hv ? `<span class="hv">${w.hv}</span>` : '<span style="color:var(--color-text-tertiary); font-size:12px;">—</span>'}</td>
       ${checkCell}
-    </tr>${radRow}`;
+    </tr>${radRow}${exRow}`;
   }).join('');
 
   const grammarRows = lessonPatterns.map((p, i) => `
