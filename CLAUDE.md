@@ -19,7 +19,7 @@ Three HTML pages, two data files, and (after the 2026-05-26 shared extraction) t
 | `grammar.html` | Grammar exercises: Browse patterns + 5 exercise types (Fill in Blank, Sentence Order, Error Correction, Pattern Match, Translation). |
 | `words.js` | Vocabulary array. |
 | `grammar_data.js` | `grammarPatterns` array + `grammarQuestions` array. |
-| `shared.css` | Cross-page styles: CSS variables, app header/nav, mode toggle, badges, related-char popup, radical panel, abbreviation tooltips, fc-message family. |
+| `shared.css` | Cross-page styles: CSS variables, app header/nav, mode toggle, POS badges, Hán Việt + audio + clickable char, related-char popup, radical panel, abbreviation tooltips. Page-specific styles (Hide & Seek, flashcard, quiz, fc-message, etc.) live in each HTML's own `<style>`. |
 | `shared.js` | Cross-page helpers: see "Shared module" below. |
 | `tests/shared.test.html` | Browser-runnable PASS/FAIL tests for pure helpers in `shared.js`. Open via local HTTP server. |
 | `docs/superpowers/specs/` | Audit + design docs. |

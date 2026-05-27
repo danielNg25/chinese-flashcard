@@ -97,10 +97,6 @@ th { text-align: left; }
 .abbr-bar { display: flex; flex-wrap: wrap; gap: 6px 16px; margin-bottom: 1.25rem; padding: 10px 14px; background: var(--color-background-secondary); border-radius: var(--border-radius-md); font-size: 12px; color: var(--color-text-secondary); }
 .abbr-bar strong { color: var(--color-text-primary); margin-right: 3px; }
 
-/* Hoverable/tappable abbreviation tooltips */
-.abbr { display: inline-block; cursor: help; border-bottom: 1px dotted var(--color-text-tertiary); position: relative; outline: none; }
-.abbr::after { content: attr(data-tip); position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 6px 10px; border-radius: 6px; white-space: nowrap; font-size: 12px; font-weight: 400; pointer-events: none; opacity: 0; visibility: hidden; transition: opacity 0.15s, visibility 0.15s; z-index: 9999; }
-.abbr:hover::after, .abbr:focus::after, .abbr.active::after { opacity: 1; visibility: visible; }
 
 /* Browse table — same structure as vocabulary page */
 .gr-table { width: 100%; border-collapse: collapse; font-size: 14px; table-layout: fixed; }
