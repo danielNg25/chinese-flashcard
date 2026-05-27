@@ -5,21 +5,26 @@
  *   { char: "汉字", pinyin: "pīnyīn", pos: "n.", viet: "nghĩa tiếng Việt", lesson: <number> }
  *
  * pos options: n. (noun), v. (verb), pron. (pronoun), adv. (adverb), adj. (adjective), part. (particle), suff. (suffix), q. (quantifier), or "" (none)
+ *
+ * Optional fields:
+ *   hv: "<Hán Việt explanation>"
+ *   radical: "<char1 = radical breakdown | char2 = ...>" (use | between characters)
+ *   examples: [{ zh: "Chinese sentence", vi: "Vietnamese translation" }, ...]
  */
 const words = [
   // ── Lesson 1 ──
-  { char:"你好",   pinyin:"nǐ hǎo",       pos:"",      viet:"chào bạn",                                          lesson:1, hv:"NỄ HẢO — lit. 'bạn tốt' = chào", radical:"你 = 亻(NHÂN — người) + 尔(NHĨ — bạn) → một người gọi 'bạn' | 好 = 女(NỮ — phụ nữ) + 子(TỬ — con) → mẹ bồng con = tốt/lành" },
+  { char:"你好",   pinyin:"nǐ hǎo",       pos:"",      viet:"chào bạn",                                          lesson:1, hv:"NỄ HẢO — lit. 'bạn tốt' = chào", radical:"你 = 亻(NHÂN — người) + 尔(NHĨ — bạn) → một người gọi 'bạn' | 好 = 女(NỮ — phụ nữ) + 子(TỬ — con) → mẹ bồng con = tốt/lành", examples:[{ zh:"你好，老师！", vi:"Chào thầy/cô!" }] },
   { char:"好",     pinyin:"hǎo",           pos:"adj.",  viet:"tốt, khỏe, hay, ngon",                              lesson:1, hv:"HẢO — tốt (như 'hảo cảm', 'hảo hán')", radical:"女(NỮ — phụ nữ) + 子(TỬ — con) → mẹ bồng con = tốt/lành" },
-  { char:"你",     pinyin:"nǐ",            pos:"pron.", viet:"bạn, anh, chị... (ngôi thứ 2 số ít)",               lesson:1, hv:"NỄ — bạn (đại từ ngôi 2)", radical:"亻(NHÂN — người) + 尔(NHĨ — bạn) → một người gọi 'bạn'" },
-  { char:"是",     pinyin:"shì",           pos:"v.",    viet:"là, thì...",                                         lesson:1, hv:"THỊ — là (như 'thị phi', 'như thị')", radical:"日(NHẬT — mặt trời) + 正(CHÍNH — đúng/thẳng) → mặt trời đứng thẳng = đúng/là" },
-  { char:"老师",   pinyin:"lǎoshī",        pos:"n.",    viet:"giáo viên, thầy/cô giáo",                           lesson:1, hv:"LÃO SƯ — thầy/cô (dùng trong võ thuật, văn học)", radical:"老 = 土(THỔ — đất) + 人(NHÂN — người) + 匕 → người già bám rễ trên đất | 师 = 帀 + 巾(CÂN — vải) → sư phụ truyền dạy" },
-  { char:"吗",     pinyin:"ma",            pos:"part.", viet:"...không? ...à? (trợ từ nghi vấn)",                  lesson:1, hv:"MA — trợ từ nghi vấn (HV ít dùng)", radical:"口(KHẨU — miệng) + 马(MÃ — ngựa) → trợ từ phiên âm — coi như ký hiệu nghi vấn" },
+  { char:"你",     pinyin:"nǐ",            pos:"pron.", viet:"bạn, anh, chị... (ngôi thứ 2 số ít)",               lesson:1, hv:"NỄ — bạn (đại từ ngôi 2)", radical:"亻(NHÂN — người) + 尔(NHĨ — bạn) → một người gọi 'bạn'", examples:[{ zh:"你叫什么名字？", vi:"Bạn tên là gì?" }] },
+  { char:"是",     pinyin:"shì",           pos:"v.",    viet:"là, thì...",                                         lesson:1, hv:"THỊ — là (như 'thị phi', 'như thị')", radical:"日(NHẬT — mặt trời) + 正(CHÍNH — đúng/thẳng) → mặt trời đứng thẳng = đúng/là", examples:[{ zh:"我是学生。", vi:"Tôi là học sinh." }] },
+  { char:"老师",   pinyin:"lǎoshī",        pos:"n.",    viet:"giáo viên, thầy/cô giáo",                           lesson:1, hv:"LÃO SƯ — thầy/cô (dùng trong võ thuật, văn học)", radical:"老 = 土(THỔ — đất) + 人(NHÂN — người) + 匕 → người già bám rễ trên đất | 师 = 帀 + 巾(CÂN — vải) → sư phụ truyền dạy", examples:[{ zh:"她是老师。", vi:"Cô ấy là giáo viên." }] },
+  { char:"吗",     pinyin:"ma",            pos:"part.", viet:"...không? ...à? (trợ từ nghi vấn)",                  lesson:1, hv:"MA — trợ từ nghi vấn (HV ít dùng)", radical:"口(KHẨU — miệng) + 马(MÃ — ngựa) → trợ từ phiên âm — coi như ký hiệu nghi vấn", examples:[{ zh:"你是学生吗？", vi:"Bạn có phải là học sinh không?" }] },
   { char:"了",     pinyin:"le",            pos:"part.", viet:"rồi, đã (trợ từ chỉ hoàn thành/biến đổi)",            lesson:1, hv:"LIỄU — hoàn thành (như 'liễu kết', 'liễu giải')", radical:"móc 2 nét đơn — coi như ký hiệu của 'hoàn thành'" },
-  { char:"不",     pinyin:"bù",            pos:"adv.",  viet:"không (trợ từ phủ định)",                            lesson:1, hv:"BẤT — không (như 'bất công', 'bất an')", radical:"tượng hình con chim bay lên không tới = không/chưa" },
-  { char:"我",     pinyin:"wǒ",            pos:"pron.", viet:"tôi, tớ, mình... (ngôi thứ nhất số ít)",            lesson:1, hv:"NGÃ — tôi (như 'bản ngã', 'tự ngã')", radical:"tượng hình bàn tay (手) cầm vũ khí (戈 — giáo) → 'cầm giáo bảo vệ mình' = tôi/ta" },
+  { char:"不",     pinyin:"bù",            pos:"adv.",  viet:"không (trợ từ phủ định)",                            lesson:1, hv:"BẤT — không (như 'bất công', 'bất an')", radical:"tượng hình con chim bay lên không tới = không/chưa", examples:[{ zh:"我不是老师。", vi:"Tôi không phải là giáo viên." }] },
+  { char:"我",     pinyin:"wǒ",            pos:"pron.", viet:"tôi, tớ, mình... (ngôi thứ nhất số ít)",            lesson:1, hv:"NGÃ — tôi (như 'bản ngã', 'tự ngã')", radical:"tượng hình bàn tay (手) cầm vũ khí (戈 — giáo) → 'cầm giáo bảo vệ mình' = tôi/ta", examples:[{ zh:"我叫大卫。", vi:"Tôi tên là David." }] },
   { char:"学生",   pinyin:"xuésheng",      pos:"n.",    viet:"học sinh",                                           lesson:1, hv:"HỌC SINH — giống hệt tiếng Việt!", radical:"学 = 冖(MIÊN — mái) + 子(TỬ — con) + 爻(học vấn) → đứa trẻ dưới mái học chữ | 生 = 土(THỔ — đất) + 丿 → cây con mọc lên khỏi đất = sinh/sống" },
   { char:"她",     pinyin:"tā",            pos:"pron.", viet:"cô ấy, chị ấy, nó (nữ, ngôi thứ 3 số ít)",         lesson:1, hv:"THA — cô ấy (như 'tha hương', 'tha nhân')", radical:"女(NỮ — phụ nữ) + 也(DÃ — cũng) → cô ấy (dạng nữ của 他)" },
-  { char:"谢谢",   pinyin:"xièxie",        pos:"v.",    viet:"cảm ơn",                                            lesson:1, hv:"TẠ TẠ — cảm tạ (lặp 2 lần)", radical:"讠(NGÔN — lời nói) + 射(XẠ — bắn) → bắn ra lời cảm ơn (lặp 2 lần để nhấn mạnh)" },
+  { char:"谢谢",   pinyin:"xièxie",        pos:"v.",    viet:"cảm ơn",                                            lesson:1, hv:"TẠ TẠ — cảm tạ (lặp 2 lần)", radical:"讠(NGÔN — lời nói) + 射(XẠ — bắn) → bắn ra lời cảm ơn (lặp 2 lần để nhấn mạnh)", examples:[{ zh:"谢谢老师！", vi:"Cảm ơn thầy/cô!" }] },
   { char:"不客气", pinyin:"bú kèqi",        pos:"",      viet:"đừng khách sáo",                                    lesson:1, hv:"BẤT KHÁCH KHÍ — đừng khách khí", radical:"不(BẤT — không) | 客(KHÁCH) = 宀(MIÊN — mái) + 各(CÁC — chỉ thanh) → khách dưới mái | 气(KHÍ — khí/thái độ) → 'không khách khí' = đừng khách sáo" },
   { char:"您",     pinyin:"nín",           pos:"pron.", viet:"ông, bà, cô, chú, anh, chị... (trang trọng, số ít)", lesson:1, hv:"kính ngữ của 你 (NỄ) — HV ít dùng", radical:"你(NỄ — bạn) đặt trên 心(TÂM — tim) → 'gọi bạn từ trái tim' = bạn (kính ngữ)" },
   { char:"留学生", pinyin:"liúxuéshēng",    pos:"n.",    viet:"lưu học sinh",                                      lesson:1, hv:"LƯU HỌC SINH — giống hệt tiếng Việt!", radical:"留 = 田(ĐIỀN — ruộng) + 刀 + 口 → ở lại làm việc trên đồng ruộng | 学 = đứa trẻ dưới mái học chữ | 生 = cây con mọc lên = người" },
