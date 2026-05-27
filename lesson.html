@@ -19,6 +19,17 @@ tbody td { padding: 8px 10px; vertical-align: middle; }
 .pinyin { color: var(--color-text-secondary); font-style: italic; }
 .viet { color: var(--color-text-secondary); font-size: 13px; }
 
+/* Single-row top controls — lesson select + inner tabs + H&S slot */
+.top-controls { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 1.25rem; }
+.top-controls .lesson-select { margin-bottom: 0; }
+.top-controls .inner-tabs { margin-bottom: 0; }
+.top-controls #hsToolbar { margin-bottom: 0; margin-left: auto; }
+.top-controls #hsToolbar:empty { display: none; }
+@media (max-width: 600px) {
+  .top-controls .lesson-select { flex: 1 1 100%; }
+  .top-controls #hsToolbar { margin-left: 0; }
+}
+
 /* Hide & Seek */
 .hs-toolbar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 1rem; }
 .hs-btn { padding: 6px 14px; border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); background: var(--color-background-primary); color: var(--color-text-primary); font-size: 13px; font-family: inherit; cursor: pointer; transition: all 0.15s; }
@@ -209,13 +220,17 @@ tbody td { padding: 8px 10px; vertical-align: middle; }
 </div>
 
 <div class="wrap">
-  <select id="lessonSelect" class="lesson-select" onchange="selectLesson(Number(this.value))">
-  </select>
+  <div class="top-controls">
+    <select id="lessonSelect" class="lesson-select" onchange="selectLesson(Number(this.value))">
+    </select>
 
-  <div class="inner-tabs">
-    <button class="inner-tab active" data-tab="vocabulary" onclick="selectTab('vocabulary')">Vocabulary</button>
-    <button class="inner-tab" data-tab="grammar" onclick="selectTab('grammar')">Grammar</button>
-    <button class="inner-tab" data-tab="quiz" onclick="selectTab('quiz')">Quiz</button>
+    <div class="inner-tabs">
+      <button class="inner-tab active" data-tab="vocabulary" onclick="selectTab('vocabulary')">Vocabulary</button>
+      <button class="inner-tab" data-tab="grammar" onclick="selectTab('grammar')">Grammar</button>
+      <button class="inner-tab" data-tab="quiz" onclick="selectTab('quiz')">Quiz</button>
+    </div>
+
+    <div id="hsToolbar"></div>
   </div>
 
   <div id="vocab-view"></div>
@@ -278,6 +293,7 @@ function startLessonHideSeek() {
     lessonHsHidden[w.n] = fixed || LESSON_HS_MODES[Math.floor(Math.random() * LESSON_HS_MODES.length)];
   });
   render();
+  renderHsToolbar();
 }
 
 function stopLessonHideSeek() {
@@ -285,6 +301,7 @@ function stopLessonHideSeek() {
   lessonHsHidden = {};
   lessonHsOrder = {};
   render();
+  renderHsToolbar();
 }
 
 function changeLessonHsMode() {
@@ -376,6 +393,7 @@ function selectLesson(n) {
   const sel = document.getElementById('lessonSelect');
   if (sel) sel.value = n;
   render();
+  renderHsToolbar();
 }
 
 function selectTab(tab) {
@@ -387,6 +405,34 @@ function selectTab(tab) {
   document.getElementById('grammar-view').style.display = tab === 'grammar' ? '' : 'none';
   document.getElementById('quiz-view').style.display = tab === 'quiz' ? '' : 'none';
   if (tab === 'quiz' && !quizActive) renderQuizIntro();
+  renderHsToolbar();
+}
+
+/* ── Hide & Seek toolbar (lives in #hsToolbar slot inside .top-controls) ─ */
+function renderHsToolbar() {
+  const slot = document.getElementById('hsToolbar');
+  if (!slot) return;
+  // Only show when on the Vocabulary tab and the current lesson has words.
+  const hasWords = words.some(w => w.lesson === currentLesson);
+  if (currentTab !== 'vocabulary' || !hasWords) {
+    slot.innerHTML = '';
+    return;
+  }
+  const modeOptions = ['random', 'char', 'pinyin', 'viet', 'pinyin-viet'].map(v => {
+    const label = { random: 'Random mix', char: 'Characters only', pinyin: 'Pinyin only', viet: 'Meanings only', 'pinyin-viet': 'Pinyin + Meanings' }[v];
+    return `<option value="${v}"${lessonHsField === v ? ' selected' : ''}>${label}</option>`;
+  }).join('');
+  slot.innerHTML = lessonHsMode ? `
+    <div class="hs-toolbar">
+      <select id="hsModeSelect" class="hs-mode-select" onchange="changeLessonHsMode()">${modeOptions}</select>
+      <button class="hs-btn primary" onclick="checkAllLessonHs()">Check All</button>
+      <button class="hs-btn" onclick="stopLessonHideSeek()">Stop</button>
+      <div class="hs-score" id="hsScore" style="display:none"></div>
+    </div>` : `
+    <div class="hs-toolbar">
+      <button class="hs-btn primary" onclick="startLessonHideSeek()">Hide &amp; Seek</button>
+      <select id="hsModeSelect" class="hs-mode-select">${modeOptions}</select>
+    </div>`;
 }
 
 /* ── Example sentences (per-word, expandable in lesson vocab table) ─────── */
@@ -415,23 +461,6 @@ function render() {
     ? [...baseLessonWords].sort((a, b) => (lessonHsOrder[a.n] ?? 1e9) - (lessonHsOrder[b.n] ?? 1e9))
     : baseLessonWords;
   const lessonPatterns = grammarPatterns.filter(p => p.lesson === currentLesson);
-
-  const modeOptions = ['random', 'char', 'pinyin', 'viet', 'pinyin-viet'].map(v => {
-    const label = { random: 'Random mix', char: 'Characters only', pinyin: 'Pinyin only', viet: 'Meanings only', 'pinyin-viet': 'Pinyin + Meanings' }[v];
-    return `<option value="${v}"${lessonHsField === v ? ' selected' : ''}>${label}</option>`;
-  }).join('');
-
-  const hsToolbar = lessonWords.length ? (lessonHsMode ? `
-    <div class="hs-toolbar">
-      <select id="hsModeSelect" class="hs-mode-select" onchange="changeLessonHsMode()">${modeOptions}</select>
-      <button class="hs-btn primary" onclick="checkAllLessonHs()">Check All</button>
-      <button class="hs-btn" onclick="stopLessonHideSeek()">Stop</button>
-      <div class="hs-score" id="hsScore" style="display:none"></div>
-    </div>` : `
-    <div class="hs-toolbar">
-      <button class="hs-btn primary" onclick="startLessonHideSeek()">Hide &amp; Seek</button>
-      <select id="hsModeSelect" class="hs-mode-select">${modeOptions}</select>
-    </div>`) : '';
 
   const colspan = lessonHsMode ? 7 : 6;
   const wordRows = lessonWords.map((w, i) => {
@@ -492,7 +521,6 @@ function render() {
     </tr>`).join('');
 
   document.getElementById('vocab-view').innerHTML = lessonWords.length ? `
-    ${hsToolbar}
     <table>
       <thead><tr><th>#</th><th>Character</th><th>Pinyin</th><th>Type</th><th>Vietnamese meaning</th><th>Hán Việt</th>${lessonHsMode ? '<th></th>' : ''}</tr></thead>
       <tbody>${wordRows}</tbody>
@@ -1397,4 +1425,5 @@ renderLessonButtons();
 populateLessonSelects();
 const _lessons = availableLessons();
 selectLesson(_lessons.includes(1) ? 1 : (_lessons[0] || 1));
+renderHsToolbar();
 </script>
