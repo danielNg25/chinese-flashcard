@@ -364,6 +364,10 @@ const words = [
   { char:"晴天",   pinyin:"qíngtiān",     pos:"n.",    viet:"trời nắng, ngày đẹp trời (không mưa, không mây)",          lesson:11, hv:"TÌNH THIÊN — trời quang (tình = trời trong, quang đãng)", radical:"晴(TÌNH) = 日(NHẬT — mặt trời, bộ thủ) + 青(THANH — xanh, chỉ thanh) → 'mặt trời trên bầu trời xanh' = trời nắng/quang | 天(THIÊN — trời/ngày)" },
   { char:"阴天",   pinyin:"yīntiān",      pos:"n.",    viet:"trời âm u, trời nhiều mây (không nắng, không mưa — giữa 晴天 và 雨天)", lesson:11, hv:"ÂM THIÊN — trời âm u (âm = tối/âm, thiên = trời)", radical:"阴(ÂM) = 阝(PHỤ — gò đất, bộ thủ) + 月(NGUYỆT — trăng/tối) → 'phía tối của gò' = âm/tối. Giản thể của 陰. Đối lập: 晴天(nắng) ↔ 阴天(âm u) ↔ 雨天(mưa) | 天(THIÊN)" },
 
+  { char:"因为",   pinyin:"yīnwèi",       pos:"conj.", viet:"vì, bởi vì (nêu nguyên nhân — thường đi cùng 所以: 因为...所以... = vì...nên...)", lesson:11, hv:"NHÂN VI — vì (nhân = nguyên nhân, vi = vì)", radical:"因(NHÂN) = 囗(viền — bao quanh) + 大(ĐẠI — lớn) → 'nguyên nhân bao trùm' = nhân/vì | 为(VI) = tượng hình bàn tay dẫn dắt → 'làm vì mục đích'" },
+
+  { char:"做",     pinyin:"zuò",          pos:"v.",    viet:"làm, thực hiện (做作业 làm bài tập, 做饭 nấu cơm, 做什么 làm gì)", lesson:11, hv:"TÁC — làm (như 'tác phẩm', 'tác giả', 'công tác')", radical:"亻(NHÂN — người, bộ thủ) + 故(CỐ — chỉ thanh) → 'người thực hiện việc gì đó' = làm. Lưu ý: 做(zuò=làm) ≠ 坐(zuò=ngồi) — cùng âm, khác chữ và nghĩa" },
+
   // ── Add new words below ──
 ];
 
